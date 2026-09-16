@@ -1,0 +1,17 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix ms: <http://example.org/manuscript/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://alqami.net/artifact/map>
+    a schema:CreativeWork ;
+    dc:title "خريطة بابل للعالم (إيماجو موندي)"@ar ;
+    dc:title "Babylonian Map of the World (Imago Mundi)"@en ;
+    dc:creator "غير معروف"@ar ;
+    dc:date "القرن السادس أو الخامس قبل الميلاد" ;
+    schema:material "طين"@ar ;
+    schema:material "Clay"@en ;
+    ms:transcriptionArabic """تعتبر من أقدم الخرائط المعروفة في العالم، تظهر بابل في المركز وتحيط بها الأهوار والمحيط "نهر المرارة"."""@ar ;
+    ms:translationEnglish """Description loaded."""@en ;
+    schema:extent "12.2 × 8.2 سم"@ar .

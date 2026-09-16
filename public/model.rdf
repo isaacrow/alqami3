@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:bf="http://id.loc.gov/ontologies/bibframe/"
+         xmlns:schema="http://schema.org/">
+  <bf:Instance rdf:about="https://alqami.net/artifact/quran">
+    <bf:title>
+      <bf:Title>
+        <bf:mainTitle xml:lang="ar">القرآن الكريم</bf:mainTitle>
+        <rdfs:label>The Holy Quran Manuscript</rdfs:label>
+      </bf:Title>
+    </bf:title>
+    <bf:provisionActivity>
+      <bf:ProvisionActivity>
+        <bf:date>1009 هـ / 1600 م</bf:date>
+      </bf:ProvisionActivity>
+    </bf:provisionActivity>
+    <bf:extent>
+      <bf:Extent>
+        <rdfs:label xml:lang="ar">294 ورقة (15 سطراً)</rdfs:label>
+      </bf:Extent>
+    </bf:extent>
+    <bf:material>
+      <rdfs:label xml:lang="ar">ورق، حبر أسود، خط النسخ</rdfs:label>
+      <rdfs:label xml:lang="en">Paper, Black Ink, Naskh Script</rdfs:label>
+    </bf:material>
+    <bf:contribution>
+      <bf:Contribution>
+        <bf:agent>
+          <bf:Agent>
+            <rdfs:label xml:lang="ar">حيدر علي (ناسخ)</rdfs:label>
+          </bf:Agent>
+        </bf:agent>
+      </bf:Contribution>
+    </bf:contribution>
+    <bf:note>
+      <bf:Note>
+        <rdfs:label xml:lang="ar">النسخة مجدولة بعدة ألوان والصفحة الأولى والثانية مزخرفة. نسخت في حائر الإمام الحسين عليه السلام.</rdfs:label>
+      </bf:Note>
+    </bf:note>
+  </bf:Instance>
+</rdf:RDF>

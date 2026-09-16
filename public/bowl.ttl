@@ -1,0 +1,17 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix ms: <http://example.org/manuscript/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://alqami.net/artifact/bowl>
+    a schema:CreativeWork ;
+    dc:title "وعاء أثري"@ar ;
+    dc:title "Ancient Bowl"@en ;
+    dc:creator "حرفي غير معروف"@ar ;
+    dc:date "غير محدد" ;
+    schema:material "فخار"@ar ;
+    schema:material "Pottery / Ceramic"@en ;
+    ms:transcriptionArabic """وعاء تاريخي يستخدم للأغراض اليومية، يعكس أسلوب صناعة الفخار في تلك الحقبة."""@ar ;
+    ms:translationEnglish """Description loaded."""@en ;
+    schema:extent "متوسط الحجم"@ar .

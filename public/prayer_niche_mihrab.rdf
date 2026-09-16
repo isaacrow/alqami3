@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:bf="http://id.loc.gov/ontologies/bibframe/"
+         xmlns:schema="http://schema.org/">
+  <bf:Instance rdf:about="https://alqami.net/artifact/mihrab">
+    <bf:title>
+      <bf:Title>
+        <bf:mainTitle xml:lang="ar">محراب الصلاة</bf:mainTitle>
+        <rdfs:label>Prayer Niche (Mihrab)</rdfs:label>
+      </bf:Title>
+    </bf:title>
+    <bf:provisionActivity>
+      <bf:ProvisionActivity>
+        <bf:date>القرن الثالث عشر الميلادي</bf:date>
+      </bf:ProvisionActivity>
+    </bf:provisionActivity>
+    <bf:extent>
+      <bf:Extent>
+        <rdfs:label xml:lang="ar">قطعة معمارية كبيرة</rdfs:label>
+      </bf:Extent>
+    </bf:extent>
+    <bf:material>
+      <rdfs:label xml:lang="ar">خزف مزجج (قاشاني)</rdfs:label>
+      <rdfs:label xml:lang="en">Glazed Ceramic (Kashani)</rdfs:label>
+    </bf:material>
+    <bf:contribution>
+      <bf:Contribution>
+        <bf:agent>
+          <bf:Agent>
+            <rdfs:label xml:lang="ar">فنان إسلامي غير معروف</rdfs:label>
+          </bf:Agent>
+        </bf:agent>
+      </bf:Contribution>
+    </bf:contribution>
+    <bf:note>
+      <bf:Note>
+        <rdfs:label xml:lang="ar">محراب مزين بالزخارف الهندسية والنباتية والآيات القرآنية بالخط الكوفي والثلث. يستخدم لتحديد القبلة في المساجد.</rdfs:label>
+      </bf:Note>
+    </bf:note>
+  </bf:Instance>
+</rdf:RDF>

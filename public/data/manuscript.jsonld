@@ -1,0 +1,61 @@
+{
+  "@context": {
+    "dc": "http://purl.org/dc/elements/1.1/",
+    "dcterms": "http://purl.org/dc/terms/",
+    "schema": "http://schema.org/",
+    "crm": "http://www.cidoc-crm.org/cidoc-crm/",
+    "edm": "http://www.europeana.eu/schemas/edm/",
+    "ms": "https://w3id.org/manuscript-ar/ontology#",
+    "rdfs": "http://www.w3.org/2000/01/rdf-schema#"
+  },
+  "@id": "https://w3id.org/manuscript-ar/item/MS-17874180",
+  "@type": ["schema:Manuscript", "crm:E22_Human-Made_Object", "edm:ProvidedCHO"],
+  "dc:title": [
+    {"@value": "Kitāb al-Shifāʾ: Logic & Metaphysics with Illuminated ʿUnwān", "@language": "en"},
+    {"@value": "كتاب الشفاء: منطق وإلهيات مع ديباجة مذهبة", "@language": "ar"},
+    {"@value": "کتاب الشفاء: بخش منطق و الهیات با سرلوح مذهب", "@language": "fa"}
+  ],
+  "dc:creator": {
+    "@id": "http://www.wikidata.org/entity/Q8011",
+    "@type": "schema:Person",
+    "schema:name": "Ibn Sīnā (Avicenna / ابن سینا)",
+    "schema:jobTitle": "Polymath, Philosopher, Physician",
+    "schema:birthDate": "0980-08-23",
+    "schema:deathDate": "1037-06-22"
+  },
+  "dc:contributor": "Anonymous Master Scribe & Royal Illuminator",
+  "dc:date": "16th-17th Century CE (Safavid / Timurid Continuation Era)",
+  "dc:language": ["ar", "fa"],
+  "dc:identifier": "MS-SHIFA-1302-MAJLIS",
+  "dc:publisher": "Parliament Library Collection (Ketābkhāneh-ye Majles)",
+  "schema:material": "Burnished rag paper (kāghaz), shell gold (ṭalā-ye ḥall), lapis lazuli pigment, iron gall ink, vermilion ink",
+  "schema:artform": "Islamic Calligraphy & Illumination (Tadhhīb)",
+  "ms:dimensions": "26.5 cm x 17.2 cm",
+  "ms:folioLayout": "Single-column framed text box with 17 ruled lines; marginal annotations at 45-degree angled layout",
+  "ms:rulingTechnique": "Mastār (ruling board impression)",
+  "ms:rubrication": "Section headers, bismillah keywords, and transition particles in vermilion red",
+  "ms:transcriptionArabic": "بِسْمِ اللهِ الرَّحْمَنِ الرَّحِيمِ - الحمد لله الواحد الأحد الصمد المصور ومهيمن كل وجود وجاعل كل موجود والصلوة على من قفاه من زمر الانبياء واصطفاه من رسل الرسل... والقوانين فيما قد استبان لعين عقل مقلة قلبي ببصيرة رؤى بنور الهبة في طول المدتين ان رتب الابداع والتكوين تنفرد بالقدم وبقاء الدوام...",
+  "ms:translationEnglish": "In the Name of God, the Most Gracious, the Most Merciful. Praise be to God, the One, the Unique, the Eternal Refuge, the Fashioner and Guardian of all being, the Creator of every existent; and blessings upon him whom He chose from among the ranks of prophets and messengers... And the principles that have become clear to the eye of reason and inner insight through the luminous bestowal over the two durations: namely, that the ranks of origination (ibdāʿ) and cosmic formation (takwīn) are uniquely characterized by eternity and perpetual subsistence...",
+  "ms:features": [
+    {
+      "@id": "ms:LapisGoldUnwan",
+      "@type": "ms:IlluminationFeature",
+      "rdfs:label": "Illuminated Header (ʿUnwān / ديباجة مذهبة)",
+      "dc:description": "Intricate polylobed arch headpiece rendered in lapis lazuli (ultramarine blue), turquoise, and 24-karat shell gold with intertwining floral islimi (arabesque) vine scrollwork framing the cartouche.",
+      "ms:pigments": "Lapis lazuli, ground malachite, cinnabar, shell gold leaf"
+    },
+    {
+      "@id": "ms:MajlisLibrarySeal",
+      "@type": "ms:ProvenanceFeature",
+      "rdfs:label": "Majlis Parliament Library Seal (مهر کتابخانه مجلس شورای ملی)",
+      "dc:description": "Official ownership stamp of the Iranian National Consultative Assembly Library (Ketābkhāneh-ye Majles-e Showrā-ye Mellī), established in 1302 AH / 1923 CE.",
+      "schema:foundingDate": "1302 AH (1923 CE)"
+    },
+    {
+      "@id": "ms:NaskhFine",
+      "@type": "ms:CalligraphicScript",
+      "rdfs:label": "Clear Naskh Calligraphy (خط النسخ الدقيق)",
+      "dc:description": "Carefully proportioned Naskh script written with a reed pen (qalam) using iron gall ink, providing optimal clarity for philosophical discourse."
+    }
+  ]
+}
