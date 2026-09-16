@@ -7271,7 +7271,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const y0="->",qZ=/->/g,rT=",",iT="...";function lv(n,e){n=n.replace(/\s/g,"");const t=(n.length-n.replace(qZ,"").length)/y0.length;if(t<1)throw new Error("Equations without an arrow are not supported.");if(t>1)throw new Error(`Equation must contain exactly one arrow ("${y0}").`);const[r,i]=n.split(y0);F(r.indexOf(iT)===-1,()=>`The ellipsis notation ("${iT}") is not supported yet.`);const s=r.split(rT),a=s.length;if(e!==a)throw new Error(`Expected ${a} input tensors, received ${e}`);if(a>2)throw new Error("Support for more than 2 input tensors is not implemented yet.");const o=[];for(let d=0;d<i.length;++d){const p=i[d];if(!s.some(g=>g.indexOf(p)!==-1))throw new Error(`Output subscripts contain the label ${p} not present in the input subscripts.`);o.indexOf(p)===-1&&o.push(p)}for(let d=0;d<r.length;++d){const p=r[d];o.indexOf(p)===-1&&p!==rT&&o.push(p)}const l=new Array(s.length);for(let d=0;d<a;++d){if(new Set(s[d].split("")).size!==s[d].length)throw new Error(`Found duplicate axes in input component ${s[d]}. Support for duplicate axes in input is not implemented yet.`);l[d]=[];for(let p=0;p<s[d].length;++p)l[d].push(o.indexOf(s[d][p]))}const u=o.length,c=i.length,h=[];for(let d=c;d<u;++d)h.push(d);return{allDims:o,summedDims:h,idDims:l}}function uv(n,e){let t=new Array(n);t.fill(-1);for(let i=0;i<e.length;++i)t[e[i]]=i;const r=[];for(let i=0;i<n;++i)t[i]===-1&&r.push(i);return t=t.filter(i=>i!==-1),{permutationIndices:t,expandDims:r}}function cv(n,e,t){const r=new Array(n);for(let i=0;i<t.length;++i){const s=t[i].shape;for(let a=0;a<e[i].length;++a)r[e[i][a]]===void 0?r[e[i][a]]=s[a]:F(r[e[i][a]]===s[a],()=>`Expected dimension ${r[e[i][a]]} at axis ${a} of input shaped ${JSON.stringify(s)}, but got dimension ${s[a]}`)}}function hv(n,e){const t=n,r=[];let i=0;n.length===0&&t.push(-1),i=n.length+1;for(let a=0;a<i;++a)r.push([]);const s=[];for(let a=0;a<t.length;++a){const o=t[a],l=e4(e,o);for(const u of l)s.indexOf(u)===-1&&(r[a].push(u),s.push(u))}return{path:t,steps:r}}function dv(n){return n.every((e,t)=>e===t)}function e4(n,e){const t=[];for(let r=0;r<n.length;++r)(n[r].length===0||n[r].indexOf(e)!==-1||e===-1)&&t.push(r);return t}function pv(n,e,t=0){let r=[];if(typeof e=="number")F(n.shape[t]%e===0,()=>"Number of splits must evenly divide the axis."),r=new Array(e).fill(n.shape[t]/e);else{const i=e.reduce((a,o)=>(o===-1&&(a+=1),a),0);F(i<=1,()=>"There should be only one negative value in split array.");const s=e.indexOf(-1);if(s!==-1){const a=e.reduce((o,l)=>l>0?o+l:o);e[s]=n.shape[t]-a}F(n.shape[t]===e.reduce((a,o)=>a+o),()=>"The sum of sizes must match the size of the axis dimension."),r=e}return r}/**
+ */const y0="->",qZ=/->/g,rT=",",iT="...";function lv(n,e){n=n.replace(/\s/g,"");const t=(n.length-n.replace(qZ,"").length)/y0.length;if(t<1)throw new Error("Equations without an arrow are not supported.");if(t>1)throw new Error(`Equation must contain exactly one arrow ("${y0}").`);const[r,i]=n.split(y0);F(r.indexOf(iT)===-1,()=>`The ellipsis notation ("${iT}") is not supported yet.`);const s=r.split(rT),a=s.length;if(e!==a)throw new Error(`Expected ${a} input tensors, received ${e}`);if(a>2)throw new Error("Support for more than 2 input tensors is not implemented yet.");const o=[];for(let d=0;d<i.length;++d){const p=i[d];if(!s.some(g=>g.indexOf(p)!==-1))throw new Error(`Output subscripts contain the label ${p} not present in the input subscripts.`);o.indexOf(p)===-1&&o.push(p)}for(let d=0;d<r.length;++d){const p=r[d];o.indexOf(p)===-1&&p!==rT&&o.push(p)}const l=new Array(s.length);for(let d=0;d<a;++d){if(new Set(s[d].split("")).size!==s[d].length)throw new Error(`Found duplicate axes in input component ${s[d]}. Support for duplicate axes in input is not implemented yet.`);l[d]=[];for(let p=0;p<s[d].length;++p)l[d].push(o.indexOf(s[d][p]))}const u=o.length,c=i.length,h=[];for(let d=c;d<u;++d)h.push(d);return{allDims:o,summedDims:h,idDims:l}}function uv(n,e){let t=new Array(n);t.fill(-1);for(let i=0;i<e.length;++i)t[e[i]]=i;const r=[];for(let i=0;i<n;++i)t[i]===-1&&r.push(i);return t=t.filter(i=>i!==-1),{permutationIndices:t,expandDims:r}}function cv(n,e,t){const r=new Array(n);for(let i=0;i<t.length;++i){const s=t[i].shape;for(let a=0;a<e[i].length;++a)r[e[i][a]]===void 0?r[e[i][a]]=s[a]:F(r[e[i][a]]===s[a],()=>`Expected dimension ${r[e[i][a]]} at axis ${a} of input shaped ${JSON.stringify(s)}, but got dimension ${s[a]}`)}}function hv(n,e){const t=n,r=[];let i=0;n.length===0&&t.push(-1),i=n.length+1;for(let a=0;a<i;++a)r.push([]);const s=[];for(let a=0;a<t.length;++a){const o=t[a],l=e5(e,o);for(const u of l)s.indexOf(u)===-1&&(r[a].push(u),s.push(u))}return{path:t,steps:r}}function dv(n){return n.every((e,t)=>e===t)}function e5(n,e){const t=[];for(let r=0;r<n.length;++r)(n[r].length===0||n[r].indexOf(e)!==-1||e===-1)&&t.push(r);return t}function pv(n,e,t=0){let r=[];if(typeof e=="number")F(n.shape[t]%e===0,()=>"Number of splits must evenly divide the axis."),r=new Array(e).fill(n.shape[t]/e);else{const i=e.reduce((a,o)=>(o===-1&&(a+=1),a),0);F(i<=1,()=>"There should be only one negative value in split array.");const s=e.indexOf(-1);if(s!==-1){const a=e.reduce((o,l)=>l>0?o+l:o);e[s]=n.shape[t]-a}F(n.shape[t]===e.reduce((a,o)=>a+o),()=>"The sum of sizes must match the size of the axis dimension."),r=e}return r}/**
  * @license
  * Copyright 2021 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7334,7 +7334,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * limitations under the License.
  * =============================================================================
  */function IN(n,e){let t=!1,r;for(n<=Qw?(r=n,t=!0):r=Xf(n,Math.floor(Math.sqrt(n)));!t;)r>e||r===n?t=!0:r=Xf(n,r+1);return r}function TN(n,e,t){const r=[],i=n.length;for(let s=0;s<i;s++)s!==e?r.push(n[s]):r.push(t);return r}function fv(n,e,t,r){const i=e.shape.length,s=n.shape.length;if(r!==0&&(r<-i||r>i))throw new Error(`Expect batchDims in the range of [-${i}, ${i}], but got ${r}`);if(r<0&&(r+=i),r>s)throw new Error(`batchDims (${r}) must be less than rank(x) (
-    ${s}).`);if(t<r)throw new Error(`batchDims (${r}) must be less than or equal to axis (${t}).`);for(let h=0;h<r;++h)if(n.shape[h]!==e.shape[h])throw new Error(`x.shape[${h}]: ${n.shape[h]} should be equal to indices.shape[${h}]: ${e.shape[h]}.`);const a=n.shape[t],o=[];let l=1,u=1,c=1;for(let h=0;h<r;++h)o.push(n.shape[h]),l*=n.shape[h];for(let h=r;h<t;h++)o.push(n.shape[h]),u*=n.shape[h];for(let h=r;h<i;h++)o.push(e.shape[h]);for(let h=t+1;h<s;h++)o.push(n.shape[h]),c*=n.shape[h];return{batchSize:l,sliceSize:c,outerSize:u,dimSize:a,outputShape:o}}const t4=Object.freeze(Object.defineProperty({__proto__:null,collectGatherOpShapeInfo:fv,computeOutShape:TN,segOpComputeOptimalWindowSize:IN},Symbol.toStringTag,{value:"Module"}));/**
+    ${s}).`);if(t<r)throw new Error(`batchDims (${r}) must be less than or equal to axis (${t}).`);for(let h=0;h<r;++h)if(n.shape[h]!==e.shape[h])throw new Error(`x.shape[${h}]: ${n.shape[h]} should be equal to indices.shape[${h}]: ${e.shape[h]}.`);const a=n.shape[t],o=[];let l=1,u=1,c=1;for(let h=0;h<r;++h)o.push(n.shape[h]),l*=n.shape[h];for(let h=r;h<t;h++)o.push(n.shape[h]),u*=n.shape[h];for(let h=r;h<i;h++)o.push(e.shape[h]);for(let h=t+1;h<s;h++)o.push(n.shape[h]),c*=n.shape[h];return{batchSize:l,sliceSize:c,outerSize:u,dimSize:a,outputShape:o}}const t5=Object.freeze(Object.defineProperty({__proto__:null,collectGatherOpShapeInfo:fv,computeOutShape:TN,segOpComputeOptimalWindowSize:IN},Symbol.toStringTag,{value:"Module"}));/**
  * @license
  * Copyright 2018 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7349,7 +7349,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */function Vs(n){try{return n.map(e=>Ps(e))}catch(e){throw new Error(`Failed to decode encoded string bytes into utf-8, error: ${e}`)}}function kN(n){return n.map(e=>cs(e))}const CN=Object.freeze(Object.defineProperty({__proto__:null,ERF_A1:nv,ERF_A2:rv,ERF_A3:iv,ERF_A4:sv,ERF_A5:av,ERF_P:tv,PARALLELIZE_THRESHOLD:Qw,get RowPartitionType(){return Ni},SELU_SCALE:Tb,SELU_SCALEALPHA:Ib,applyActivation:mb,assertAndGetBroadcastShape:pt,assertAxesAreInnerMostDims:Yn,assertParamsConsistent:Yw,assignToTypedArray:cN,axesAreInnerMostDims:ow,calculateShapes:Va,checkEinsumDimSizes:cv,checkPadOnDimRoundingMode:ur,combineLocations:yM,combineRaggedTensorToTensorShapes:rN,complexWithEvenIndex:lN,complexWithOddIndex:uN,computeConv2DInfo:Fn,computeConv3DInfo:za,computeDefaultPad:V1,computeDilation2DInfo:ep,computeOptimalWindowSize:_b,computeOutAndReduceShapes:Pn,computeOutShape:ds,computePool2DInfo:vi,computePool3DInfo:Ks,convertConv2DDataFormat:js,decodeEinsumEquation:lv,eitherStridesOrDilationsAreOne:jn,expandShapeToKeepDim:cn,exponent:dN,exponents:hN,fromStringArrayToUint8:kN,fromUint8ToStringArray:Vs,getAxesPermutation:rn,getBroadcastDims:zo,getComplexWithIndex:ov,getEinsumComputePath:hv,getEinsumPermutation:uv,getFusedBiasGradient:fb,getFusedDyActivation:pb,getImageCenter:Jw,getInnerMostAxes:hn,getPermuted:wp,getRaggedRank:sN,getReductionAxes:yn,getReshaped:xp,getReshapedPermuted:vp,getRowPartitionTypesHelper:iN,getSliceBeginCoords:qw,getSliceSize:ev,getSparseFillEmptyRowsIndicesDenseShapeMismatch:pN,getSparseFillEmptyRowsNegativeIndexErrorMessage:fN,getSparseFillEmptyRowsOutOfRangeIndexErrorMessage:mN,getSparseReshapeEmptyTensorZeroOutputDimErrorMessage:yN,getSparseReshapeInputOutputMismatchErrorMessage:wN,getSparseReshapeInputOutputMultipleErrorMessage:xN,getSparseReshapeMultipleNegativeOneOutputDimErrorMessage:gN,getSparseReshapeNegativeOutputDimErrorMessage:bN,getSparseSegmentReductionIndicesOutOfRangeErrorMessage:_N,getSparseSegmentReductionNegativeSegmentIdsErrorMessage:Sx,getSparseSegmentReductionNonIncreasingSegmentIdsErrorMessage:vN,getSparseSegmentReductionSegmentIdOutOfRangeErrorMessage:SN,getUndoAxesPermutation:Ga,isIdentityPermutation:dv,log:a$,mergeRealAndImagArrays:$s,prepareAndValidate:vb,prepareSplitSize:pv,segment_util:t4,shouldFuse:gb,slice_util:tN,splitRealAndImagArrays:oN,stridesOrDilationsArePositive:Fo,tupleValuesAreOne:ka,upcastType:vr,validateDefaultValueShape:aN,validateInput:lb,validateUpdateShape:Cw,warn:ni},Symbol.toStringTag,{value:"Module"}));/**
+ */function Vs(n){try{return n.map(e=>Ps(e))}catch(e){throw new Error(`Failed to decode encoded string bytes into utf-8, error: ${e}`)}}function kN(n){return n.map(e=>cs(e))}const CN=Object.freeze(Object.defineProperty({__proto__:null,ERF_A1:nv,ERF_A2:rv,ERF_A3:iv,ERF_A4:sv,ERF_A5:av,ERF_P:tv,PARALLELIZE_THRESHOLD:Qw,get RowPartitionType(){return Ni},SELU_SCALE:Tb,SELU_SCALEALPHA:Ib,applyActivation:mb,assertAndGetBroadcastShape:pt,assertAxesAreInnerMostDims:Yn,assertParamsConsistent:Yw,assignToTypedArray:cN,axesAreInnerMostDims:ow,calculateShapes:Va,checkEinsumDimSizes:cv,checkPadOnDimRoundingMode:ur,combineLocations:yM,combineRaggedTensorToTensorShapes:rN,complexWithEvenIndex:lN,complexWithOddIndex:uN,computeConv2DInfo:Fn,computeConv3DInfo:za,computeDefaultPad:V1,computeDilation2DInfo:ep,computeOptimalWindowSize:_b,computeOutAndReduceShapes:Pn,computeOutShape:ds,computePool2DInfo:vi,computePool3DInfo:Ks,convertConv2DDataFormat:js,decodeEinsumEquation:lv,eitherStridesOrDilationsAreOne:jn,expandShapeToKeepDim:cn,exponent:dN,exponents:hN,fromStringArrayToUint8:kN,fromUint8ToStringArray:Vs,getAxesPermutation:rn,getBroadcastDims:zo,getComplexWithIndex:ov,getEinsumComputePath:hv,getEinsumPermutation:uv,getFusedBiasGradient:fb,getFusedDyActivation:pb,getImageCenter:Jw,getInnerMostAxes:hn,getPermuted:wp,getRaggedRank:sN,getReductionAxes:yn,getReshaped:xp,getReshapedPermuted:vp,getRowPartitionTypesHelper:iN,getSliceBeginCoords:qw,getSliceSize:ev,getSparseFillEmptyRowsIndicesDenseShapeMismatch:pN,getSparseFillEmptyRowsNegativeIndexErrorMessage:fN,getSparseFillEmptyRowsOutOfRangeIndexErrorMessage:mN,getSparseReshapeEmptyTensorZeroOutputDimErrorMessage:yN,getSparseReshapeInputOutputMismatchErrorMessage:wN,getSparseReshapeInputOutputMultipleErrorMessage:xN,getSparseReshapeMultipleNegativeOneOutputDimErrorMessage:gN,getSparseReshapeNegativeOutputDimErrorMessage:bN,getSparseSegmentReductionIndicesOutOfRangeErrorMessage:_N,getSparseSegmentReductionNegativeSegmentIdsErrorMessage:Sx,getSparseSegmentReductionNonIncreasingSegmentIdsErrorMessage:vN,getSparseSegmentReductionSegmentIdOutOfRangeErrorMessage:SN,getUndoAxesPermutation:Ga,isIdentityPermutation:dv,log:a$,mergeRealAndImagArrays:$s,prepareAndValidate:vb,prepareSplitSize:pv,segment_util:t5,shouldFuse:gb,slice_util:tN,splitRealAndImagArrays:oN,stridesOrDilationsArePositive:Fo,tupleValuesAreOne:ka,upcastType:vr,validateDefaultValueShape:aN,validateInput:lb,validateUpdateShape:Cw,warn:ni},Symbol.toStringTag,{value:"Module"}));/**
  * @license
  * Copyright 2017 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7394,7 +7394,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const n4={kernelName:yu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>{const r=Pt(Ue(t,"float32")),i=Zn(Ye(at(1),r));return Xt(rt(n,i))}}}};/**
+ */const n5={kernelName:yu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>{const r=Pt(Ue(t,"float32")),i=Zn(Ye(at(1),r));return Xt(rt(n,i))}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7409,7 +7409,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const r4={kernelName:xu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>{const r=Zn(Ye(Pt(Ue(t,"float32")),1));return rt(n,r)}}}};/**
+ */const r5={kernelName:xu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>{const r=Zn(Ye(Pt(Ue(t,"float32")),1));return rt(n,r)}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7424,7 +7424,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const i4={kernelName:qo,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{let s=n;const a=yn(t.shape,i);return a.length>0&&(s=Je(s,a)),ce(s,t.shape)},b:()=>{let s=n;const a=yn(r.shape,i);return a.length>0&&(s=Je(s,a)),ce(s,r.shape)}}}};/**
+ */const i5={kernelName:qo,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{let s=n;const a=yn(t.shape,i);return a.length>0&&(s=Je(s,a)),ce(s,t.shape)},b:()=>{let s=n;const a=yn(r.shape,i);return a.length>0&&(s=Je(s,a)),ce(s,r.shape)}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7439,7 +7439,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const s4={kernelName:Yh,saveAllInputs:!0,gradFunc:(n,e)=>{const t={};return e.forEach((r,i)=>{t[i]=()=>n.clone()}),t}};/**
+ */const s5={kernelName:Yh,saveAllInputs:!0,gradFunc:(n,e)=>{const t={};return e.forEach((r,i)=>{t[i]=()=>n.clone()}),t}};/**
  * @license
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7454,7 +7454,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const a4={kernelName:Qh,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>Mt(t)}}};/**
+ */const a5={kernelName:Qh,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>Mt(t)}}};/**
  * @license
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7469,7 +7469,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const o4={kernelName:Jh,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>Mt(t)}}};/**
+ */const o5={kernelName:Jh,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>Mt(t)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7484,7 +7484,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const l4={kernelName:wu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,Zn(Ye(at(1),Pt(Ue(t,"float32")))))}}};/**
+ */const l5={kernelName:wu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,Zn(Ye(at(1),Pt(Ue(t,"float32")))))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7499,7 +7499,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const u4={kernelName:vu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>{const r=Zn(ze(at(1),Pt(Ue(t,"float32"))));return rt(n,r)}}}};/**
+ */const u5={kernelName:vu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>{const r=Zn(ze(at(1),Pt(Ue(t,"float32"))));return rt(n,r)}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7514,7 +7514,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const c4={kernelName:Iu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{const s=ze(Pt(t),Pt(r));let a=le(n,rt(r,s));const o=yn(t.shape,i);return o.length>0&&(a=Je(a,o)),ce(a,t.shape)},b:()=>{const s=ze(Pt(t),Pt(r));let a=Xt(le(n,rt(t,s)));const o=yn(r.shape,i);return o.length>0&&(a=Je(a,o)),ce(a,r.shape)}}}};/**
+ */const c5={kernelName:Iu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{const s=ze(Pt(t),Pt(r));let a=le(n,rt(r,s));const o=yn(t.shape,i);return o.length>0&&(a=Je(a,o)),ce(a,t.shape)},b:()=>{const s=ze(Pt(t),Pt(r));let a=Xt(le(n,rt(t,s)));const o=yn(r.shape,i);return o.length>0&&(a=Je(a,o)),ce(a,r.shape)}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7529,7 +7529,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const h4={kernelName:Su,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,ze(Pt(Ue(t,"float32")),1))}}};/**
+ */const h5={kernelName:Su,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,ze(Pt(Ue(t,"float32")),1))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7544,7 +7544,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const d4={kernelName:_u,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,Ye(at(1),Pt(Ue(t,"float32"))))}}};/**
+ */const d5={kernelName:_u,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,Ye(at(1),Pt(Ue(t,"float32"))))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7559,7 +7559,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */function p4(n,e,t,r,i,s){const a=$(n,"dy","avgPool3dGrad"),o=$(e,"input","avgPool3dGrad");let l=a,u=o,c=!1;o.rank===4&&(c=!0,l=ce(a,[1,a.shape[0],a.shape[1],a.shape[2],a.shape[3]]),u=ce(o,[1,o.shape[0],o.shape[1],o.shape[2],o.shape[3]])),F(l.rank===5,()=>`Error in avgPool3dGrad: dy must be rank 5 but got rank ${l.rank}.`),F(u.rank===5,()=>`Error in avgPool3dGrad: input must be rank 5 but got rank ${u.rank}.`),ur("avgPool3dGrad",i,s);const h={dy:l,input:u},d={filterSize:t,strides:r,pad:i,dimRoundingMode:s},p=te.runKernel(zm,h,d);return c?ce(p,[p.shape[1],p.shape[2],p.shape[3],p.shape[4]]):p}const f4=re({avgPool3dGrad_:p4});/**
+ */function p5(n,e,t,r,i,s){const a=$(n,"dy","avgPool3dGrad"),o=$(e,"input","avgPool3dGrad");let l=a,u=o,c=!1;o.rank===4&&(c=!0,l=ce(a,[1,a.shape[0],a.shape[1],a.shape[2],a.shape[3]]),u=ce(o,[1,o.shape[0],o.shape[1],o.shape[2],o.shape[3]])),F(l.rank===5,()=>`Error in avgPool3dGrad: dy must be rank 5 but got rank ${l.rank}.`),F(u.rank===5,()=>`Error in avgPool3dGrad: input must be rank 5 but got rank ${u.rank}.`),ur("avgPool3dGrad",i,s);const h={dy:l,input:u},d={filterSize:t,strides:r,pad:i,dimRoundingMode:s},p=te.runKernel(zm,h,d);return c?ce(p,[p.shape[1],p.shape[2],p.shape[3],p.shape[4]]):p}const f5=re({avgPool3dGrad_:p5});/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7574,7 +7574,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const m4={kernelName:ed,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{filterSize:i,strides:s,pad:a,dimRoundingMode:o}=t;return{x:()=>f4(n,r,i,s,a,o)}}};/**
+ */const m5={kernelName:ed,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{filterSize:i,strides:s,pad:a,dimRoundingMode:o}=t;return{x:()=>f5(n,r,i,s,a,o)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7589,7 +7589,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */function g4(n,e,t,r,i){const s=$(n,"dy","avgPoolGrad"),a=$(e,"input","avgPoolGrad");F(a.rank===s.rank,()=>`Rank of input (${a.rank}) does not match rank of dy (${s.rank})`);let o=a,l=s,u=!1;a.rank===3&&(u=!0,o=ce(a,[1,a.shape[0],a.shape[1],a.shape[2]]),l=ce(s,[1,s.shape[0],s.shape[1],s.shape[2]])),F(l.rank===4,()=>`Error in avgPoolGrad: dy must be rank 4 but got rank ${l.rank}.`),F(o.rank===4,()=>`Error in avgPoolGrad: input must be rank 4 but got rank ${o.rank}.`);const c={dy:l,input:o},h={filterSize:t,strides:r,pad:i},d=te.runKernel(Pm,c,h);return u?ce(d,[d.shape[1],d.shape[2],d.shape[3]]):d}const b4=re({avgPoolGrad_:g4});/**
+ */function g5(n,e,t,r,i){const s=$(n,"dy","avgPoolGrad"),a=$(e,"input","avgPoolGrad");F(a.rank===s.rank,()=>`Rank of input (${a.rank}) does not match rank of dy (${s.rank})`);let o=a,l=s,u=!1;a.rank===3&&(u=!0,o=ce(a,[1,a.shape[0],a.shape[1],a.shape[2]]),l=ce(s,[1,s.shape[0],s.shape[1],s.shape[2]])),F(l.rank===4,()=>`Error in avgPoolGrad: dy must be rank 4 but got rank ${l.rank}.`),F(o.rank===4,()=>`Error in avgPoolGrad: input must be rank 4 but got rank ${o.rank}.`);const c={dy:l,input:o},h={filterSize:t,strides:r,pad:i},d=te.runKernel(Pm,c,h);return u?ce(d,[d.shape[1],d.shape[2],d.shape[3]]):d}const b5=re({avgPoolGrad_:g5});/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7604,7 +7604,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const y4={kernelName:qh,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{filterSize:i,strides:s,pad:a}=t;return{x:()=>b4(n,r,i,s,a)}}};/**
+ */const y5={kernelName:qh,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{filterSize:i,strides:s,pad:a}=t;return{x:()=>b5(n,r,i,s,a)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7619,7 +7619,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const x4={kernelName:td,inputsToSave:["a","b"],gradFunc:(n,e,t)=>{const[r,i]=e,{transposeA:s,transposeB:a}=t;return!s&&!a?{a:()=>wt(n,i,!1,!0),b:()=>wt(r,n,!0,!1)}:!s&&a?{a:()=>wt(n,i,!1,!1),b:()=>wt(n,r,!0,!1)}:s&&!a?{a:()=>wt(i,n,!1,!0),b:()=>wt(r,n,!1,!1)}:{a:()=>wt(i,n,!0,!0),b:()=>wt(n,r,!0,!0)}}};/**
+ */const x5={kernelName:td,inputsToSave:["a","b"],gradFunc:(n,e,t)=>{const[r,i]=e,{transposeA:s,transposeB:a}=t;return!s&&!a?{a:()=>wt(n,i,!1,!0),b:()=>wt(r,n,!0,!1)}:!s&&a?{a:()=>wt(n,i,!1,!1),b:()=>wt(n,r,!0,!1)}:s&&!a?{a:()=>wt(i,n,!1,!0),b:()=>wt(r,n,!1,!1)}:{a:()=>wt(i,n,!0,!0),b:()=>wt(n,r,!0,!0)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7634,7 +7634,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const w4={kernelName:nd,gradFunc:(n,e,t)=>{const{blockShape:r,crops:i}=t;return{x:()=>hp(n,r,i)}}};/**
+ */const w5={kernelName:nd,gradFunc:(n,e,t)=>{const{blockShape:r,crops:i}=t;return{x:()=>hp(n,r,i)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7649,7 +7649,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const v4={kernelName:PC,gradFunc:(n,e,t)=>{const r=t,i=r.inputShape,s=r.shape,a=Array.from(s);for(let l=i.length-1;l>=0;l--)if(i[l]===s[l])a[l]=1;else if(i[l]!==1)throw new Error(`broadcastTo(): [${i}] cannot be broadcast to [${s}].`);const o=[];for(let l=0;l<a.length;l++)a[l]>1&&o.push(l);return{x:()=>Je(n,o,!0)}}};/**
+ */const v5={kernelName:PC,gradFunc:(n,e,t)=>{const r=t,i=r.inputShape,s=r.shape,a=Array.from(s);for(let l=i.length-1;l>=0;l--)if(i[l]===s[l])a[l]=1;else if(i[l]!==1)throw new Error(`broadcastTo(): [${i}] cannot be broadcast to [${s}].`);const o=[];for(let l=0;l<a.length;l++)a[l]>1&&o.push(l);return{x:()=>Je(n,o,!0)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7664,7 +7664,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const S4={kernelName:Tu,gradFunc:n=>({x:()=>n.clone()})};/**
+ */const S5={kernelName:Tu,gradFunc:n=>({x:()=>n.clone()})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7679,7 +7679,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const _4={kernelName:ku,gradFunc:n=>({x:()=>Mt(n)})};/**
+ */const _5={kernelName:ku,gradFunc:n=>({x:()=>Mt(n)})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7694,7 +7694,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const I4={kernelName:Cu,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{clipValueMin:i,clipValueMax:s}=t;return{x:()=>En(wi(Ys(r,i),Oa(r,s)),n,Mt(n))}}};/**
+ */const I5={kernelName:Cu,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{clipValueMin:i,clipValueMax:s}=t;return{x:()=>En(wi(Ys(r,i),Oa(r,s)),n,Mt(n))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7709,7 +7709,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const T4={kernelName:id,inputsToSave:["x"],gradFunc:MN.gradFunc};/**
+ */const T5={kernelName:id,inputsToSave:["x"],gradFunc:MN.gradFunc};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7724,7 +7724,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const k4={kernelName:sd,saveAllInputs:!0,gradFunc:(n,e,t)=>{const r=e.map(o=>o.shape),{axis:i}=t,s=vt(i,e[0].shape)[0],a=r.map(o=>o[s]);return wr(n,a,s).map(o=>()=>o)}};/**
+ */const k5={kernelName:sd,saveAllInputs:!0,gradFunc:(n,e,t)=>{const r=e.map(o=>o.shape),{axis:i}=t,s=vt(i,e[0].shape)[0],a=r.map(o=>o[s]);return wr(n,a,s).map(o=>()=>o)}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7739,7 +7739,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const C4={kernelName:ad,inputsToSave:["x","filter"],gradFunc:(n,e,t)=>{const[r,i]=e,{dilations:s,strides:a,pad:o,dataFormat:l}=t;return F(ka(s),()=>`Error in gradient of conv2D: dilation rates greater than 1 are not yet supported in gradients. Got dilations '${s}'`),{x:()=>q1(r.shape,n,i,a,o,l),filter:()=>Aw(r,n,i.shape,a,o,l)}}};/**
+ */const C5={kernelName:ad,inputsToSave:["x","filter"],gradFunc:(n,e,t)=>{const[r,i]=e,{dilations:s,strides:a,pad:o,dataFormat:l}=t;return F(ka(s),()=>`Error in gradient of conv2D: dilation rates greater than 1 are not yet supported in gradients. Got dilations '${s}'`),{x:()=>q1(r.shape,n,i,a,o,l),filter:()=>Aw(r,n,i.shape,a,o,l)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7754,7 +7754,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const M4={kernelName:od,inputsToSave:["dy","filter"],gradFunc:(n,e,t)=>{const[r,i]=e,{strides:s,pad:a,dataFormat:o,dimRoundingMode:l}=t;return{dy:()=>Os(n,i,s,a,o,1,l),filter:()=>Aw(n,r,i.shape,s,a,o,l)}}};/**
+ */const M5={kernelName:od,inputsToSave:["dy","filter"],gradFunc:(n,e,t)=>{const[r,i]=e,{strides:s,pad:a,dataFormat:o,dimRoundingMode:l}=t;return{dy:()=>Os(n,i,s,a,o,1,l),filter:()=>Aw(n,r,i.shape,s,a,o,l)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7769,7 +7769,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */function N4(n,e,t,r,i){let s=n;n.rank===4&&(s=ce(n,[1,n.shape[0],n.shape[1],n.shape[2],n.shape[3]]));let a=e;a.rank===4&&(a=ce(e,[1,e.shape[0],e.shape[1],e.shape[2],e.shape[3]])),F(s.rank===5,()=>`Error in conv3dDerFilter: input must be rank 5, but got shape ${s.shape}.`),F(a.rank===5,()=>`Error in conv3dDerFilter: dy must be rank 5, but got shape ${a.shape}.`),F(t.length===5,()=>`Error in conv3dDerFilter: filterShape must be length 5, but got ${t}.`),F(s.shape[4]===t[3],()=>`Error in conv3dDerFilter: depth of input ${s.shape[4]}) must match input depth in filter (${t[3]}.`),F(a.shape[4]===t[4],()=>`Error in conv3dDerFilter: depth of dy (${a.shape[4]}) must match output depth for filter (${t[4]}).`);const o={x:s,dy:a},l={strides:r,pad:i,filterShape:t};return te.runKernel(Vm,o,l)}const E4=re({conv3DBackpropFilter_:N4});/**
+ */function N5(n,e,t,r,i){let s=n;n.rank===4&&(s=ce(n,[1,n.shape[0],n.shape[1],n.shape[2],n.shape[3]]));let a=e;a.rank===4&&(a=ce(e,[1,e.shape[0],e.shape[1],e.shape[2],e.shape[3]])),F(s.rank===5,()=>`Error in conv3dDerFilter: input must be rank 5, but got shape ${s.shape}.`),F(a.rank===5,()=>`Error in conv3dDerFilter: dy must be rank 5, but got shape ${a.shape}.`),F(t.length===5,()=>`Error in conv3dDerFilter: filterShape must be length 5, but got ${t}.`),F(s.shape[4]===t[3],()=>`Error in conv3dDerFilter: depth of input ${s.shape[4]}) must match input depth in filter (${t[3]}.`),F(a.shape[4]===t[4],()=>`Error in conv3dDerFilter: depth of dy (${a.shape[4]}) must match output depth for filter (${t[4]}).`);const o={x:s,dy:a},l={strides:r,pad:i,filterShape:t};return te.runKernel(Vm,o,l)}const E5=re({conv3DBackpropFilter_:N5});/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7784,7 +7784,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const R4={kernelName:ld,inputsToSave:["x","filter"],gradFunc:(n,e,t)=>{const{dilations:r,strides:i,pad:s}=t;F(ka(r),()=>`Error in gradient of conv3D: dilation rates greater than 1 are not yet supported in gradients. Got dilations '${r}'`);const[a,o]=e;return{x:()=>bM(a.shape,n,o,i,s),filter:()=>E4(a,n,o.shape,i,s)}}};/**
+ */const R5={kernelName:ld,inputsToSave:["x","filter"],gradFunc:(n,e,t)=>{const{dilations:r,strides:i,pad:s}=t;F(ka(r),()=>`Error in gradient of conv3D: dilation rates greater than 1 are not yet supported in gradients. Got dilations '${r}'`);const[a,o]=e;return{x:()=>bM(a.shape,n,o,i,s),filter:()=>E5(a,n,o.shape,i,s)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7799,7 +7799,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const L4={kernelName:Mu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(Xt(rb(Ue(t,"float32"))),n)}}};/**
+ */const L5={kernelName:Mu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(Xt(rb(Ue(t,"float32"))),n)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7814,7 +7814,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const A4={kernelName:Nu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(ib(Ue(t,"float32")),n)}}};/**
+ */const A5={kernelName:Nu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(ib(Ue(t,"float32")),n)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7829,7 +7829,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const D4={kernelName:ud,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{axis:i,exclusive:s,reverse:a}=t;return{x:()=>{const o=rn([i],r.rank);let l=Hg(n,i,s,!a);return o!=null&&(l=kt(l,o)),l}}}};/**
+ */const D5={kernelName:ud,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{axis:i,exclusive:s,reverse:a}=t;return{x:()=>{const o=rn([i],r.rank);let l=Hg(n,i,s,!a);return o!=null&&(l=kt(l,o)),l}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7844,7 +7844,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const F4={kernelName:cd,inputsToSave:["x","filter"],gradFunc:(n,e,t)=>{const{dilations:r,strides:i,pad:s,dimRoundingMode:a}=t,o=r??[1,1];F(ka(o),()=>`Error in gradient of depthwiseConv2dNative: dilation rates greater than 1 are not yet supported. Got dilations '${o}'`);const[l,u]=e;return F(l.rank===4,()=>`Error in gradient of depthwiseConv2dNative: input must be rank 4, but got rank ${l.rank}.`),F(u.rank===4,()=>`Error in gradient of depthwiseConv2dNative: filter must be rank 4, but got rank ${u.rank}.`),F(l.shape[3]===u.shape[2],()=>`Error in gradient of depthwiseConv2d: number of input channels (${l.shape[3]}) must match the inChannels dimension in filter ${u.shape[2]}.`),F(jn(i,o),()=>`Error in gradient of depthwiseConv2d: Either strides or dilations must be  1. Got strides ${i} and dilations '${o}'.`),ur("depthwiseConv2d",s,a),{x:()=>EM(l.shape,n,u,i,s,o,a),filter:()=>NM(l,n,u.shape,i,s,o,a)}}};/**
+ */const F5={kernelName:cd,inputsToSave:["x","filter"],gradFunc:(n,e,t)=>{const{dilations:r,strides:i,pad:s,dimRoundingMode:a}=t,o=r??[1,1];F(ka(o),()=>`Error in gradient of depthwiseConv2dNative: dilation rates greater than 1 are not yet supported. Got dilations '${o}'`);const[l,u]=e;return F(l.rank===4,()=>`Error in gradient of depthwiseConv2dNative: input must be rank 4, but got rank ${l.rank}.`),F(u.rank===4,()=>`Error in gradient of depthwiseConv2dNative: filter must be rank 4, but got rank ${u.rank}.`),F(l.shape[3]===u.shape[2],()=>`Error in gradient of depthwiseConv2d: number of input channels (${l.shape[3]}) must match the inChannels dimension in filter ${u.shape[2]}.`),F(jn(i,o),()=>`Error in gradient of depthwiseConv2d: Either strides or dilations must be  1. Got strides ${i} and dilations '${o}'.`),ur("depthwiseConv2d",s,a),{x:()=>EM(l.shape,n,u,i,s,o,a),filter:()=>NM(l,n,u.shape,i,s,o,a)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7859,7 +7859,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const P4={kernelName:hd,inputsToSave:["x","filter"],gradFunc:(n,e,t)=>{const[r,i]=e,s={x:r,filter:i,dy:n},a={x:r,filter:i,dy:n};return{x:()=>te.runKernel(Hf,s,t),filter:()=>te.runKernel(Zf,a,t)}}};/**
+ */const P5={kernelName:hd,inputsToSave:["x","filter"],gradFunc:(n,e,t)=>{const[r,i]=e,s={x:r,filter:i,dy:n},a={x:r,filter:i,dy:n};return{x:()=>te.runKernel(Hf,s,t),filter:()=>te.runKernel(Zf,a,t)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7874,7 +7874,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const z4={kernelName:Ru,outputsToSave:[!0],gradFunc:(n,e)=>{const[t]=e,r={dy:n,y:t};return{x:()=>te.runKernel(qm,r)}}};/**
+ */const z5={kernelName:Ru,outputsToSave:[!0],gradFunc:(n,e)=>{const[t]=e,r={dy:n,y:t};return{x:()=>te.runKernel(qm,r)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7889,7 +7889,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const G4={kernelName:Lu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e,r=le(Ir(Xt(Pt(t))),2/Math.sqrt(Math.PI));return{x:()=>le(n,r)}}};/**
+ */const G5={kernelName:Lu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e,r=le(Ir(Xt(Pt(t))),2/Math.sqrt(Math.PI));return{x:()=>le(n,r)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7904,7 +7904,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const O4={kernelName:Au,outputsToSave:[!0],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,t)}}};/**
+ */const O5={kernelName:Au,outputsToSave:[!0],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,t)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7919,7 +7919,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const W4={kernelName:pd,inputsToSave:["input"],gradFunc:(n,e)=>{const[t]=e;return{input:()=>ce(n,t.shape)}}};/**
+ */const W5={kernelName:pd,inputsToSave:["input"],gradFunc:(n,e)=>{const[t]=e;return{input:()=>ce(n,t.shape)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7934,7 +7934,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const $4={kernelName:Du,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,Ir(t))}}};/**
+ */const $5={kernelName:Du,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,Ir(t))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7949,7 +7949,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const V4={kernelName:Fu,gradFunc:n=>({x:()=>Mt(n)})};/**
+ */const V5={kernelName:Fu,gradFunc:n=>({x:()=>Mt(n)})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7964,7 +7964,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const B4={kernelName:Pu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{const s=rt(n,Ue(r,"float32")),a=yn(t.shape,i);return a.length>0?ce(Je(s,a),t.shape):s},b:()=>{let s=le(n,Ue(t,"float32"));const a=yn(r.shape,i);a.length>0&&(s=ce(Je(s,a),r.shape));const o=Pt(r);return Xt(rt(s,Ue(o,"float32")))}}}};/**
+ */const B5={kernelName:Pu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{const s=rt(n,Ue(r,"float32")),a=yn(t.shape,i);return a.length>0?ce(Je(s,a),t.shape):s},b:()=>{let s=le(n,Ue(t,"float32"));const a=yn(r.shape,i);a.length>0&&(s=ce(Je(s,a),r.shape));const o=Pt(r);return Xt(rt(s,Ue(o,"float32")))}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7979,7 +7979,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const U4={kernelName:fd,inputsToSave:["x","mean","variance","scale"],gradFunc:(n,e,t)=>{const{varianceEpsilon:r}=t,[i,s,a,o]=e,l=o??at(1),u=yn(s.shape,i.shape),c=[];if(s.rank===1){for(let m=0;m<i.shape.length-1;++m)c.push(i.shape[m]);c.push(1)}const h=Ye(i,s),d=le(n,l),p=eb(ze(a,at(r))),g=le(le(le(p,p),p),at(-.5));return{x:()=>s.rank===1?ce(le(le(n,ri(ce(p,[1,1,1,s.shape[0]]),c)),l),i.shape):ce(le(le(n,p),l),i.shape),mean:()=>{let m=le(le(p,at(-1)),d);return s.rank===1&&(m=Je(m,u)),ce(m,s.shape)},variance:()=>{let m=le(le(g,h),d);return s.rank===1&&(m=Je(m,u)),ce(m,s.shape)},scale:()=>{const m=le(h,p);let f=le(n,m);return s.rank===1&&(f=Je(f,u)),ce(f,s.shape)},offset:()=>{let m=n;return s.rank===1&&(m=Je(m,u)),ce(m,s.shape)}}}};/**
+ */const U5={kernelName:fd,inputsToSave:["x","mean","variance","scale"],gradFunc:(n,e,t)=>{const{varianceEpsilon:r}=t,[i,s,a,o]=e,l=o??at(1),u=yn(s.shape,i.shape),c=[];if(s.rank===1){for(let m=0;m<i.shape.length-1;++m)c.push(i.shape[m]);c.push(1)}const h=Ye(i,s),d=le(n,l),p=eb(ze(a,at(r))),g=le(le(le(p,p),p),at(-.5));return{x:()=>s.rank===1?ce(le(le(n,ri(ce(p,[1,1,1,s.shape[0]]),c)),l),i.shape):ce(le(le(n,p),l),i.shape),mean:()=>{let m=le(le(p,at(-1)),d);return s.rank===1&&(m=Je(m,u)),ce(m,s.shape)},variance:()=>{let m=le(le(g,h),d);return s.rank===1&&(m=Je(m,u)),ce(m,s.shape)},scale:()=>{const m=le(h,p);let f=le(n,m);return s.rank===1&&(f=Je(f,u)),ce(f,s.shape)},offset:()=>{let m=n;return s.rank===1&&(m=Je(m,u)),ce(m,s.shape)}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -7994,7 +7994,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const X4={kernelName:md,inputsToSave:["x","indices"],gradFunc:(n,e,t)=>{const[r,i]=e,{axis:s,batchDims:a}=t,o=vt(s,r.shape)[0],l=(u,c,h)=>()=>{const d=u.shape,p=c.size,g=d.slice(0,o),m=g.length,f=d.slice(s,d.length).slice(1),b=f.length,y=sT(0,m),x=sT(m+1,m+1+b),w=aT([g,[p],f]),v=ce(h,w),I=ce(c,[p]),k=aT([[m],y,x]),S=kt(v,k);let C=cb(S,I,u.shape[o]);const N=Ga(k);return C=kt(C,N),C};if(a===1){const u=r.shape[0],c=r.split(u,0);return{x:()=>tr(c.map((h,d)=>l(h,i.slice(d,1),n.slice(d,1))())).reshape(r.shape),indices:()=>i}}else return{x:l(r,i,n),indices:()=>i}}};function sT(n,e){const t=[];for(let r=n;r<e;++r)t.push(r);return t}function aT(n){const e=[];for(let t=0;t<n.length;++t)for(let r=0;r<n[t].length;++r)e.push(n[t][r]);return e}/**
+ */const X5={kernelName:md,inputsToSave:["x","indices"],gradFunc:(n,e,t)=>{const[r,i]=e,{axis:s,batchDims:a}=t,o=vt(s,r.shape)[0],l=(u,c,h)=>()=>{const d=u.shape,p=c.size,g=d.slice(0,o),m=g.length,f=d.slice(s,d.length).slice(1),b=f.length,y=sT(0,m),x=sT(m+1,m+1+b),w=aT([g,[p],f]),v=ce(h,w),I=ce(c,[p]),k=aT([[m],y,x]),S=kt(v,k);let C=cb(S,I,u.shape[o]);const N=Ga(k);return C=kt(C,N),C};if(a===1){const u=r.shape[0],c=r.split(u,0);return{x:()=>tr(c.map((h,d)=>l(h,i.slice(d,1),n.slice(d,1))())).reshape(r.shape),indices:()=>i}}else return{x:l(r,i,n),indices:()=>i}}};function sT(n,e){const t=[];for(let r=n;r<e;++r)t.push(r);return t}function aT(n){const e=[];for(let t=0;t<n.length;++t)for(let r=0;r<n[t].length;++r)e.push(n[t][r]);return e}/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8009,7 +8009,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const H4={kernelName:zu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e;return{a:()=>Mt(t),b:()=>Mt(r)}}};/**
+ */const H5={kernelName:zu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e;return{a:()=>Mt(t),b:()=>Mt(r)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8024,7 +8024,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const Z4={kernelName:Gu,gradFunc:n=>({x:()=>Ue(n,"float32")})};/**
+ */const Z5={kernelName:Gu,gradFunc:n=>({x:()=>Ue(n,"float32")})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8039,7 +8039,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const K4={kernelName:Ou,gradFunc:n=>({x:()=>Mt(n)})};/**
+ */const K5={kernelName:Ou,gradFunc:n=>({x:()=>Mt(n)})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8054,7 +8054,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const j4={kernelName:Wu,gradFunc:n=>({x:()=>Mt(n)})};/**
+ */const j5={kernelName:Wu,gradFunc:n=>({x:()=>Mt(n)})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8069,7 +8069,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const Y4={kernelName:$u,gradFunc:n=>({x:()=>Mt(n)})};/**
+ */const Y5={kernelName:$u,gradFunc:n=>({x:()=>Mt(n)})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8084,7 +8084,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const Q4={kernelName:bd,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{alpha:i}=t,s=cr(r,0);return{x:()=>En(s,n,le(n,i))}}};/**
+ */const Q5={kernelName:bd,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{alpha:i}=t,s=cr(r,0);return{x:()=>En(s,n,le(n,i))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8099,7 +8099,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const J4={kernelName:Bu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,ze(t,1))}}};/**
+ */const J5={kernelName:Bu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,ze(t,1))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8114,7 +8114,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const q4={kernelName:Vu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,Ue(t,"float32"))}}};/**
+ */const q5={kernelName:Vu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,Ue(t,"float32"))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8129,7 +8129,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const e5={kernelName:zC,inputsToSave:[],outputsToSave:[!0],gradFunc:(n,e,t)=>{const[r]=e,{axis:i}=t;return{logits:()=>{const s=Ir(r);return Ye(n,le(Je(n,i,!0),s))}}}};/**
+ */const e4={kernelName:zC,inputsToSave:[],outputsToSave:[!0],gradFunc:(n,e,t)=>{const[r]=e,{axis:i}=t;return{logits:()=>{const s=Ir(r);return Ye(n,le(Je(n,i,!0),s))}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8144,7 +8144,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */function t5(n,e,t,r=5,i=1,s=1,a=.5){const o={x:n,y:e,dy:t},l={depthRadius:r,bias:i,alpha:s,beta:a};return te.runKernel(og,o,l)}const n5=re({localResponseNormalizationBackprop_:t5});/**
+ */function t4(n,e,t,r=5,i=1,s=1,a=.5){const o={x:n,y:e,dy:t},l={depthRadius:r,bias:i,alpha:s,beta:a};return te.runKernel(og,o,l)}const n4=re({localResponseNormalizationBackprop_:t4});/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8159,7 +8159,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const r5={kernelName:_d,inputsToSave:["x"],outputsToSave:[!0],gradFunc:(n,e,t)=>{const[r,i]=e,{depthRadius:s,bias:a,alpha:o,beta:l}=t;return{x:()=>n5(r,i,n,s,a,o,l)}}};/**
+ */const r4={kernelName:_d,inputsToSave:["x"],outputsToSave:[!0],gradFunc:(n,e,t)=>{const[r,i]=e,{depthRadius:s,bias:a,alpha:o,beta:l}=t;return{x:()=>n4(r,i,n,s,a,o,l)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8204,7 +8204,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const i5={kernelName:Uu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e;return{a:()=>le(n,Ue(Ys(t,r),"float32")),b:()=>le(n,Ue(nu(t,r),"float32"))}}};/**
+ */const i4={kernelName:Uu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e;return{a:()=>le(n,Ue(Ys(t,r),"float32")),b:()=>le(n,Ue(nu(t,r),"float32"))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8219,7 +8219,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */function s5(n,e,t,r,i,s,a){const o=$(n,"dy","maxPool3dGrad"),l=$(e,"input","maxPool3dGrad"),u=$(t,"output","maxPool3dGrad");let c=o,h=l,d=u,p=!1;l.rank===4&&(p=!0,c=ce(o,[1,o.shape[0],o.shape[1],o.shape[2],o.shape[3]]),h=ce(l,[1,l.shape[0],l.shape[1],l.shape[2],l.shape[3]]),d=ce(u,[1,u.shape[0],u.shape[1],u.shape[2],u.shape[3]])),F(c.rank===5,()=>`Error in maxPool3dGrad: dy must be rank 5 but got rank ${c.rank}.`),F(h.rank===5,()=>`Error in maxPool3dGrad: input must be rank 5 but got rank ${h.rank}.`),F(d.rank===5,()=>`Error in maxPool3dGrad: output must be rank 5 but got rank ${d.rank}.`),ur("maxPool3dGrad",s,a);const g={dy:c,input:h,output:d},m={filterSize:r,strides:i,pad:s,dimRoundingMode:a},f=te.runKernel(ug,g,m);return p?ce(f,[f.shape[1],f.shape[2],f.shape[3],f.shape[4]]):f}const a5=re({maxPool3dGrad_:s5});/**
+ */function s4(n,e,t,r,i,s,a){const o=$(n,"dy","maxPool3dGrad"),l=$(e,"input","maxPool3dGrad"),u=$(t,"output","maxPool3dGrad");let c=o,h=l,d=u,p=!1;l.rank===4&&(p=!0,c=ce(o,[1,o.shape[0],o.shape[1],o.shape[2],o.shape[3]]),h=ce(l,[1,l.shape[0],l.shape[1],l.shape[2],l.shape[3]]),d=ce(u,[1,u.shape[0],u.shape[1],u.shape[2],u.shape[3]])),F(c.rank===5,()=>`Error in maxPool3dGrad: dy must be rank 5 but got rank ${c.rank}.`),F(h.rank===5,()=>`Error in maxPool3dGrad: input must be rank 5 but got rank ${h.rank}.`),F(d.rank===5,()=>`Error in maxPool3dGrad: output must be rank 5 but got rank ${d.rank}.`),ur("maxPool3dGrad",s,a);const g={dy:c,input:h,output:d},m={filterSize:r,strides:i,pad:s,dimRoundingMode:a},f=te.runKernel(ug,g,m);return p?ce(f,[f.shape[1],f.shape[2],f.shape[3],f.shape[4]]):f}const a4=re({maxPool3dGrad_:s4});/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8234,7 +8234,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const o5={kernelName:kd,inputsToSave:["x"],outputsToSave:[!0],gradFunc:(n,e,t)=>{const[r,i]=e,{filterSize:s,strides:a,pad:o,dimRoundingMode:l}=t;return{x:()=>a5(n,r,i,s,a,o,l)}}};/**
+ */const o4={kernelName:kd,inputsToSave:["x"],outputsToSave:[!0],gradFunc:(n,e,t)=>{const[r,i]=e,{filterSize:s,strides:a,pad:o,dimRoundingMode:l}=t;return{x:()=>a4(n,r,i,s,a,o,l)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8249,7 +8249,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */function l5(n,e,t,r,i,s,a){const o=$(n,"dy","maxPoolGrad"),l=$(e,"input","maxPoolGrad"),u=$(t,"output","maxPoolGrad");F(l.rank===o.rank,()=>`Rank of input (${l.rank}) does not match rank of dy (${o.rank})`),F(o.rank===4,()=>`Error in maxPoolGrad: dy must be rank 4 but got rank ${o.rank}.`),F(l.rank===4,()=>`Error in maxPoolGrad: input must be rank 4 but got rank ${l.rank}.`),ur("maxPoolGrad",s,a);const c={dy:o,input:l,output:u},h={filterSize:r,strides:i,pad:s,dimRoundingMode:a};return te.runKernel(lg,c,h)}const u5=re({maxPoolGrad_:l5});/**
+ */function l4(n,e,t,r,i,s,a){const o=$(n,"dy","maxPoolGrad"),l=$(e,"input","maxPoolGrad"),u=$(t,"output","maxPoolGrad");F(l.rank===o.rank,()=>`Rank of input (${l.rank}) does not match rank of dy (${o.rank})`),F(o.rank===4,()=>`Error in maxPoolGrad: dy must be rank 4 but got rank ${o.rank}.`),F(l.rank===4,()=>`Error in maxPoolGrad: input must be rank 4 but got rank ${l.rank}.`),ur("maxPoolGrad",s,a);const c={dy:o,input:l,output:u},h={filterSize:r,strides:i,pad:s,dimRoundingMode:a};return te.runKernel(lg,c,h)}const u4=re({maxPoolGrad_:l4});/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8264,7 +8264,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const c5={kernelName:Td,inputsToSave:["x"],outputsToSave:[!0],gradFunc:(n,e,t)=>{const[r,i]=e,{filterSize:s,strides:a,pad:o}=t;return{x:()=>u5(n,r,i,s,a,o)}}};/**
+ */const c4={kernelName:Td,inputsToSave:["x"],outputsToSave:[!0],gradFunc:(n,e,t)=>{const[r,i]=e,{filterSize:s,strides:a,pad:o}=t;return{x:()=>u4(n,r,i,s,a,o)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8279,7 +8279,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const h5={kernelName:Cd,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{axis:i}=t,s=vt(i,r.shape),a=Pn(r.shape,s)[1],o=_e(a);return{x:()=>{const l=r.shape.slice();s.forEach(c=>{l[c]=1});const u=ce(n,l);return rt(le(u,xr(r.shape,"float32")),o)}}}};/**
+ */const h4={kernelName:Cd,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{axis:i}=t,s=vt(i,r.shape),a=Pn(r.shape,s)[1],o=_e(a);return{x:()=>{const l=r.shape.slice();s.forEach(c=>{l[c]=1});const u=ce(n,l);return rt(le(u,xr(r.shape,"float32")),o)}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8294,7 +8294,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const d5={kernelName:Md,inputsToSave:["x"],outputsToSave:[!0],gradFunc:(n,e,t)=>{const r=t,{axis:i}=r,[s,a]=e,o=vt(i,s.shape),l=NN(n,a,s,o);return{x:()=>l.x()}}};/**
+ */const d4={kernelName:Md,inputsToSave:["x"],outputsToSave:[!0],gradFunc:(n,e,t)=>{const r=t,{axis:i}=r,[s,a]=e,o=vt(i,s.shape),l=NN(n,a,s,o);return{x:()=>l.x()}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8309,7 +8309,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const p5={kernelName:Xu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e;return{a:()=>le(n,Ue(Oa(t,r),"float32")),b:()=>le(n,Ue(cr(t,r),"float32"))}}};/**
+ */const p4={kernelName:Xu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e;return{a:()=>le(n,Ue(Oa(t,r),"float32")),b:()=>le(n,Ue(cr(t,r),"float32"))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8324,7 +8324,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const f5={kernelName:Nd,inputsToSave:["x"],gradFunc:(n,e,t)=>{const r=e[0],{paddings:i}=t,s=i.map(a=>a[0]);return{x:()=>Ct(n,s,r.shape)}}};/**
+ */const f4={kernelName:Nd,inputsToSave:["x"],gradFunc:(n,e,t)=>{const r=e[0],{paddings:i}=t,s=i.map(a=>a[0]);return{x:()=>Ct(n,s,r.shape)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8339,7 +8339,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const m5={kernelName:Hu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{const s=yn(t.shape,i);return s.length>0?ce(Je(n,s),t.shape):n},b:()=>{const s=le(n,Xt(bc(rt(t,r)))),a=yn(r.shape,i);return a.length>0?ce(Je(s,a),r.shape):s}}}};/**
+ */const m4={kernelName:Hu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{const s=yn(t.shape,i);return s.length>0?ce(Je(n,s),t.shape):n},b:()=>{const s=le(n,Xt(bc(rt(t,r)))),a=yn(r.shape,i);return a.length>0?ce(Je(s,a),r.shape):s}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8354,7 +8354,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const g5={kernelName:Zu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{const s=le(n,Ue(r,"float32")),a=yn(t.shape,i);return a.length>0?ce(Je(s,a),t.shape):s},b:()=>{const s=le(n,Ue(t,"float32")),a=yn(r.shape,i);return a.length>0?ce(Je(s,a),r.shape):s}}}};/**
+ */const g4={kernelName:Zu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{const s=le(n,Ue(r,"float32")),a=yn(t.shape,i);return a.length>0?ce(Je(s,a),t.shape):s},b:()=>{const s=le(n,Ue(t,"float32")),a=yn(r.shape,i);return a.length>0?ce(Je(s,a),r.shape):s}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8369,7 +8369,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const b5={kernelName:Ed,gradFunc:n=>({x:()=>Xt(n)})};/**
+ */const b4={kernelName:Ed,gradFunc:n=>({x:()=>Xt(n)})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8384,7 +8384,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const y5={kernelName:Ad,inputsToSave:["indices"],gradFunc:(n,e)=>{const t=e[0];return{indices:()=>mn(t.shape,"float32")}}};/**
+ */const y4={kernelName:Ad,inputsToSave:["indices"],gradFunc:(n,e)=>{const t=e[0];return{indices:()=>mn(t.shape,"float32")}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8399,7 +8399,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const x5={kernelName:Ld,gradFunc:n=>({x:()=>Mt(n)})};/**
+ */const x4={kernelName:Ld,gradFunc:n=>({x:()=>Mt(n)})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8414,7 +8414,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const w5={kernelName:Dd,saveAllInputs:!0,gradFunc:(n,e,t)=>{const{axis:r}=t;return ci(n,r).map(i=>()=>i)}};/**
+ */const w4={kernelName:Dd,saveAllInputs:!0,gradFunc:(n,e,t)=>{const{axis:r}=t;return ci(n,r).map(i=>()=>i)}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8444,7 +8444,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const v5={kernelName:Ku,inputsToSave:["a","b"],outputsToSave:[!0],gradFunc:(n,e)=>{const[t,r,i]=e,s=t,a=r,o=pt(s.shape,a.shape);return{a:()=>{const l=Ue(a,"float32");let u=le(n,le(l,Ws(s,Ye(l,at(1)))));const c=yn(s.shape,o);return c.length>0&&(u=Je(u,c)),ce(u,s.shape)},b:()=>{const l=cr(s,0),u=En(l,$r(s),Mt(s));let c=le(n,le(i,u));const h=yn(a.shape,o);return h.length>0&&(c=Je(c,h)),ce(c,a.shape)}}}};/**
+ */const v4={kernelName:Ku,inputsToSave:["a","b"],outputsToSave:[!0],gradFunc:(n,e)=>{const[t,r,i]=e,s=t,a=r,o=pt(s.shape,a.shape);return{a:()=>{const l=Ue(a,"float32");let u=le(n,le(l,Ws(s,Ye(l,at(1)))));const c=yn(s.shape,o);return c.length>0&&(u=Je(u,c)),ce(u,s.shape)},b:()=>{const l=cr(s,0),u=En(l,$r(s),Mt(s));let c=le(n,le(i,u));const h=yn(a.shape,o);return h.length>0&&(c=Je(c,h)),ce(c,a.shape)}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8459,7 +8459,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const S5={kernelName:Pd,inputsToSave:["x","alpha"],gradFunc:(n,e)=>{const[t,r]=e,i=cr(t,0);return{x:()=>En(i,n,le(n,r)),alpha:()=>{let s=En(i,Mt(n),le(n,t));const a=yn(r.shape,n.shape);return a.length>0&&(s=Je(s,a)),ce(s,r.shape)}}}};/**
+ */const S4={kernelName:Pd,inputsToSave:["x","alpha"],gradFunc:(n,e)=>{const[t,r]=e,i=cr(t,0);return{x:()=>En(i,n,le(n,r)),alpha:()=>{let s=En(i,Mt(n),le(n,t));const a=yn(r.shape,n.shape);return a.length>0&&(s=Je(s,a)),ce(s,r.shape)}}}};/**
  * @license
  * Copyright 2022 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8474,7 +8474,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */function _5(n,e,t){const r=n.shape.slice();r[t]=1;const i=ce(e,r),s=Fh(n,t,!0,!1),a=Fh(n,t,!0,!0),o=le(s,a);return le(i,o)}function I5(n,e,t){const r=n.shape.length,i=r-t.length,s=rn(t,r);let a=n;s!=null&&(a=kt(n,s));const o=a.shape.slice(),l=o.splice(r-t.length,t.length).reduce((h,d)=>h*d,1);o.push(l);const u=a.reshape(o);let c=_5(u,e,i);if(c=c.reshape(a.shape),s!=null){const h=Ga(s);c=kt(c,h)}return c}const T5={kernelName:zd,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{axis:i}=t;let s=[];return i==null?s=r.shape.map((a,o)=>o):typeof i=="number"?s=[i]:s=i,{x:()=>I5(r,n,s)}}};/**
+ */function _4(n,e,t){const r=n.shape.slice();r[t]=1;const i=ce(e,r),s=Fh(n,t,!0,!1),a=Fh(n,t,!0,!0),o=le(s,a);return le(i,o)}function I4(n,e,t){const r=n.shape.length,i=r-t.length,s=rn(t,r);let a=n;s!=null&&(a=kt(n,s));const o=a.shape.slice(),l=o.splice(r-t.length,t.length).reduce((h,d)=>h*d,1);o.push(l);const u=a.reshape(o);let c=_4(u,e,i);if(c=c.reshape(a.shape),s!=null){const h=Ga(s);c=kt(c,h)}return c}const T4={kernelName:zd,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{axis:i}=t;let s=[];return i==null?s=r.shape.map((a,o)=>o):typeof i=="number"?s=[i]:s=i,{x:()=>I4(r,n,s)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8489,7 +8489,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const k5={kernelName:Eu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{const s=rt(n,Ue(r,"float32")),a=yn(t.shape,i);return a.length>0?ce(Je(s,a),t.shape):s},b:()=>{let s=le(n,Ue(t,"float32"));const a=yn(r.shape,i);a.length>0&&(s=ce(Je(s,a),r.shape));const o=Pt(r);return Xt(rt(s,Ue(o,"float32")))}}}};/**
+ */const k4={kernelName:Eu,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{const s=rt(n,Ue(r,"float32")),a=yn(t.shape,i);return a.length>0?ce(Je(s,a),t.shape):s},b:()=>{let s=le(n,Ue(t,"float32"));const a=yn(r.shape,i);a.length>0&&(s=ce(Je(s,a),r.shape));const o=Pt(r);return Xt(rt(s,Ue(o,"float32")))}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8504,7 +8504,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const C5={kernelName:ju,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,Xt(Pt(t)))}}};/**
+ */const C4={kernelName:ju,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,Xt(Pt(t)))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8519,7 +8519,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const M5={kernelName:Qu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e,r=le(Oa(t,6),sl(t));return{x:()=>le(n,Ue(r,"float32"))}}};/**
+ */const M4={kernelName:Qu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e,r=le(Oa(t,6),sl(t));return{x:()=>le(n,Ue(r,"float32"))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8534,7 +8534,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const N5={kernelName:Yu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,Ue(sl(t),"float32"))}}};/**
+ */const N4={kernelName:Yu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,Ue(sl(t),"float32"))}}};/**
  * @license
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8549,7 +8549,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const E5={kernelName:Gd,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>ce(n,t.shape)}}};/**
+ */const E4={kernelName:Gd,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>ce(n,t.shape)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8564,7 +8564,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const R5={kernelName:Wd,inputsToSave:["images"],gradFunc:(n,e,t)=>{const[r]=e,i={dy:n,images:r};return{images:()=>te.runKernel(vg,i,t)}}};/**
+ */const R4={kernelName:Wd,inputsToSave:["images"],gradFunc:(n,e,t)=>{const[r]=e,i={dy:n,images:r};return{images:()=>te.runKernel(vg,i,t)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8579,7 +8579,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const L5={kernelName:Od,inputsToSave:["images"],gradFunc:(n,e,t)=>{const[r]=e,i={dy:n,images:r};return{images:()=>te.runKernel(wg,i,t)}}};/**
+ */const L4={kernelName:Od,inputsToSave:["images"],gradFunc:(n,e,t)=>{const[r]=e,i={dy:n,images:r};return{images:()=>te.runKernel(wg,i,t)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8594,7 +8594,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const A5={kernelName:$d,gradFunc:(n,e,t)=>{const{dims:r}=t,i=vt(r,n.shape);return{x:()=>ui(n,i)}}};/**
+ */const A4={kernelName:$d,gradFunc:(n,e,t)=>{const{dims:r}=t,i=vt(r,n.shape);return{x:()=>ui(n,i)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8609,7 +8609,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const D5={kernelName:Ju,gradFunc:n=>({x:()=>Mt(n)})};/**
+ */const D4={kernelName:Ju,gradFunc:n=>({x:()=>Mt(n)})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8624,7 +8624,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const F5={kernelName:qu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>Xt(rt(n,le(Ws(t,1.5),2)))}}};/**
+ */const F4={kernelName:qu,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>Xt(rt(n,le(Ws(t,1.5),2)))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8639,7 +8639,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const P5={kernelName:Vd,inputsToSave:["condition"],gradFunc:(n,e)=>{const[t]=e;return{condition:()=>Ue(Mt(t),"float32"),t:()=>le(n,Ue(t,n.dtype)),e:()=>le(n,Ue(lp(t),n.dtype))}}};/**
+ */const P4={kernelName:Vd,inputsToSave:["condition"],gradFunc:(n,e)=>{const[t]=e;return{condition:()=>Ue(Mt(t),"float32"),t:()=>le(n,Ue(t,n.dtype)),e:()=>le(n,Ue(lp(t),n.dtype))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8654,7 +8654,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const z5={kernelName:ec,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>{const r=cr(t,at(0)),i=at(Ib),s=at(Tb),a=le(n,s),o=le(le(n,i),Ir(Ue(t,"float32")));return En(r,a,o)}}}};/**
+ */const z4={kernelName:ec,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>{const r=cr(t,at(0)),i=at(Ib),s=at(Tb),a=le(n,s),o=le(le(n,i),Ir(Ue(t,"float32")));return En(r,a,o)}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8669,7 +8669,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const G5={kernelName:ic,outputsToSave:[!0],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,le(t,Ye(at(1),t)))}}};/**
+ */const G4={kernelName:ic,outputsToSave:[!0],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,le(t,Ye(at(1),t)))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8684,7 +8684,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const O5={kernelName:rc,gradFunc:n=>({x:()=>Mt(n)})};/**
+ */const O4={kernelName:rc,gradFunc:n=>({x:()=>Mt(n)})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8699,7 +8699,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const W5={kernelName:tc,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(rp(Ue(t,"float32")),n)}}};/**
+ */const W4={kernelName:tc,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(rp(Ue(t,"float32")),n)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8714,7 +8714,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const $5={kernelName:nc,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(Xg(Ue(t,"float32")),n)}}};/**
+ */const $4={kernelName:nc,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(Xg(Ue(t,"float32")),n)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8729,7 +8729,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const V5={kernelName:Bd,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{begin:i,size:s}=t,a=r.shape,[o,l]=Sb(r,i,s),u=[];for(let c=0;c<n.rank;c++)u.push([o[c],a[c]-o[c]-l[c]]);return{x:()=>Qs(n,u)}}};/**
+ */const V4={kernelName:Bd,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{begin:i,size:s}=t,a=r.shape,[o,l]=Sb(r,i,s),u=[];for(let c=0;c<n.rank;c++)u.push([o[c],a[c]-o[c]-l[c]]);return{x:()=>Qs(n,u)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8744,7 +8744,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const B5={kernelName:Zd,outputsToSave:[!0],gradFunc:(n,e,t)=>{const[r]=e,{dim:i}=t,s=!0,a=le(n,r);return{logits:()=>Ye(a,le(Je(a,[i],s),r))}}};/**
+ */const B4={kernelName:Zd,outputsToSave:[!0],gradFunc:(n,e,t)=>{const[r]=e,{dim:i}=t,s=!0,a=le(n,r);return{logits:()=>Ye(a,le(Je(a,[i],s),r))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8759,7 +8759,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const U5={kernelName:sc,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,Fi(t))}}};/**
+ */const U4={kernelName:sc,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,Fi(t))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8804,7 +8804,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const X5={kernelName:ac,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,le(Zn(Ue(t,"float32")),2))}}};/**
+ */const X4={kernelName:ac,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,le(Zn(Ue(t,"float32")),2))}}};/**
  * @license
  * Copyright 2019 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8819,7 +8819,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const H5={kernelName:Eg,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,le(Ue(t,"float32"),2))}}};/**
+ */const H4={kernelName:Eg,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(n,le(Ue(t,"float32"),2))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8834,7 +8834,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const Z5={kernelName:oc,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=at(2);return{a:()=>le(n,le(i,Ye(t,r))),b:()=>le(n,le(i,Ye(r,t)))}}};/**
+ */const Z4={kernelName:oc,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=at(2);return{a:()=>le(n,le(i,Ye(t,r))),b:()=>le(n,le(i,Ye(r,t)))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8849,7 +8849,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const K5={kernelName:dc,gradFunc:n=>({x:()=>Mt(n)})};/**
+ */const K4={kernelName:dc,gradFunc:n=>({x:()=>Mt(n)})};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8864,7 +8864,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const j5={kernelName:lc,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{let s=n;const a=yn(t.shape,i);return a.length>0&&(s=Je(s,a)),ce(s,t.shape)},b:()=>{let s=n;const a=yn(r.shape,i);return a.length>0&&(s=Je(s,a)),ce(Xt(s),r.shape)}}}};/**
+ */const j4={kernelName:lc,inputsToSave:["a","b"],gradFunc:(n,e)=>{const[t,r]=e,i=pt(t.shape,r.shape);return{a:()=>{let s=n;const a=yn(t.shape,i);return a.length>0&&(s=Je(s,a)),ce(s,t.shape)},b:()=>{let s=n;const a=yn(r.shape,i);return a.length>0&&(s=Je(s,a)),ce(Xt(s),r.shape)}}}};/**
  * @license
  * Copyright 2020 Google Inc. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8879,7 +8879,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const Y5={kernelName:Ud,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,i=r.shape.slice(),{axis:s}=t;vt(s,r.shape).forEach(l=>{i[l]=1});const a=ce(n,i),o=le(a,xr(r.shape,"float32"));return{x:()=>o}}};/**
+ */const Y4={kernelName:Ud,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,i=r.shape.slice(),{axis:s}=t;vt(s,r.shape).forEach(l=>{i[l]=1});const a=ce(n,i),o=le(a,xr(r.shape,"float32"));return{x:()=>o}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8894,7 +8894,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const Q5={kernelName:uc,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,Pt(rp(t)))}}};/**
+ */const Q4={kernelName:uc,inputsToSave:["x"],gradFunc:(n,e)=>{const[t]=e;return{x:()=>rt(n,Pt(rp(t)))}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8909,7 +8909,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const J5={kernelName:cc,outputsToSave:[!0],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(Ye(at(1),Pt(t)),n)}}};/**
+ */const J4={kernelName:cc,outputsToSave:[!0],gradFunc:(n,e)=>{const[t]=e;return{x:()=>le(Ye(at(1),Pt(t)),n)}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8924,7 +8924,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const q5={kernelName:hc,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{reps:i}=t;return{x:()=>{let s=Mt(r);if(r.rank===1)for(let a=0;a<i[0];++a)s=ze(s,Ct(n,[a*r.shape[0]],[r.shape[0]]));else if(r.rank===2)for(let a=0;a<i[0];++a)for(let o=0;o<i[1];++o)s=ze(s,Ct(n,[a*r.shape[0],o*r.shape[1]],[r.shape[0],r.shape[1]]));else if(r.rank===3)for(let a=0;a<i[0];++a)for(let o=0;o<i[1];++o)for(let l=0;l<i[2];++l)s=ze(s,Ct(n,[a*r.shape[0],o*r.shape[1],l*r.shape[2]],[r.shape[0],r.shape[1],r.shape[2]]));else if(r.rank===4)for(let a=0;a<i[0];++a)for(let o=0;o<i[1];++o)for(let l=0;l<i[2];++l)for(let u=0;u<i[3];++u)s=ze(s,Ct(n,[a*r.shape[0],o*r.shape[1],l*r.shape[2],u*r.shape[3]],[r.shape[0],r.shape[1],r.shape[2],r.shape[3]]));else throw new Error(`Gradient for tile operation is not implemented for rank-${r.rank} tensors yet.`);return s}}}};/**
+ */const q4={kernelName:hc,inputsToSave:["x"],gradFunc:(n,e,t)=>{const[r]=e,{reps:i}=t;return{x:()=>{let s=Mt(r);if(r.rank===1)for(let a=0;a<i[0];++a)s=ze(s,Ct(n,[a*r.shape[0]],[r.shape[0]]));else if(r.rank===2)for(let a=0;a<i[0];++a)for(let o=0;o<i[1];++o)s=ze(s,Ct(n,[a*r.shape[0],o*r.shape[1]],[r.shape[0],r.shape[1]]));else if(r.rank===3)for(let a=0;a<i[0];++a)for(let o=0;o<i[1];++o)for(let l=0;l<i[2];++l)s=ze(s,Ct(n,[a*r.shape[0],o*r.shape[1],l*r.shape[2]],[r.shape[0],r.shape[1],r.shape[2]]));else if(r.rank===4)for(let a=0;a<i[0];++a)for(let o=0;o<i[1];++o)for(let l=0;l<i[2];++l)for(let u=0;u<i[3];++u)s=ze(s,Ct(n,[a*r.shape[0],o*r.shape[1],l*r.shape[2],u*r.shape[3]],[r.shape[0],r.shape[1],r.shape[2],r.shape[3]]));else throw new Error(`Gradient for tile operation is not implemented for rank-${r.rank} tensors yet.`);return s}}}};/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -8999,7 +8999,7 @@ Manifest JSON has weights with names: ${o.join(", ")}.`)}const l=i.reduce((p,g,m
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const sK=[MN,n4,r4,i4,s4,a4,o4,l4,u4,c4,h4,d4,m4,y4,x4,w4,v4,S4,_4,I4,T4,k4,M4,C4,R4,L4,A4,D4,F4,P4,k5,z4,G4,O4,W4,$4,B4,V4,U4,X4,H4,Z4,K4,j4,Y4,Q4,J4,q4,e5,r5,oT,oT,i5,o5,c5,h5,d5,p5,f5,m5,g5,b5,y5,x5,w5,lT,lT,v5,S5,T5,C5,M5,N5,E5,R5,L5,A5,D5,F5,P5,z5,G5,O5,W5,$5,V5,B5,U5,uT,uT,cT,cT,X5,Z5,H5,K5,j5,Y5,Q5,J5,q5,eK,tK,nK,iK];for(const n of sK)GC(n);/**
+ */const sK=[MN,n5,r5,i5,s5,a5,o5,l5,u5,c5,h5,d5,m5,y5,x5,w5,v5,S5,_5,I5,T5,k5,M5,C5,R5,L5,A5,D5,F5,P5,k4,z5,G5,O5,W5,$5,B5,V5,U5,X5,H5,Z5,K5,j5,Y5,Q5,J5,q5,e4,r4,oT,oT,i4,o4,c4,h4,d4,p4,f4,m4,g4,b4,y4,x4,w4,lT,lT,v4,S4,T4,C4,M4,N4,E4,R4,L4,A4,D4,F4,P4,z4,G4,O4,W4,$4,V4,B4,U4,uT,uT,cT,cT,X4,Z4,H4,K4,j4,Y4,Q4,J4,q4,eK,tK,nK,iK];for(const n of sK)GC(n);/**
  * @license
  * Copyright 2020 Google LLC. All Rights Reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -26196,7 +26196,7 @@ Expected: ${s}.`)}typeof expect<"u"&&expect().nothing()}function Fde(n,e){n().th
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * =============================================================================
- */const vbe={"tfjs-core":NA,"tfjs-backend-cpu":YA,"tfjs-backend-webgl":QA,"tfjs-data":jA,"tfjs-layers":Gb,"tfjs-converter":WA,tfjs:wbe},Sbe=Object.freeze(Object.defineProperty({__proto__:null,Abs:jh,Acos:yu,Acosh:xu,AdadeltaOptimizer:Pw,AdagradOptimizer:zw,AdamOptimizer:Gw,AdamaxOptimizer:Ow,Add:qo,AddN:Yh,All:Dm,Any:Fm,ArgMax:Qh,ArgMin:Jh,Asin:wu,Asinh:vu,Atan:Su,Atan2:Iu,Atanh:_u,AvgPool:qh,AvgPool3D:ed,AvgPool3DGrad:zm,AvgPoolGrad:Pm,BatchMatMul:td,BatchToSpaceND:nd,Bincount:Gm,BitwiseAnd:rd,BroadcastArgs:Om,BroadcastTo:PC,Callback:FA,CallbackList:KN,Cast:Tu,Ceil:ku,ClipByValue:Cu,Complex:Wm,ComplexAbs:id,Concat:sd,Conv2D:ad,Conv2DBackpropFilter:$m,Conv2DBackpropInput:od,Conv3D:ld,Conv3DBackpropFilterV2:Vm,Conv3DBackpropInputV2:Bm,Cos:Mu,Cosh:Nu,CropAndResize:Xm,Cumprod:Um,Cumsum:ud,CustomCallback:YN,DataStorage:g1,DenseBincount:Hm,DepthToSpace:Zm,DepthwiseConv2dNative:cd,DepthwiseConv2dNativeBackpropFilter:Km,DepthwiseConv2dNativeBackpropInput:jm,Diag:Ym,Dilation2D:hd,Dilation2DBackpropFilter:Zf,Dilation2DBackpropInput:Hf,Draw:Qm,get ENV(){return v1},EarlyStopping:PA,Einsum:Jm,Elu:Ru,EluGrad:qm,Environment:DC,Equal:dd,Erf:Lu,Exp:Au,ExpandDims:pd,Expm1:Du,FFT:eg,Fill:tg,FlipLeftRight:ng,Floor:Fu,FloorDiv:Pu,FromPixels:Kf,FusedBatchNorm:fd,FusedConv2D:kh,FusedDepthwiseConv2D:Ch,GPGPUContext:Gf,GatherNd:rg,GatherV2:md,GraphModel:S_,Greater:gd,GreaterEqual:zu,History:jN,IFFT:ig,Identity:Gu,Imag:sg,InputSpec:gn,IsFinite:Ou,IsInf:Wu,IsNan:$u,KernelBackend:Rm,LRN:_d,LRNGrad:og,LayerVariable:UN,LayersModel:As,LeakyRelu:bd,Less:yd,LessEqual:xd,LinSpace:ag,Log:Vu,Log1p:Bu,LogSoftmax:zC,LogicalAnd:wd,LogicalNot:vd,LogicalOr:Sd,LogicalXor:t$,LowerBound:n$,MathBackendCPU:Rp,MathBackendWebGL:Fp,MatrixBandPart:r$,Max:Id,MaxPool:Td,MaxPool3D:kd,MaxPool3DGrad:ug,MaxPoolGrad:lg,MaxPoolWithArgmax:cg,Maximum:Uu,Mean:Cd,Min:Md,Minimum:Xu,MirrorPad:Nd,Mod:Hu,MomentumOptimizer:Ww,Multinomial:hg,Multiply:Zu,Neg:Ed,NonMaxSuppressionV3:dg,NonMaxSuppressionV4:pg,NonMaxSuppressionV5:fg,NotEqual:Rd,OP_SCOPE_SUFFIX:C1,OneHot:Ad,OnesLike:Ld,Optimizer:qs,OptimizerConstructors:nN,Pack:Dd,PadV2:Fd,Pool:i$,Pow:Ku,Prelu:Pd,Prod:zd,RMSPropOptimizer:$w,RNN:Zi,RaggedGather:mg,RaggedRange:gg,RaggedTensorToTensor:bg,Range:yg,get Rank(){return ox},Real:xg,RealDiv:Eu,Reciprocal:ju,get Reduction(){return ar},Relu:Yu,Relu6:Qu,Reshape:Gd,ResizeBilinear:Wd,ResizeBilinearGrad:vg,ResizeNearestNeighbor:Od,ResizeNearestNeighborGrad:wg,Reverse:$d,RotateWithOffset:Gg,Round:Ju,Rsqrt:qu,SGDOptimizer:wb,ScatterNd:Sg,SearchSorted:Ig,Select:Vd,Selu:ec,Sequential:Ob,Sigmoid:ic,Sign:rc,Sin:tc,Sinh:nc,Slice:Bd,Softmax:Zd,Softplus:sc,SpaceToBatchND:Xd,SparseFillEmptyRows:Tg,SparseReshape:kg,SparseSegmentMean:Cg,SparseSegmentSum:Mg,SparseToDense:Ng,SplitV:Hd,Sqrt:ac,Square:Eg,SquaredDifference:oc,StaticRegexReplace:Kd,Step:dc,StridedSlice:Rg,StringNGrams:Lg,StringSplit:Ag,StringToHashBucketFast:Dg,Sub:lc,Sum:Ud,SymbolicTensor:Wi,Tan:uc,Tanh:cc,Tensor:Nt,TensorBuffer:bn,TensorScatterUpdate:_g,Tile:hc,TopK:Fg,Transform:Pg,Transpose:So,Unique:zg,Unpack:jd,UnsortedSegmentSum:Yd,UpperBound:s$,Variable:Eh,ZerosLike:Qd,_FusedMatMul:Th,abs:fn,acos:D1,acosh:F1,add:ze,addN:OL,all:Vg,any:Lh,argMax:Do,argMin:P1,asin:z1,asinh:G1,atan:O1,atan2:W1,atanh:$1,avgPool:tp,avgPool3d:B1,backend:as,backend_util:CN,basicLSTMCell:WL,batchNorm:pc,batchNorm2d:U1,batchNorm3d:X1,batchNorm4d:H1,batchToSpaceND:np,bincount:Z1,bitwiseAnd:$L,booleanMaskAsync:vA,broadcastArgs:VL,broadcastTo:_o,broadcast_util:AB,browser:HZ,buffer:gt,callbacks:Rme,cast:Ue,ceil:K1,clipByValue:_r,clone:hs,complex:Gs,concat:un,concat1d:j1,concat2d:Y1,concat3d:Q1,concat4d:J1,constraints:Cpe,conv1d:Bg,conv2d:Os,conv2dTranspose:Ug,conv3d:ew,conv3dTranspose:tw,copyRegisteredKernels:u$,cos:rp,cosh:Xg,cosineWindow:db,cumprod:Fh,cumsum:Hg,customGrad:gs,data:xbe,denseBincount:qf,deprecationWarn:V$,depthToSpace:nw,depthwiseConv2d:fc,deregisterOp:Ame,device_util:P$,diag:BL,dilation2d:rw,disableDeprecationWarnings:$$,dispose:dt,disposeVariables:B$,div:rt,divNoNan:iw,dot:sw,dropout:Rw,einsum:lo,elu:mc,enableDebugMode:W$,enableProdMode:O$,enclosingPowerOfTwo:Lw,engine:Gt,ensureShape:UL,env:me,equal:Wr,erf:aw,euclideanNorm:lw,exp:Ir,expandDims:Vn,expm1:uw,eye:Zg,fft:gp,fill:nl,findBackend:j$,findBackendFactory:Y$,floor:bc,floorDiv:$g,forceHalfFloat:q3,fused:CA,gather:yc,gatherND:TA,gather_util:ZZ,getBackend:rM,getGradient:ix,getKernel:Nh,getKernelsForBackend:jf,gpgpu_util:oee,grad:mU,grads:gU,greater:cr,greaterEqual:Ys,ifft:au,imag:ip,image:xi,inTopKAsync:kA,initializers:Bpe,input:EA,io:g_,irfft:ab,isFinite:cw,isInf:hw,isNaN:dw,keep:an,kernel_impls:Spe,layers:lme,leakyRelu:sp,less:nu,lessEqual:Oa,linalg:Fw,linspace:XL,loadGraphModel:ibe,loadGraphModelSync:sbe,loadLayersModel:A9,localResponseNormalization:pw,log:$r,log1p:ap,logSigmoid:fw,logSoftmax:jg,logSumExp:op,logicalAnd:wi,logicalNot:lp,logicalOr:Yg,logicalXor:mw,losses:zM,lowerBound:HL,matMul:wt,math:vpe,max:li,maxPool:up,maxPool3d:gw,maxPoolWithArgmax:ZL,maximum:ys,mean:en,memory:Qf,meshgrid:KL,metrics:Ime,min:tu,minimum:Ca,mirrorPad:bw,mod:yw,model:Upe,models:Tme,moments:cp,movingAverage:SA,mul:le,multiRNNCell:jL,multinomial:YL,neg:Xt,nextFrame:yp,norm:gc,notEqual:Go,oneHot:ru,ones:xr,onesLike:Vr,op:re,outerProduct:QL,pad:Qs,pad1d:JL,pad2d:qL,pad3d:eA,pad4d:tA,pool:xw,pow:Ws,prelu:dp,print:A1,prod:ww,profile:U$,raggedGather:nA,raggedRange:rA,raggedTensorToTensor:iA,rand:sA,randomGamma:lA,randomNormal:Qg,randomStandardNormal:uA,randomUniform:Wa,randomUniformInt:cA,range:Oo,ready:Z$,real:iu,reciprocal:Sw,registerBackend:M1,registerCallbackConstructor:Hpe,registerGradient:GC,registerKernel:Mr,registerOp:Lme,regularizers:Nme,relu:Xi,relu6:Jg,removeBackend:K$,reshape:ce,reverse:ui,reverse1d:hA,reverse2d:dA,reverse3d:pA,reverse4d:fA,rfft:bp,round:qg,rsqrt:eb,scalar:at,scatterND:_A,scatter_util:$X,searchSorted:ey,selu:tb,separableConv2d:nb,sequential:Xpe,serialization:RZ,setBackend:H$,setPlatform:Q$,setWebGLContext:n3,setdiff1dAsync:mA,shared:OR,sigmoid:Fi,sign:_w,signal:PM,sin:rb,sinh:ib,slice:Ct,slice1d:pp,slice2d:sb,slice3d:fp,slice4d:su,slice_util:tN,softmax:mp,softplus:rl,spaceToBatchND:hp,sparse:GM,sparseToDense:IA,spectral:FM,split:wr,sqrt:Zn,square:Pt,squaredDifference:ob,squeeze:$a,stack:tr,step:sl,stridedSlice:Iw,string:OM,sub:Ye,sum:Je,sumOutType:Og,tan:Tw,tanh:Po,tensor:jt,tensor1d:Xn,tensor2d:ya,tensor3d:kw,tensor4d:gA,tensor5d:bA,tensor6d:yA,tensorScatterUpdate:xA,tensor_util:R$,test_util:Vde,tidy:de,tile:ri,time:X$,topk:Mw,train:io,transpose:kt,truncatedNormal:ub,unique:Nw,unregisterGradient:l$,unregisterKernel:o$,unsortedSegmentSum:cb,unstack:ci,upcastType:vr,upperBound:wA,util:x$,valueAndGrad:bU,valueAndGrads:yU,variable:Ew,variableGrads:wM,version:vbe,version_converter:WA,version_core:NA,version_cpu:YA,version_layers:Gb,version_webgl:QA,webgl:kte,webgl_util:pq,where:En,whereAsync:m_,zeros:mn,zerosLike:Mt},Symbol.toStringTag,{value:"Module"})),JA=new Ut;JA.compose(new fe,new Da,new fe(.001,.001,.001));const _be=new Ut().set(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1);class qA{constructor({container:e,imageTargetSrc:t,maxTrack:r,uiLoading:i="yes",uiScanning:s="yes",uiError:a="yes",filterMinCF:o=null,filterBeta:l=null,warmupTolerance:u=null,missTolerance:c=null,userDeviceId:h=null,environmentDeviceId:d=null}){this.container=e,this.imageTargetSrc=t,this.maxTrack=r,this.filterMinCF=o,this.filterBeta=l,this.warmupTolerance=u,this.missTolerance=c,this.ui=new WW({uiLoading:i,uiScanning:s,uiError:a}),this.userDeviceId=h,this.environmentDeviceId=d,this.shouldFaceUser=!1,this.scene=new MI,this.cssScene=new MI,this.renderer=new h1({antialias:!0,alpha:!0}),this.cssRenderer=new pde({antialias:!0}),this.renderer.outputEncoding=Vt,this.renderer.setPixelRatio(window.devicePixelRatio),this.camera=new ei,this.anchors=[],this.renderer.domElement.style.position="absolute",this.cssRenderer.domElement.style.position="absolute",this.container.appendChild(this.renderer.domElement),this.container.appendChild(this.cssRenderer.domElement),window.addEventListener("resize",this.resize.bind(this))}async start(){this.ui.showLoading(),await this._startVideo(),await this._startAR()}stop(){this.controller.stopProcessVideo(),this.video.srcObject.getTracks().forEach(function(e){e.stop()}),this.video.remove()}switchCamera(){this.shouldFaceUser=!this.shouldFaceUser,this.stop(),this.start()}addAnchor(e){const t=new Li;t.visible=!1,t.matrixAutoUpdate=!1;const r={group:t,targetIndex:e,onTargetFound:null,onTargetLost:null,onTargetUpdate:null,css:!1,visible:!1};return this.anchors.push(r),this.scene.add(t),r}addCSSAnchor(e){const t=new Li;t.visible=!1,t.matrixAutoUpdate=!1;const r={group:t,targetIndex:e,onTargetFound:null,onTargetLost:null,onTargetUpdate:null,css:!0,visible:!1};return this.anchors.push(r),this.cssScene.add(t),r}_startVideo(){return new Promise((e,t)=>{if(this.video=document.createElement("video"),this.video.setAttribute("autoplay",""),this.video.setAttribute("muted",""),this.video.setAttribute("playsinline",""),this.video.style.position="absolute",this.video.style.top="0px",this.video.style.left="0px",this.video.style.zIndex="-2",this.container.appendChild(this.video),!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){this.ui.showCompatibility(),t();return}const r={audio:!1,video:{}};this.shouldFaceUser?this.userDeviceId?r.video.deviceId={exact:this.userDeviceId}:r.video.facingMode="user":this.environmentDeviceId?r.video.deviceId={exact:this.environmentDeviceId}:r.video.facingMode="environment",navigator.mediaDevices.getUserMedia(r).then(i=>{this.video.addEventListener("loadedmetadata",()=>{this.video.setAttribute("width",this.video.videoWidth),this.video.setAttribute("height",this.video.videoHeight),e()}),this.video.srcObject=i}).catch(i=>{console.log("getUserMedia error",i),t()})})}_startAR(){return new Promise(async(e,t)=>{const r=this.video;this.container,this.controller=new cde({inputWidth:r.videoWidth,inputHeight:r.videoHeight,filterMinCF:this.filterMinCF,filterBeta:this.filterBeta,warmupTolerance:this.warmupTolerance,missTolerance:this.missTolerance,maxTrack:this.maxTrack,onUpdate:s=>{if(s.type==="updateMatrix"){const{targetIndex:a,worldMatrix:o}=s;for(let l=0;l<this.anchors.length;l++)if(this.anchors[l].targetIndex===a){if(this.anchors[l].css?this.anchors[l].group.children.forEach(u=>{u.element.style.visibility=o===null?"hidden":"visible"}):this.anchors[l].group.visible=o!==null,o!==null){let u=new Ut;u.elements=[...o],u.multiply(this.postMatrixs[a]),this.anchors[l].css&&u.multiply(JA),this.anchors[l].group.matrix=u}else this.anchors[l].group.matrix=_be;this.anchors[l].visible&&o===null&&(this.anchors[l].visible=!1,this.anchors[l].onTargetLost&&this.anchors[l].onTargetLost()),!this.anchors[l].visible&&o!==null&&(this.anchors[l].visible=!0,this.anchors[l].onTargetFound&&this.anchors[l].onTargetFound()),this.anchors[l].onTargetUpdate&&this.anchors[l].onTargetUpdate()}this.anchors.reduce((l,u)=>l||u.visible,!1)?this.ui.hideScanning():this.ui.showScanning()}}}),this.resize();const{dimensions:i}=await this.controller.addImageTargets(this.imageTargetSrc);this.postMatrixs=[];for(let s=0;s<i.length;s++){const a=new fe,o=new Da,l=new fe,[u,c]=i[s];a.x=u/2,a.y=u/2+(c-u)/2,l.x=u,l.y=u,l.z=u;const h=new Ut;h.compose(a,o,l),this.postMatrixs.push(h)}await this.controller.dummyRun(this.video),this.ui.hideLoading(),this.ui.showScanning(),this.controller.processVideo(this.video),e()})}resize(){const{renderer:e,cssRenderer:t,camera:r,container:i,video:s}=this;if(!s)return;this.video.setAttribute("width",this.video.videoWidth),this.video.setAttribute("height",this.video.videoHeight);let a,o;const l=s.videoWidth/s.videoHeight,u=i.clientWidth/i.clientHeight;l>u?(o=i.clientHeight,a=o*l):(a=i.clientWidth,o=a/l);const c=this.controller.getProjectionMatrix(),h=this.controller.inputWidth/this.controller.inputHeight;let d;h>u?d=this.video.width/this.controller.inputWidth:d=this.video.height/this.controller.inputHeight;let p,g;h>u?(p=i.clientHeight,p*=d):(g=i.clientWidth,p=g/this.controller.inputWidth*this.controller.inputHeight,p*=d);let m=i.clientHeight/p;const f=2*Math.atan(1/c[5]*m)*180/Math.PI,b=c[14]/(c[10]-1),y=c[14]/(c[10]+1);c[5]/c[0],r.fov=f,r.near=b,r.far=y,r.aspect=i.clientWidth/i.clientHeight,r.updateProjectionMatrix(),s.style.top=-(o-i.clientHeight)/2+"px",s.style.left=-(a-i.clientWidth)/2+"px",s.style.width=a+"px",s.style.height=o+"px";const x=e.domElement,w=t.domElement;x.style.position="absolute",x.style.left=0,x.style.top=0,x.style.width=i.clientWidth+"px",x.style.height=i.clientHeight+"px",w.style.position="absolute",w.style.left=0,w.style.top=0,w.style.width=i.clientWidth+"px",w.style.height=i.clientHeight+"px",e.setSize(i.clientWidth,i.clientHeight),t.setSize(i.clientWidth,i.clientHeight)}}window.MINDAR||(window.MINDAR={});window.MINDAR.IMAGE||(window.MINDAR.IMAGE={});window.MINDAR.IMAGE.MindARThree=qA;window.MINDAR.IMAGE.tf=Sbe;class Ibe{constructor(e,t="/targets/manuscript.mind"){this.container=e,this.targetSrc=t,this.mindarThree=null,this.anchor=null,this.isRunning=!1,this.isTargetFound=!1,this.onTargetFound=null,this.onTargetLost=null,this.onError=null}async init(){try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error("Camera API (getUserMedia) not supported in this browser. Please ensure HTTPS is enabled or use Chrome/Safari.");this.mindarThree=new qA({container:this.container,imageTargetSrc:this.targetSrc,filterMinCF:5e-4,filterBeta:500,warmupTolerance:4,missTolerance:6,uiLoading:"no",uiScanning:"no"});const{renderer:e,scene:t,camera:r}=this.mindarThree;e.outputEncoding!==void 0&&(e.outputEncoding=Vt),e.toneMapping=iC,e.toneMappingExposure=1.1;const i=new AW(16777215,1.4);t.add(i);const s=new LW(16772829,1.8);s.position.set(1,3,2),t.add(s);const a=new EW(54015,2,8);return a.position.set(0,1,1),t.add(a),this.anchor=this.mindarThree.addAnchor(0),this.anchor.onTargetFound=()=>{this.isTargetFound=!0,this.onTargetFound&&this.onTargetFound()},this.anchor.onTargetLost=()=>{this.isTargetFound=!1,this.onTargetLost&&this.onTargetLost()},{renderer:e,scene:t,camera:r,anchorGroup:this.anchor.group}}catch(e){throw console.error("AREngine init error:",e),this.onError&&this.onError(e),e}}async start(e){if(this.mindarThree)try{await this.mindarThree.start(),this.isRunning=!0;const{renderer:t,scene:r,camera:i}=this.mindarThree;t.setAnimationLoop(()=>{e&&e(),t.render(r,i)})}catch(t){throw console.error("Error starting MindAR:",t),this.onError&&this.onError(t),t}}stop(){if(this.mindarThree){try{const{renderer:e}=this.mindarThree;e&&e.setAnimationLoop(null),this.isRunning&&this.mindarThree.stop()}catch(e){console.warn("Error during MindAR stop:",e)}this.isRunning=!1,this.isTargetFound=!1}}getAnchorGroup(){return this.anchor?this.anchor.group:null}getCamera(){return this.mindarThree?this.mindarThree.camera:null}getRenderer(){return this.mindarThree?this.mindarThree.renderer:null}}class Tbe{constructor(e){this.anchor=e,this.hotspotMeshes=[],this.hologramGroup=new Li,this.anchor.add(this.hologramGroup),this.raycaster=new DW,this.mouse=new At,this.cardCanvas=document.createElement("canvas"),this.cardCanvas.width=1024,this.cardCanvas.height=700,this.cardContext=this.cardCanvas.getContext("2d"),this.cardTexture=new LI(this.cardCanvas),this.cardTexture.minFilter=Jr,this.cardMesh=null,this.gridMesh=null,this.axesGroup=null,this.hotspotGroup=new Li,this.hologramGroup.add(this.hotspotGroup),this.time=0,this.currentMetadata=null,this.onHotspotClick=null,this._createARSurfaceFrameAndAxes()}_createARSurfaceFrameAndAxes(){const s=new Li,a=new sa({color:16777215,linewidth:2}),o=.1,l=(w,v,I,k)=>{const S=[new fe(w,v+k*o,.002),new fe(w,v,.002),new fe(w+I*o,v,.002)],C=new qn().setFromPoints(S),N=new Ja(C,a);s.add(N)};l(-.5,-.44,1,1),l(.5,-.44,-1,1),l(-.5,.44,1,-1),l(.5,.44,-1,-1);const u=new qn().setFromPoints([new fe(-.5,-.44,.001),new fe(.5,-.44,.001),new fe(.5,.44,.001),new fe(-.5,.44,.001),new fe(-.5,-.44,.001)]),c=new sa({color:16777215,transparent:!0,opacity:.35}),h=new Ja(u,c);s.add(h),this.hologramGroup.add(s);const d=new Li;d.position.set(-.5-.04,-.44-.04,.002);const p=.15,g=new qn().setFromPoints([new fe(0,0,0),new fe(p,0,0)]),m=new sa({color:16726832,linewidth:2});d.add(new Ja(g,m));const f=new qn().setFromPoints([new fe(0,0,0),new fe(0,p,0)]),b=new sa({color:3458905,linewidth:2});d.add(new Ja(f,b));const y=new qn().setFromPoints([new fe(0,0,0),new fe(0,0,p)]),x=new sa({color:29155,linewidth:2});d.add(new Ja(y,x)),this.axesGroup=d,this.hologramGroup.add(d)}createHolographicCard(e){if(this.currentMetadata=e,this._renderCardTexture(e),this.cardMesh)this.cardTexture.needsUpdate=!0;else{const t=new Bl(.96,.65),r=new zl({map:this.cardTexture,transparent:!0,opacity:.98,side:Ai});this.cardMesh=new ti(t,r),this.cardMesh.position.set(0,.62,.15),this.cardMesh.rotation.x=-Math.PI*.11;const i=new Bl(.98,.67),s=new zl({color:0,transparent:!0,opacity:.12}),a=new ti(i,s);a.position.z=-.003,this.cardMesh.add(a);const o=new qn().setFromPoints([new fe(0,-.325,0),new fe(0,-.62,-.15)]),l=new sa({color:8816267,transparent:!0,opacity:.5}),u=new Ja(o,l);this.cardMesh.add(u),this.hologramGroup.add(this.cardMesh)}}_renderCardTexture(e){const t=this.cardContext,r=this.cardCanvas.width,i=this.cardCanvas.height;t.clearRect(0,0,r,i),t.fillStyle="rgba(255, 255, 255, 0.95)",this._roundRect(t,16,16,r-32,i-32,28),t.fill(),t.strokeStyle="rgba(0, 0, 0, 0.08)",t.lineWidth=2,t.stroke(),t.fillStyle="rgba(0, 113, 227, 0.08)",this._roundRect(t,42,38,200,36,18),t.fill(),t.font="600 13px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="#0071e3",t.fillText("ALQAMI INTELLIGENCE",58,61),t.font="500 13px monospace",t.fillStyle="#86868b",t.textAlign="right",t.fillText(e?.identifier||"MS-SHIFA-1302",r-45,61),t.textAlign="left",t.font="600 28px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="#1d1d1f",t.fillText(e?.title||"Kitab al-Shifa: Logic and Metaphysics",45,118),e?.titleArabic&&(t.font='24px "Amiri", "Traditional Arabic", serif',t.fillStyle="#6e6e73",t.fillText(e.titleArabic,45,158)),t.strokeStyle="rgba(0, 0, 0, 0.06)",t.lineWidth=1,t.beginPath(),t.moveTo(45,180),t.lineTo(r-45,180),t.stroke();const s=(a,o,l,u)=>{t.font="600 11px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="#86868b",t.fillText(a.toUpperCase(),l,u),t.font="500 17px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="#1d1d1f";const c=o&&o.length>34?o.slice(0,32)+"…":o||"—";t.fillText(c,l,u+22)};s("Author (dc:creator)",e?.creator||"Ibn Sina (Avicenna)",45,218),s("Period (dc:date)",e?.date||"16th-17th Century",520,218),s("Material (schema:material)",e?.material||"Gold leaf, Lapis lazuli, Rag paper",45,290),s("Holding Repository",e?.publisher||"Majlis Parliament Library",520,290),s("Script Style","Naskh text with Marginal Nastaliq",45,362),s("Dimensions",e?.dimensions||"26.5 x 17.2 cm",520,362),t.fillStyle="rgba(0, 0, 0, 0.03)",this._roundRect(t,45,420,r-90,155,16),t.fill(),t.font="600 11px monospace",t.fillStyle="#86868b",t.fillText("ONTOLOGY TRANSCRIPTION (dc:description)",65,448),t.font='16px "Amiri", "Traditional Arabic", serif',t.fillStyle="#1d1d1f",t.fillText("« بسم الله الرحمن الرحيم - الحمد لله الواحد الأحد الصمد المصور... »",65,484),t.font="14px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="#6e6e73",t.fillText('"In the Name of God... origination (ibda) and cosmic formation (takwin)..."',65,516),t.font="600 12px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="#34c759",t.fillText("Tracking Active (60 FPS)",65,550),this.cardTexture.needsUpdate=!0}_roundRect(e,t,r,i,s,a){e.beginPath(),e.moveTo(t+a,r),e.lineTo(t+i-a,r),e.quadraticCurveTo(t+i,r,t+i,r+a),e.lineTo(t+i,r+s-a),e.quadraticCurveTo(t+i,r+s,t+i-a,r+s),e.lineTo(t+a,r+s),e.quadraticCurveTo(t,r+s,t,r+s-a),e.lineTo(t,r+a),e.quadraticCurveTo(t,r,t+a,r),e.closePath()}createHotspots(e){for(;this.hotspotGroup.children.length>0;){const i=this.hotspotGroup.children[0];this.hotspotGroup.remove(i)}this.hotspotMeshes=[];const t=1,r=.88;e.forEach((i,s)=>{const a=(i.normX-.5)*t,o=(.5-i.normY)*r,l=i.elevZ||.055,u=new Li;u.position.set(a,o,l),u.userData={hotspot:i,index:s};const c=new qn().setFromPoints([new fe(0,0,0),new fe(0,0,-l)]),h=new sa({color:16777215,transparent:!0,opacity:.75,linewidth:2}),d=new Ja(c,h);u.add(d);const p=new d1(.018,.032,24),g=new zl({color:29155,side:Ai,transparent:!0,opacity:.85}),m=new ti(p,g);m.position.z=-l+.001,u.add(m);const f=new p1(.024,24,24),b=new MW({color:16777215,roughness:.1,metalness:.2,emissive:29155,emissiveIntensity:.3}),y=new ti(f,b);y.name="pinMesh",u.add(y);const x=document.createElement("canvas");x.width=360,x.height=84;const w=x.getContext("2d");w.fillStyle="rgba(255, 255, 255, 0.95)",this._roundRect(w,4,4,352,76,18),w.fill(),w.strokeStyle="rgba(0, 0, 0, 0.08)",w.lineWidth=2,w.stroke(),w.font="600 20px -apple-system, BlinkMacSystemFont, sans-serif",w.fillStyle="#1d1d1f",w.textAlign="center";const v=i.label.length>22?i.label.slice(0,20)+"…":i.label;w.fillText(v,180,38),w.font="500 14px -apple-system, BlinkMacSystemFont, sans-serif",w.fillStyle="#86868b",w.fillText(i.folio||"Region",180,62);const I=new LI(x),k=new Bl(.22,.052),S=new zl({map:I,transparent:!0,side:Ai}),C=new ti(k,S);C.position.y=.05,C.name="labelBillboard",u.add(C),this.hotspotGroup.add(u),this.hotspotMeshes.push(y)})}update(e){this.time+=e,this.cardMesh&&(this.cardMesh.position.z=.15+Math.sin(this.time*2)*.01),this.hotspotGroup.children.forEach((t,r)=>{const i=t.getObjectByName("pinMesh");i&&(i.position.z=Math.sin(this.time*2.5+r)*.005)})}checkRaycast(e,t,r,i,s){this.mouse.x=t/i*2-1,this.mouse.y=-(r/s)*2+1,this.raycaster.setFromCamera(this.mouse,e);const a=this.raycaster.intersectObjects(this.hotspotMeshes,!0);if(a.length>0){const o=a[0].object.parent;if(o&&o.userData&&o.userData.hotspot)return o.userData.hotspot}return null}}class kbe{constructor(e){this.canvas=e,this.ctx=e.getContext("2d"),this.nodes=[],this.links=[],this.width=e.width,this.height=e.height,this.animId=null,this.hoveredNode=null,this.selectedNode=null,this.isDragging=!1,this.dragNode=null,this.onSelectCallback=null,this._setupEvents()}setData(e){this.width=this.canvas.clientWidth||500,this.height=this.canvas.clientHeight||400,this.canvas.width=this.width*window.devicePixelRatio,this.canvas.height=this.height*window.devicePixelRatio,this.ctx.scale(window.devicePixelRatio,window.devicePixelRatio);const t=e.nodes.length,r=this.width/2,i=this.height/2,s=Math.min(this.width,this.height)*.38;this.nodes=e.nodes.map((o,l)=>{const u=l/t*Math.PI*2,c=o.group===1?0:o.group===3?s*.55:s*.9;return{...o,x:r+Math.cos(u)*c+(Math.random()-.5)*20,y:i+Math.sin(u)*c+(Math.random()-.5)*20,vx:0,vy:0,radius:o.group===1?20:o.group===3?14:10}});const a=new Map(this.nodes.map(o=>[o.id,o]));this.links=e.links.map(o=>({source:a.get(o.source)||{x:r,y:i},target:a.get(o.target)||{x:r,y:i},predicate:o.predicate,fullPredicate:o.fullPredicate})),this.startSimulation()}startSimulation(){this.animId&&cancelAnimationFrame(this.animId);let e=0;const t=200,r=()=>{(e<t||this.isDragging)&&(this._applyForces(),e++),this.draw(),this.animId=requestAnimationFrame(r)};r()}_applyForces(){const r=this.width/2,i=this.height/2;for(let s=0;s<this.nodes.length;s++)for(let a=s+1;a<this.nodes.length;a++){const o=this.nodes[a].x-this.nodes[s].x,l=this.nodes[a].y-this.nodes[s].y,u=Math.sqrt(o*o+l*l)||1;if(u<250){const c=1200/(u*u),h=o/u*c,d=l/u*c;this.nodes[s]!==this.dragNode&&(this.nodes[s].x-=h,this.nodes[s].y-=d),this.nodes[a]!==this.dragNode&&(this.nodes[a].x+=h,this.nodes[a].y+=d)}}for(const s of this.links){const a=s.target.x-s.source.x,o=s.target.y-s.source.y,l=Math.sqrt(a*a+o*o)||1,c=(l-90)*.05,h=a/l*c,d=o/l*c;s.source!==this.dragNode&&(s.source.x+=h,s.source.y+=d),s.target!==this.dragNode&&(s.target.x-=h,s.target.y-=d)}for(const s of this.nodes)s!==this.dragNode&&(s.x+=(r-s.x)*.01,s.y+=(i-s.y)*.01,s.x=Math.max(30,Math.min(this.width-30,s.x)),s.y=Math.max(30,Math.min(this.height-30,s.y)))}draw(){this.ctx.clearRect(0,0,this.width,this.height);for(const e of this.links){this.ctx.beginPath(),this.ctx.moveTo(e.source.x,e.source.y),this.ctx.lineTo(e.target.x,e.target.y),this.ctx.strokeStyle="rgba(0, 0, 0, 0.12)",this.ctx.lineWidth=1.2,this.ctx.stroke();const t=(e.source.x+e.target.x)/2,r=(e.source.y+e.target.y)/2;this.ctx.font="10px -apple-system, BlinkMacSystemFont, sans-serif",this.ctx.fillStyle="#86868b",this.ctx.textAlign="center",this.ctx.fillText(e.predicate||"",t,r-3)}for(const e of this.nodes){const t=this.hoveredNode===e,r=this.selectedNode===e;this.ctx.beginPath(),this.ctx.arc(e.x,e.y,e.radius+(t?3:0),0,Math.PI*2),e.group===1?this.ctx.fillStyle="#1d1d1f":e.group===3?this.ctx.fillStyle="#0071e3":this.ctx.fillStyle="#34c759",this.ctx.fill(),this.ctx.strokeStyle=r?"#0071e3":t?"#1d1d1f":"#ffffff",this.ctx.lineWidth=r?3:2,this.ctx.stroke(),this.ctx.font=e.group===1?"600 11px -apple-system, BlinkMacSystemFont, sans-serif":"500 10px -apple-system, BlinkMacSystemFont, sans-serif",this.ctx.fillStyle="#1d1d1f",this.ctx.textAlign="center";const i=e.label||e.id,s=i.length>20?i.slice(0,18)+"…":i;this.ctx.fillText(s,e.x,e.y+e.radius+12)}}_setupEvents(){const e=r=>{const i=this.canvas.getBoundingClientRect(),s=r.touches?r.touches[0].clientX:r.clientX,a=r.touches?r.touches[0].clientY:r.clientY;return{x:s-i.left,y:a-i.top}},t=r=>this.nodes.find(i=>{const s=i.x-r.x,a=i.y-r.y;return Math.sqrt(s*s+a*a)<=i.radius+6});this.canvas.addEventListener("mousemove",r=>{const i=e(r);if(this.isDragging&&this.dragNode){this.dragNode.x=i.x,this.dragNode.y=i.y;return}const s=t(i);s!==this.hoveredNode&&(this.hoveredNode=s,this.canvas.style.cursor=s?"pointer":"default")}),this.canvas.addEventListener("mousedown",r=>{const i=e(r),s=t(i);s&&(this.isDragging=!0,this.dragNode=s,this.selectedNode=s,this.onSelectCallback&&this.onSelectCallback(s))}),window.addEventListener("mouseup",()=>{this.isDragging=!1,this.dragNode=null}),this.canvas.addEventListener("touchstart",r=>{const i=e(r),s=t(i);s&&(this.isDragging=!0,this.dragNode=s,this.selectedNode=s,this.onSelectCallback&&this.onSelectCallback(s))},{passive:!0}),this.canvas.addEventListener("touchmove",r=>{if(this.isDragging&&this.dragNode){const i=e(r);this.dragNode.x=i.x,this.dragNode.y=i.y}},{passive:!0}),this.canvas.addEventListener("touchend",()=>{this.isDragging=!1,this.dragNode=null})}onSelect(e){this.onSelectCallback=e}resize(){this.width=this.canvas.clientWidth||500,this.height=this.canvas.clientHeight||400,this.canvas.width=this.width*window.devicePixelRatio,this.canvas.height=this.height*window.devicePixelRatio,this.ctx.scale(window.devicePixelRatio,window.devicePixelRatio)}destroy(){this.animId&&cancelAnimationFrame(this.animId)}}class Cbe{constructor(){this.synth=typeof window<"u"&&"speechSynthesis"in window?window.speechSynthesis:null,this.isPlaying=!1,this.currentUtterance=null,this.onStateChange=null}speak(e,t="en"){if(!this.synth){console.warn("Speech synthesis not supported in this browser");return}this.stop();const r=new SpeechSynthesisUtterance(e);r.lang=t==="ar"?"ar-SA":"en-US",r.rate=.95,r.pitch=1;const s=this.synth.getVoices().find(a=>a.lang.startsWith(t));s&&(r.voice=s),r.onstart=()=>{this.isPlaying=!0,this.onStateChange&&this.onStateChange(!0)},r.onend=()=>{this.isPlaying=!1,this.onStateChange&&this.onStateChange(!1)},r.onerror=a=>{console.error("Speech error:",a),this.isPlaying=!1,this.onStateChange&&this.onStateChange(!1)},this.currentUtterance=r,this.synth.speak(r)}stop(){this.synth&&this.synth.cancel(),this.isPlaying=!1,this.onStateChange&&this.onStateChange(!1)}toggle(e,t="en"){this.isPlaying?this.stop():this.speak(e,t)}}class Mbe{constructor(){this.mode="camera",this.rdfParser=new kD,this.speech=new Cbe,this.arEngine=null,this.simulator=null,this.cardManager=null,this.graphVisualizer=null,this.rawInitialTtl="",this.activeHotspot=null,this.lastTime=performance.now(),this.dom={arContainer:document.getElementById("ar-container"),simulatorContainer:document.getElementById("simulator-container"),btnMode3d:document.getElementById("btn-mode-3d"),btnModeScan:document.getElementById("btn-mode-scan"),modelDock:document.getElementById("model-dock"),audioGuideBtn:document.getElementById("btn-audio-guide"),snapshotBtn:document.getElementById("btn-snapshot"),trackingStatus:document.getElementById("tracking-status"),trackingText:document.getElementById("tracking-text"),scanningHud:document.getElementById("scanning-hud"),metaTitle:document.getElementById("meta-title"),metaCreator:document.getElementById("meta-creator"),metaDate:document.getElementById("meta-date"),metaExtent:document.getElementById("meta-extent"),metaMaterial:document.getElementById("meta-material"),metaNotes:document.getElementById("meta-notes"),graphCanvas:document.getElementById("graph-canvas"),ttlEditor:document.getElementById("ttl-code-editor"),btnApplyRdf:document.getElementById("btn-apply-rdf"),btnResetRdf:document.getElementById("btn-reset-rdf"),hotspotModal:document.getElementById("hotspot-modal"),modalTitle:document.getElementById("modal-title"),modalBody:document.getElementById("modal-body"),btnCloseModal:document.getElementById("btn-close-modal"),btnModalAction:document.getElementById("btn-modal-action"),cameraFlash:document.getElementById("camera-flash")}}async init(){console.log("Initializing Alqami AR (Vision Pro UI)..."),this._setupTabNavigation(),this._setupModals(),this._setupButtons();try{const t=await this.rdfParser.loadFromUrl("./model.ttl");this.rawInitialTtl=this.rdfParser.rawTurtle,this.dom.ttlEditor&&(this.dom.ttlEditor.value=this.rawInitialTtl),this._updateUIWithMetadata(t.metadata),this.graphVisualizer=new kbe(this.dom.graphCanvas),this.graphVisualizer.setData(this.rdfParser.getGraphData()),this.graphVisualizer.onSelect(r=>{console.log("Selected Graph Node:",r)})}catch(e){console.error("Failed to load initial RDF:",e)}this._startSimulatorMode()}async _startCameraMode(){this.mode="camera",this.dom.arContainer.style.display="block",this.dom.simulatorContainer.style.display="none",this.dom.btnModeScan.classList.add("active"),this.dom.btnMode3d.classList.remove("active"),this.dom.modelDock.style.display="none",this.dom.trackingStatus.style.display="flex",this._setTrackingState(!1,"Scanning for manuscript");try{const t=await this.rdfParser.loadFromUrl("./data/manuscript.ttl");this.rawInitialTtl=this.rdfParser.rawTurtle,this.dom.ttlEditor&&(this.dom.ttlEditor.value=this.rawInitialTtl),this._updateUIWithMetadata(t.metadata),this.graphVisualizer&&this.graphVisualizer.setData(this.rdfParser.getGraphData())}catch(e){console.warn("No manuscript.ttl found",e)}try{if(this.arEngine)this.arEngine.start();else{this.arEngine=new Ibe(this.dom.arContainer,"./targets/manuscript.mind"),this.arEngine.onTargetFound=()=>{console.log("Target Detected in AR Camera"),this._setTrackingState(!0,"Target Tracked")},this.arEngine.onTargetLost=()=>{console.log("Target Lost in AR Camera"),this._setTrackingState(!1,"Scanning for manuscript")},this.arEngine.onError=a=>{console.warn("Camera AR unavailable, switching to Simulator:",a),this._startSimulatorMode()};const{renderer:t,scene:r,camera:i,anchorGroup:s}=await this.arEngine.init();this.cardManager=new Tbe(s),this.cardManager.createHolographicCard(this.rdfParser.metadata),this.cardManager.createHotspots(this.rdfParser.hotspots),this.lastTime=performance.now(),await this.arEngine.start(()=>{const a=performance.now(),o=(a-this.lastTime)/1e3;this.lastTime=a,this.cardManager&&this.cardManager.update(o)}),this._setupInteractionRaycasting(t.domElement,i)}}catch(e){console.warn("Camera AR init failed, switching to Desktop Simulator:",e),this._startSimulatorMode()}}_startSimulatorMode(){this.mode="simulator",this.dom.arContainer.style.display="none",this.dom.simulatorContainer.style.display="block",this.dom.btnMode3d.classList.add("active"),this.dom.btnModeScan.classList.remove("active"),this.dom.modelDock.style.display="block",this.dom.trackingStatus.style.display="none",this.dom.scanningHud.style.display="none",this.arEngine&&this.arEngine.stop();const e=document.querySelectorAll(".dock-btn");e.forEach(r=>{r.addEventListener("click",async()=>{e.forEach(l=>l.classList.remove("active")),r.classList.add("active");const i=r.dataset.model,s=r.dataset.title;document.getElementById("top-title").textContent=s;const a="./",o=document.getElementById("model-3d-viewer");o&&(o.src=`${a}${i}.glb`);try{const l=await this.rdfParser.loadFromUrl(`${a}${i}.ttl`);this.rawInitialTtl=this.rdfParser.rawTurtle,this.dom.ttlEditor&&(this.dom.ttlEditor.value=this.rawInitialTtl),this._updateUIWithMetadata(l.metadata),this.graphVisualizer&&this.graphVisualizer.setData(this.rdfParser.getGraphData())}catch(l){console.error("Failed to load TTL for",i,l)}})});const t=document.getElementById("model-3d-viewer");t&&!t.hasAttribute("data-progress-listener")&&(t.setAttribute("data-progress-listener","true"),t.addEventListener("progress",r=>{const i=t.querySelector(".progress-bar"),s=t.querySelector(".update-bar");i&&s&&(s.style.width=`${r.detail.totalProgress*100}%`,r.detail.totalProgress===1?i.classList.add("hide"):i.classList.remove("hide"))}))}_setupInteractionRaycasting(e,t){const r=i=>{const s=i.changedTouches?i.changedTouches[0].clientX:i.clientX,a=i.changedTouches?i.changedTouches[0].clientY:i.clientY;if(this.cardManager){const o=this.cardManager.checkRaycast(t,s,a,e.clientWidth,e.clientHeight);o&&this._openHotspotModal(o)}};e.addEventListener("click",r)}_setTrackingState(e,t){e?(this.dom.trackingStatus.classList.add("found"),this.dom.trackingText.textContent=t||"Target Tracked",this.dom.scanningHud&&(this.dom.scanningHud.style.display="none")):(this.dom.trackingStatus.classList.remove("found"),this.dom.trackingText.textContent=t||"Scanning for manuscript",this.dom.scanningHud&&(this.dom.scanningHud.style.display="flex"))}_updateUIWithMetadata(e){e&&(this.dom.metaTitle.textContent=e.titleArabic||e.title||"—",this.dom.metaCreator.textContent=e.creator||"—",this.dom.metaDate.textContent=e.date||"—",this.dom.metaExtent.textContent=e.dimensions||e.extent||"—",this.dom.metaMaterial.textContent=e.material||"—",this.dom.metaNotes.textContent=e.transcriptionArabic||"—")}_setupTabNavigation(){const e=document.querySelectorAll(".tab-btn"),t=document.querySelectorAll(".tab-pane");e.forEach(r=>{r.addEventListener("click",()=>{e.forEach(a=>a.classList.remove("active")),t.forEach(a=>a.classList.remove("active")),r.classList.add("active");const i=r.getAttribute("data-tab"),s=document.getElementById(i);s&&s.classList.add("active"),i==="tab-graph"&&this.graphVisualizer&&setTimeout(()=>this.graphVisualizer.resize(),50)})})}_setupModals(){this.dom.btnCloseModal&&this.dom.btnCloseModal.addEventListener("click",()=>{this.dom.hotspotModal.classList.remove("active")}),this.dom.btnModalAction&&this.dom.btnModalAction.addEventListener("click",()=>{this.activeHotspot&&this.speech.speak(`${this.activeHotspot.label}. ${this.activeHotspot.description}`)})}_openHotspotModal(e){this.activeHotspot=e,this.dom.modalTitle.textContent=e.label,this.dom.modalBody.innerHTML=`
+ */const vbe={"tfjs-core":NA,"tfjs-backend-cpu":YA,"tfjs-backend-webgl":QA,"tfjs-data":jA,"tfjs-layers":Gb,"tfjs-converter":WA,tfjs:wbe},Sbe=Object.freeze(Object.defineProperty({__proto__:null,Abs:jh,Acos:yu,Acosh:xu,AdadeltaOptimizer:Pw,AdagradOptimizer:zw,AdamOptimizer:Gw,AdamaxOptimizer:Ow,Add:qo,AddN:Yh,All:Dm,Any:Fm,ArgMax:Qh,ArgMin:Jh,Asin:wu,Asinh:vu,Atan:Su,Atan2:Iu,Atanh:_u,AvgPool:qh,AvgPool3D:ed,AvgPool3DGrad:zm,AvgPoolGrad:Pm,BatchMatMul:td,BatchToSpaceND:nd,Bincount:Gm,BitwiseAnd:rd,BroadcastArgs:Om,BroadcastTo:PC,Callback:FA,CallbackList:KN,Cast:Tu,Ceil:ku,ClipByValue:Cu,Complex:Wm,ComplexAbs:id,Concat:sd,Conv2D:ad,Conv2DBackpropFilter:$m,Conv2DBackpropInput:od,Conv3D:ld,Conv3DBackpropFilterV2:Vm,Conv3DBackpropInputV2:Bm,Cos:Mu,Cosh:Nu,CropAndResize:Xm,Cumprod:Um,Cumsum:ud,CustomCallback:YN,DataStorage:g1,DenseBincount:Hm,DepthToSpace:Zm,DepthwiseConv2dNative:cd,DepthwiseConv2dNativeBackpropFilter:Km,DepthwiseConv2dNativeBackpropInput:jm,Diag:Ym,Dilation2D:hd,Dilation2DBackpropFilter:Zf,Dilation2DBackpropInput:Hf,Draw:Qm,get ENV(){return v1},EarlyStopping:PA,Einsum:Jm,Elu:Ru,EluGrad:qm,Environment:DC,Equal:dd,Erf:Lu,Exp:Au,ExpandDims:pd,Expm1:Du,FFT:eg,Fill:tg,FlipLeftRight:ng,Floor:Fu,FloorDiv:Pu,FromPixels:Kf,FusedBatchNorm:fd,FusedConv2D:kh,FusedDepthwiseConv2D:Ch,GPGPUContext:Gf,GatherNd:rg,GatherV2:md,GraphModel:S_,Greater:gd,GreaterEqual:zu,History:jN,IFFT:ig,Identity:Gu,Imag:sg,InputSpec:gn,IsFinite:Ou,IsInf:Wu,IsNan:$u,KernelBackend:Rm,LRN:_d,LRNGrad:og,LayerVariable:UN,LayersModel:As,LeakyRelu:bd,Less:yd,LessEqual:xd,LinSpace:ag,Log:Vu,Log1p:Bu,LogSoftmax:zC,LogicalAnd:wd,LogicalNot:vd,LogicalOr:Sd,LogicalXor:t$,LowerBound:n$,MathBackendCPU:Rp,MathBackendWebGL:Fp,MatrixBandPart:r$,Max:Id,MaxPool:Td,MaxPool3D:kd,MaxPool3DGrad:ug,MaxPoolGrad:lg,MaxPoolWithArgmax:cg,Maximum:Uu,Mean:Cd,Min:Md,Minimum:Xu,MirrorPad:Nd,Mod:Hu,MomentumOptimizer:Ww,Multinomial:hg,Multiply:Zu,Neg:Ed,NonMaxSuppressionV3:dg,NonMaxSuppressionV4:pg,NonMaxSuppressionV5:fg,NotEqual:Rd,OP_SCOPE_SUFFIX:C1,OneHot:Ad,OnesLike:Ld,Optimizer:qs,OptimizerConstructors:nN,Pack:Dd,PadV2:Fd,Pool:i$,Pow:Ku,Prelu:Pd,Prod:zd,RMSPropOptimizer:$w,RNN:Zi,RaggedGather:mg,RaggedRange:gg,RaggedTensorToTensor:bg,Range:yg,get Rank(){return ox},Real:xg,RealDiv:Eu,Reciprocal:ju,get Reduction(){return ar},Relu:Yu,Relu6:Qu,Reshape:Gd,ResizeBilinear:Wd,ResizeBilinearGrad:vg,ResizeNearestNeighbor:Od,ResizeNearestNeighborGrad:wg,Reverse:$d,RotateWithOffset:Gg,Round:Ju,Rsqrt:qu,SGDOptimizer:wb,ScatterNd:Sg,SearchSorted:Ig,Select:Vd,Selu:ec,Sequential:Ob,Sigmoid:ic,Sign:rc,Sin:tc,Sinh:nc,Slice:Bd,Softmax:Zd,Softplus:sc,SpaceToBatchND:Xd,SparseFillEmptyRows:Tg,SparseReshape:kg,SparseSegmentMean:Cg,SparseSegmentSum:Mg,SparseToDense:Ng,SplitV:Hd,Sqrt:ac,Square:Eg,SquaredDifference:oc,StaticRegexReplace:Kd,Step:dc,StridedSlice:Rg,StringNGrams:Lg,StringSplit:Ag,StringToHashBucketFast:Dg,Sub:lc,Sum:Ud,SymbolicTensor:Wi,Tan:uc,Tanh:cc,Tensor:Nt,TensorBuffer:bn,TensorScatterUpdate:_g,Tile:hc,TopK:Fg,Transform:Pg,Transpose:So,Unique:zg,Unpack:jd,UnsortedSegmentSum:Yd,UpperBound:s$,Variable:Eh,ZerosLike:Qd,_FusedMatMul:Th,abs:fn,acos:D1,acosh:F1,add:ze,addN:OL,all:Vg,any:Lh,argMax:Do,argMin:P1,asin:z1,asinh:G1,atan:O1,atan2:W1,atanh:$1,avgPool:tp,avgPool3d:B1,backend:as,backend_util:CN,basicLSTMCell:WL,batchNorm:pc,batchNorm2d:U1,batchNorm3d:X1,batchNorm4d:H1,batchToSpaceND:np,bincount:Z1,bitwiseAnd:$L,booleanMaskAsync:vA,broadcastArgs:VL,broadcastTo:_o,broadcast_util:AB,browser:HZ,buffer:gt,callbacks:Rme,cast:Ue,ceil:K1,clipByValue:_r,clone:hs,complex:Gs,concat:un,concat1d:j1,concat2d:Y1,concat3d:Q1,concat4d:J1,constraints:Cpe,conv1d:Bg,conv2d:Os,conv2dTranspose:Ug,conv3d:ew,conv3dTranspose:tw,copyRegisteredKernels:u$,cos:rp,cosh:Xg,cosineWindow:db,cumprod:Fh,cumsum:Hg,customGrad:gs,data:xbe,denseBincount:qf,deprecationWarn:V$,depthToSpace:nw,depthwiseConv2d:fc,deregisterOp:Ame,device_util:P$,diag:BL,dilation2d:rw,disableDeprecationWarnings:$$,dispose:dt,disposeVariables:B$,div:rt,divNoNan:iw,dot:sw,dropout:Rw,einsum:lo,elu:mc,enableDebugMode:W$,enableProdMode:O$,enclosingPowerOfTwo:Lw,engine:Gt,ensureShape:UL,env:me,equal:Wr,erf:aw,euclideanNorm:lw,exp:Ir,expandDims:Vn,expm1:uw,eye:Zg,fft:gp,fill:nl,findBackend:j$,findBackendFactory:Y$,floor:bc,floorDiv:$g,forceHalfFloat:q3,fused:CA,gather:yc,gatherND:TA,gather_util:ZZ,getBackend:rM,getGradient:ix,getKernel:Nh,getKernelsForBackend:jf,gpgpu_util:oee,grad:mU,grads:gU,greater:cr,greaterEqual:Ys,ifft:au,imag:ip,image:xi,inTopKAsync:kA,initializers:Bpe,input:EA,io:g_,irfft:ab,isFinite:cw,isInf:hw,isNaN:dw,keep:an,kernel_impls:Spe,layers:lme,leakyRelu:sp,less:nu,lessEqual:Oa,linalg:Fw,linspace:XL,loadGraphModel:ibe,loadGraphModelSync:sbe,loadLayersModel:A9,localResponseNormalization:pw,log:$r,log1p:ap,logSigmoid:fw,logSoftmax:jg,logSumExp:op,logicalAnd:wi,logicalNot:lp,logicalOr:Yg,logicalXor:mw,losses:zM,lowerBound:HL,matMul:wt,math:vpe,max:li,maxPool:up,maxPool3d:gw,maxPoolWithArgmax:ZL,maximum:ys,mean:en,memory:Qf,meshgrid:KL,metrics:Ime,min:tu,minimum:Ca,mirrorPad:bw,mod:yw,model:Upe,models:Tme,moments:cp,movingAverage:SA,mul:le,multiRNNCell:jL,multinomial:YL,neg:Xt,nextFrame:yp,norm:gc,notEqual:Go,oneHot:ru,ones:xr,onesLike:Vr,op:re,outerProduct:QL,pad:Qs,pad1d:JL,pad2d:qL,pad3d:eA,pad4d:tA,pool:xw,pow:Ws,prelu:dp,print:A1,prod:ww,profile:U$,raggedGather:nA,raggedRange:rA,raggedTensorToTensor:iA,rand:sA,randomGamma:lA,randomNormal:Qg,randomStandardNormal:uA,randomUniform:Wa,randomUniformInt:cA,range:Oo,ready:Z$,real:iu,reciprocal:Sw,registerBackend:M1,registerCallbackConstructor:Hpe,registerGradient:GC,registerKernel:Mr,registerOp:Lme,regularizers:Nme,relu:Xi,relu6:Jg,removeBackend:K$,reshape:ce,reverse:ui,reverse1d:hA,reverse2d:dA,reverse3d:pA,reverse4d:fA,rfft:bp,round:qg,rsqrt:eb,scalar:at,scatterND:_A,scatter_util:$X,searchSorted:ey,selu:tb,separableConv2d:nb,sequential:Xpe,serialization:RZ,setBackend:H$,setPlatform:Q$,setWebGLContext:n3,setdiff1dAsync:mA,shared:OR,sigmoid:Fi,sign:_w,signal:PM,sin:rb,sinh:ib,slice:Ct,slice1d:pp,slice2d:sb,slice3d:fp,slice4d:su,slice_util:tN,softmax:mp,softplus:rl,spaceToBatchND:hp,sparse:GM,sparseToDense:IA,spectral:FM,split:wr,sqrt:Zn,square:Pt,squaredDifference:ob,squeeze:$a,stack:tr,step:sl,stridedSlice:Iw,string:OM,sub:Ye,sum:Je,sumOutType:Og,tan:Tw,tanh:Po,tensor:jt,tensor1d:Xn,tensor2d:ya,tensor3d:kw,tensor4d:gA,tensor5d:bA,tensor6d:yA,tensorScatterUpdate:xA,tensor_util:R$,test_util:Vde,tidy:de,tile:ri,time:X$,topk:Mw,train:io,transpose:kt,truncatedNormal:ub,unique:Nw,unregisterGradient:l$,unregisterKernel:o$,unsortedSegmentSum:cb,unstack:ci,upcastType:vr,upperBound:wA,util:x$,valueAndGrad:bU,valueAndGrads:yU,variable:Ew,variableGrads:wM,version:vbe,version_converter:WA,version_core:NA,version_cpu:YA,version_layers:Gb,version_webgl:QA,webgl:kte,webgl_util:pq,where:En,whereAsync:m_,zeros:mn,zerosLike:Mt},Symbol.toStringTag,{value:"Module"})),JA=new Ut;JA.compose(new fe,new Da,new fe(.001,.001,.001));const _be=new Ut().set(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1);class qA{constructor({container:e,imageTargetSrc:t,maxTrack:r,uiLoading:i="yes",uiScanning:s="yes",uiError:a="yes",filterMinCF:o=null,filterBeta:l=null,warmupTolerance:u=null,missTolerance:c=null,userDeviceId:h=null,environmentDeviceId:d=null}){this.container=e,this.imageTargetSrc=t,this.maxTrack=r,this.filterMinCF=o,this.filterBeta=l,this.warmupTolerance=u,this.missTolerance=c,this.ui=new WW({uiLoading:i,uiScanning:s,uiError:a}),this.userDeviceId=h,this.environmentDeviceId=d,this.shouldFaceUser=!1,this.scene=new MI,this.cssScene=new MI,this.renderer=new h1({antialias:!0,alpha:!0}),this.cssRenderer=new pde({antialias:!0}),this.renderer.outputEncoding=Vt,this.renderer.setPixelRatio(window.devicePixelRatio),this.camera=new ei,this.anchors=[],this.renderer.domElement.style.position="absolute",this.cssRenderer.domElement.style.position="absolute",this.container.appendChild(this.renderer.domElement),this.container.appendChild(this.cssRenderer.domElement),window.addEventListener("resize",this.resize.bind(this))}async start(){this.ui.showLoading(),await this._startVideo(),await this._startAR()}stop(){this.controller.stopProcessVideo(),this.video.srcObject.getTracks().forEach(function(e){e.stop()}),this.video.remove()}switchCamera(){this.shouldFaceUser=!this.shouldFaceUser,this.stop(),this.start()}addAnchor(e){const t=new Li;t.visible=!1,t.matrixAutoUpdate=!1;const r={group:t,targetIndex:e,onTargetFound:null,onTargetLost:null,onTargetUpdate:null,css:!1,visible:!1};return this.anchors.push(r),this.scene.add(t),r}addCSSAnchor(e){const t=new Li;t.visible=!1,t.matrixAutoUpdate=!1;const r={group:t,targetIndex:e,onTargetFound:null,onTargetLost:null,onTargetUpdate:null,css:!0,visible:!1};return this.anchors.push(r),this.cssScene.add(t),r}_startVideo(){return new Promise((e,t)=>{if(this.video=document.createElement("video"),this.video.setAttribute("autoplay",""),this.video.setAttribute("muted",""),this.video.setAttribute("playsinline",""),this.video.style.position="absolute",this.video.style.top="0px",this.video.style.left="0px",this.video.style.zIndex="-2",this.container.appendChild(this.video),!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){this.ui.showCompatibility(),t();return}const r={audio:!1,video:{}};this.shouldFaceUser?this.userDeviceId?r.video.deviceId={exact:this.userDeviceId}:r.video.facingMode="user":this.environmentDeviceId?r.video.deviceId={exact:this.environmentDeviceId}:r.video.facingMode="environment",navigator.mediaDevices.getUserMedia(r).then(i=>{this.video.addEventListener("loadedmetadata",()=>{this.video.setAttribute("width",this.video.videoWidth),this.video.setAttribute("height",this.video.videoHeight),e()}),this.video.srcObject=i}).catch(i=>{console.log("getUserMedia error",i),t()})})}_startAR(){return new Promise(async(e,t)=>{const r=this.video;this.container,this.controller=new cde({inputWidth:r.videoWidth,inputHeight:r.videoHeight,filterMinCF:this.filterMinCF,filterBeta:this.filterBeta,warmupTolerance:this.warmupTolerance,missTolerance:this.missTolerance,maxTrack:this.maxTrack,onUpdate:s=>{if(s.type==="updateMatrix"){const{targetIndex:a,worldMatrix:o}=s;for(let l=0;l<this.anchors.length;l++)if(this.anchors[l].targetIndex===a){if(this.anchors[l].css?this.anchors[l].group.children.forEach(u=>{u.element.style.visibility=o===null?"hidden":"visible"}):this.anchors[l].group.visible=o!==null,o!==null){let u=new Ut;u.elements=[...o],u.multiply(this.postMatrixs[a]),this.anchors[l].css&&u.multiply(JA),this.anchors[l].group.matrix=u}else this.anchors[l].group.matrix=_be;this.anchors[l].visible&&o===null&&(this.anchors[l].visible=!1,this.anchors[l].onTargetLost&&this.anchors[l].onTargetLost()),!this.anchors[l].visible&&o!==null&&(this.anchors[l].visible=!0,this.anchors[l].onTargetFound&&this.anchors[l].onTargetFound()),this.anchors[l].onTargetUpdate&&this.anchors[l].onTargetUpdate()}this.anchors.reduce((l,u)=>l||u.visible,!1)?this.ui.hideScanning():this.ui.showScanning()}}}),this.resize();const{dimensions:i}=await this.controller.addImageTargets(this.imageTargetSrc);this.postMatrixs=[];for(let s=0;s<i.length;s++){const a=new fe,o=new Da,l=new fe,[u,c]=i[s];a.x=u/2,a.y=u/2+(c-u)/2,l.x=u,l.y=u,l.z=u;const h=new Ut;h.compose(a,o,l),this.postMatrixs.push(h)}await this.controller.dummyRun(this.video),this.ui.hideLoading(),this.ui.showScanning(),this.controller.processVideo(this.video),e()})}resize(){const{renderer:e,cssRenderer:t,camera:r,container:i,video:s}=this;if(!s)return;this.video.setAttribute("width",this.video.videoWidth),this.video.setAttribute("height",this.video.videoHeight);let a,o;const l=s.videoWidth/s.videoHeight,u=i.clientWidth/i.clientHeight;l>u?(o=i.clientHeight,a=o*l):(a=i.clientWidth,o=a/l);const c=this.controller.getProjectionMatrix(),h=this.controller.inputWidth/this.controller.inputHeight;let d;h>u?d=this.video.width/this.controller.inputWidth:d=this.video.height/this.controller.inputHeight;let p,g;h>u?(p=i.clientHeight,p*=d):(g=i.clientWidth,p=g/this.controller.inputWidth*this.controller.inputHeight,p*=d);let m=i.clientHeight/p;const f=2*Math.atan(1/c[5]*m)*180/Math.PI,b=c[14]/(c[10]-1),y=c[14]/(c[10]+1);c[5]/c[0],r.fov=f,r.near=b,r.far=y,r.aspect=i.clientWidth/i.clientHeight,r.updateProjectionMatrix(),s.style.top=-(o-i.clientHeight)/2+"px",s.style.left=-(a-i.clientWidth)/2+"px",s.style.width=a+"px",s.style.height=o+"px";const x=e.domElement,w=t.domElement;x.style.position="absolute",x.style.left=0,x.style.top=0,x.style.width=i.clientWidth+"px",x.style.height=i.clientHeight+"px",w.style.position="absolute",w.style.left=0,w.style.top=0,w.style.width=i.clientWidth+"px",w.style.height=i.clientHeight+"px",e.setSize(i.clientWidth,i.clientHeight),t.setSize(i.clientWidth,i.clientHeight)}}window.MINDAR||(window.MINDAR={});window.MINDAR.IMAGE||(window.MINDAR.IMAGE={});window.MINDAR.IMAGE.MindARThree=qA;window.MINDAR.IMAGE.tf=Sbe;class Ibe{constructor(e,t="/targets/manuscript.mind"){this.container=e,this.targetSrc=t,this.mindarThree=null,this.anchor=null,this.isRunning=!1,this.isTargetFound=!1,this.onTargetFound=null,this.onTargetLost=null,this.onError=null}async init(){try{if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia)throw new Error("Camera API (getUserMedia) not supported in this browser. Please ensure HTTPS is enabled or use Chrome/Safari.");this.mindarThree=new qA({container:this.container,imageTargetSrc:this.targetSrc,filterMinCF:5e-4,filterBeta:500,warmupTolerance:4,missTolerance:6,uiLoading:"no",uiScanning:"no"});const{renderer:e,scene:t,camera:r}=this.mindarThree;e.outputEncoding!==void 0&&(e.outputEncoding=Vt),e.toneMapping=iC,e.toneMappingExposure=1.1;const i=new AW(16777215,1.4);t.add(i);const s=new LW(16772829,1.8);s.position.set(1,3,2),t.add(s);const a=new EW(54015,2,8);return a.position.set(0,1,1),t.add(a),this.anchor=this.mindarThree.addAnchor(0),this.anchor.onTargetFound=()=>{this.isTargetFound=!0,this.onTargetFound&&this.onTargetFound()},this.anchor.onTargetLost=()=>{this.isTargetFound=!1,this.onTargetLost&&this.onTargetLost()},{renderer:e,scene:t,camera:r,anchorGroup:this.anchor.group}}catch(e){throw console.error("AREngine init error:",e),this.onError&&this.onError(e),e}}async start(e){if(this.mindarThree)try{await this.mindarThree.start(),this.isRunning=!0;const{renderer:t,scene:r,camera:i}=this.mindarThree;t.setAnimationLoop(()=>{e&&e(),t.render(r,i)})}catch(t){throw console.error("Error starting MindAR:",t),this.onError&&this.onError(t),t}}stop(){if(this.mindarThree){try{const{renderer:e}=this.mindarThree;e&&e.setAnimationLoop(null),this.isRunning&&this.mindarThree.stop()}catch(e){console.warn("Error during MindAR stop:",e)}this.isRunning=!1,this.isTargetFound=!1}}getAnchorGroup(){return this.anchor?this.anchor.group:null}getCamera(){return this.mindarThree?this.mindarThree.camera:null}getRenderer(){return this.mindarThree?this.mindarThree.renderer:null}}class Tbe{constructor(e){this.anchor=e,this.hotspotMeshes=[],this.hologramGroup=new Li,this.anchor.add(this.hologramGroup),this.raycaster=new DW,this.mouse=new At,this.cardCanvas=document.createElement("canvas"),this.cardCanvas.width=1024,this.cardCanvas.height=700,this.cardContext=this.cardCanvas.getContext("2d"),this.cardTexture=new LI(this.cardCanvas),this.cardTexture.minFilter=Jr,this.cardMesh=null,this.gridMesh=null,this.axesGroup=null,this.hotspotGroup=new Li,this.hologramGroup.add(this.hotspotGroup),this.time=0,this.currentMetadata=null,this.onHotspotClick=null,this._createARSurfaceFrameAndAxes()}_createARSurfaceFrameAndAxes(){const s=new Li,a=new sa({color:16777215,linewidth:2}),o=.1,l=(w,v,I,k)=>{const S=[new fe(w,v+k*o,.002),new fe(w,v,.002),new fe(w+I*o,v,.002)],C=new qn().setFromPoints(S),N=new Ja(C,a);s.add(N)};l(-.5,-.44,1,1),l(.5,-.44,-1,1),l(-.5,.44,1,-1),l(.5,.44,-1,-1);const u=new qn().setFromPoints([new fe(-.5,-.44,.001),new fe(.5,-.44,.001),new fe(.5,.44,.001),new fe(-.5,.44,.001),new fe(-.5,-.44,.001)]),c=new sa({color:16777215,transparent:!0,opacity:.35}),h=new Ja(u,c);s.add(h),this.hologramGroup.add(s);const d=new Li;d.position.set(-.5-.04,-.44-.04,.002);const p=.15,g=new qn().setFromPoints([new fe(0,0,0),new fe(p,0,0)]),m=new sa({color:16726832,linewidth:2});d.add(new Ja(g,m));const f=new qn().setFromPoints([new fe(0,0,0),new fe(0,p,0)]),b=new sa({color:3458905,linewidth:2});d.add(new Ja(f,b));const y=new qn().setFromPoints([new fe(0,0,0),new fe(0,0,p)]),x=new sa({color:29155,linewidth:2});d.add(new Ja(y,x)),this.axesGroup=d,this.hologramGroup.add(d)}createHolographicCard(e){if(this.currentMetadata=e,this._renderCardTexture(e),this.cardMesh)this.cardTexture.needsUpdate=!0;else{const t=new Bl(.96,.65),r=new zl({map:this.cardTexture,transparent:!0,opacity:.98,side:Ai});this.cardMesh=new ti(t,r),this.cardMesh.position.set(0,.62,.15),this.cardMesh.rotation.x=-Math.PI*.11;const i=new Bl(.98,.67),s=new zl({color:0,transparent:!0,opacity:.12}),a=new ti(i,s);a.position.z=-.003,this.cardMesh.add(a);const o=new qn().setFromPoints([new fe(0,-.325,0),new fe(0,-.62,-.15)]),l=new sa({color:8816267,transparent:!0,opacity:.5}),u=new Ja(o,l);this.cardMesh.add(u),this.hologramGroup.add(this.cardMesh)}}_renderCardTexture(e){const t=this.cardContext,r=this.cardCanvas.width,i=this.cardCanvas.height;t.clearRect(0,0,r,i),t.fillStyle="rgba(40, 40, 40, 0.8)",this._roundRect(t,16,16,r-32,i-32,28),t.fill(),t.strokeStyle="rgba(201, 201, 201, 0.6)",t.lineWidth=2,t.stroke(),t.fillStyle="rgba(255, 255, 255, 0.1)",this._roundRect(t,42,38,200,36,18),t.fill(),t.font="600 13px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="#ffffff",t.fillText("ALQAMI INTELLIGENCE",58,61),t.font="500 13px monospace",t.fillStyle="rgba(255, 255, 255, 0.6)",t.textAlign="right",t.fillText(e?.identifier||"MS-SHIFA-1302",r-45,61),t.textAlign="left",t.font="600 28px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="#ffffff",t.fillText(e?.title||"Kitab al-Shifa: Logic and Metaphysics",45,118),e?.titleArabic&&(t.font='24px "Amiri", "Traditional Arabic", serif',t.fillStyle="rgba(255, 255, 255, 0.7)",t.fillText(e.titleArabic,45,158)),t.strokeStyle="rgba(255, 255, 255, 0.15)",t.lineWidth=1,t.beginPath(),t.moveTo(45,180),t.lineTo(r-45,180),t.stroke();const s=(a,o,l,u)=>{t.font="600 11px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="rgba(255, 255, 255, 0.5)",t.fillText(a.toUpperCase(),l,u),t.font="500 17px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="#ffffff";const c=o&&o.length>34?o.slice(0,32)+"…":o||"—";t.fillText(c,l,u+22)};s("Author (dc:creator)",e?.creator||"Ibn Sina (Avicenna)",45,218),s("Period (dc:date)",e?.date||"16th-17th Century",520,218),s("Material (schema:material)",e?.material||"Gold leaf, Lapis lazuli, Rag paper",45,290),s("Holding Repository",e?.publisher||"Majlis Parliament Library",520,290),s("Script Style","Naskh text with Marginal Nastaliq",45,362),s("Dimensions",e?.dimensions||"26.5 x 17.2 cm",520,362),t.fillStyle="rgba(255, 255, 255, 0.05)",this._roundRect(t,45,420,r-90,155,16),t.fill(),t.font="600 11px monospace",t.fillStyle="rgba(255, 255, 255, 0.5)",t.fillText("ONTOLOGY TRANSCRIPTION (dc:description)",65,448),t.font='16px "Amiri", "Traditional Arabic", serif',t.fillStyle="#ffffff",t.fillText("« بسم الله الرحمن الرحيم - الحمد لله الواحد الأحد الصمد المصور... »",65,484),t.font="14px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="rgba(255, 255, 255, 0.7)",t.fillText('"In the Name of God... origination (ibda) and cosmic formation (takwin)..."',65,516),t.font="600 12px -apple-system, BlinkMacSystemFont, sans-serif",t.fillStyle="#34c759",t.fillText("Tracking Active (60 FPS)",65,550),this.cardTexture.needsUpdate=!0}_roundRect(e,t,r,i,s,a){e.beginPath(),e.moveTo(t+a,r),e.lineTo(t+i-a,r),e.quadraticCurveTo(t+i,r,t+i,r+a),e.lineTo(t+i,r+s-a),e.quadraticCurveTo(t+i,r+s,t+i-a,r+s),e.lineTo(t+a,r+s),e.quadraticCurveTo(t,r+s,t,r+s-a),e.lineTo(t,r+a),e.quadraticCurveTo(t,r,t+a,r),e.closePath()}createHotspots(e){for(;this.hotspotGroup.children.length>0;){const i=this.hotspotGroup.children[0];this.hotspotGroup.remove(i)}this.hotspotMeshes=[];const t=1,r=.88;e.forEach((i,s)=>{const a=(i.normX-.5)*t,o=(.5-i.normY)*r,l=i.elevZ||.055,u=new Li;u.position.set(a,o,l),u.userData={hotspot:i,index:s};const c=new qn().setFromPoints([new fe(0,0,0),new fe(0,0,-l)]),h=new sa({color:16777215,transparent:!0,opacity:.75,linewidth:2}),d=new Ja(c,h);u.add(d);const p=new d1(.018,.032,24),g=new zl({color:29155,side:Ai,transparent:!0,opacity:.85}),m=new ti(p,g);m.position.z=-l+.001,u.add(m);const f=new p1(.024,24,24),b=new MW({color:16777215,roughness:.1,metalness:.2,emissive:29155,emissiveIntensity:.3}),y=new ti(f,b);y.name="pinMesh",u.add(y);const x=document.createElement("canvas");x.width=360,x.height=84;const w=x.getContext("2d");w.fillStyle="rgba(40, 40, 40, 0.8)",this._roundRect(w,4,4,352,76,18),w.fill(),w.strokeStyle="rgba(201, 201, 201, 0.6)",w.lineWidth=2,w.stroke(),w.font="600 20px -apple-system, BlinkMacSystemFont, sans-serif",w.fillStyle="#ffffff",w.textAlign="center";const v=i.label.length>22?i.label.slice(0,20)+"…":i.label;w.fillText(v,180,38),w.font="500 14px -apple-system, BlinkMacSystemFont, sans-serif",w.fillStyle="rgba(255, 255, 255, 0.7)",w.fillText(i.folio||"Region",180,62);const I=new LI(x),k=new Bl(.22,.052),S=new zl({map:I,transparent:!0,side:Ai}),C=new ti(k,S);C.position.y=.05,C.name="labelBillboard",u.add(C),this.hotspotGroup.add(u),this.hotspotMeshes.push(y)})}update(e){this.time+=e,this.cardMesh&&(this.cardMesh.position.z=.15+Math.sin(this.time*2)*.01),this.hotspotGroup.children.forEach((t,r)=>{const i=t.getObjectByName("pinMesh");i&&(i.position.z=Math.sin(this.time*2.5+r)*.005)})}checkRaycast(e,t,r,i,s){this.mouse.x=t/i*2-1,this.mouse.y=-(r/s)*2+1,this.raycaster.setFromCamera(this.mouse,e);const a=this.raycaster.intersectObjects(this.hotspotMeshes,!0);if(a.length>0){const o=a[0].object.parent;if(o&&o.userData&&o.userData.hotspot)return o.userData.hotspot}return null}}class kbe{constructor(e){this.canvas=e,this.ctx=e.getContext("2d"),this.nodes=[],this.links=[],this.width=e.width,this.height=e.height,this.animId=null,this.hoveredNode=null,this.selectedNode=null,this.isDragging=!1,this.dragNode=null,this.onSelectCallback=null,this._setupEvents()}setData(e){this.width=this.canvas.clientWidth||500,this.height=this.canvas.clientHeight||400,this.canvas.width=this.width*window.devicePixelRatio,this.canvas.height=this.height*window.devicePixelRatio,this.ctx.scale(window.devicePixelRatio,window.devicePixelRatio);const t=e.nodes.length,r=this.width/2,i=this.height/2,s=Math.min(this.width,this.height)*.38;this.nodes=e.nodes.map((o,l)=>{const u=l/t*Math.PI*2,c=o.group===1?0:o.group===3?s*.55:s*.9;return{...o,x:r+Math.cos(u)*c+(Math.random()-.5)*20,y:i+Math.sin(u)*c+(Math.random()-.5)*20,vx:0,vy:0,radius:o.group===1?20:o.group===3?14:10}});const a=new Map(this.nodes.map(o=>[o.id,o]));this.links=e.links.map(o=>({source:a.get(o.source)||{x:r,y:i},target:a.get(o.target)||{x:r,y:i},predicate:o.predicate,fullPredicate:o.fullPredicate})),this.startSimulation()}startSimulation(){this.animId&&cancelAnimationFrame(this.animId);let e=0;const t=200,r=()=>{(e<t||this.isDragging)&&(this._applyForces(),e++),this.draw(),this.animId=requestAnimationFrame(r)};r()}_applyForces(){const r=this.width/2,i=this.height/2;for(let s=0;s<this.nodes.length;s++)for(let a=s+1;a<this.nodes.length;a++){const o=this.nodes[a].x-this.nodes[s].x,l=this.nodes[a].y-this.nodes[s].y,u=Math.sqrt(o*o+l*l)||1;if(u<250){const c=1200/(u*u),h=o/u*c,d=l/u*c;this.nodes[s]!==this.dragNode&&(this.nodes[s].x-=h,this.nodes[s].y-=d),this.nodes[a]!==this.dragNode&&(this.nodes[a].x+=h,this.nodes[a].y+=d)}}for(const s of this.links){const a=s.target.x-s.source.x,o=s.target.y-s.source.y,l=Math.sqrt(a*a+o*o)||1,c=(l-90)*.05,h=a/l*c,d=o/l*c;s.source!==this.dragNode&&(s.source.x+=h,s.source.y+=d),s.target!==this.dragNode&&(s.target.x-=h,s.target.y-=d)}for(const s of this.nodes)s!==this.dragNode&&(s.x+=(r-s.x)*.01,s.y+=(i-s.y)*.01,s.x=Math.max(30,Math.min(this.width-30,s.x)),s.y=Math.max(30,Math.min(this.height-30,s.y)))}draw(){this.ctx.clearRect(0,0,this.width,this.height);for(const e of this.links){this.ctx.beginPath(),this.ctx.moveTo(e.source.x,e.source.y),this.ctx.lineTo(e.target.x,e.target.y),this.ctx.strokeStyle="rgba(0, 0, 0, 0.12)",this.ctx.lineWidth=1.2,this.ctx.stroke();const t=(e.source.x+e.target.x)/2,r=(e.source.y+e.target.y)/2;this.ctx.font="10px -apple-system, BlinkMacSystemFont, sans-serif",this.ctx.fillStyle="#86868b",this.ctx.textAlign="center",this.ctx.fillText(e.predicate||"",t,r-3)}for(const e of this.nodes){const t=this.hoveredNode===e,r=this.selectedNode===e;this.ctx.beginPath(),this.ctx.arc(e.x,e.y,e.radius+(t?3:0),0,Math.PI*2),e.group===1?this.ctx.fillStyle="#1d1d1f":e.group===3?this.ctx.fillStyle="#0071e3":this.ctx.fillStyle="#34c759",this.ctx.fill(),this.ctx.strokeStyle=r?"#0071e3":t?"#1d1d1f":"#ffffff",this.ctx.lineWidth=r?3:2,this.ctx.stroke(),this.ctx.font=e.group===1?"600 11px -apple-system, BlinkMacSystemFont, sans-serif":"500 10px -apple-system, BlinkMacSystemFont, sans-serif",this.ctx.fillStyle="#1d1d1f",this.ctx.textAlign="center";const i=e.label||e.id,s=i.length>20?i.slice(0,18)+"…":i;this.ctx.fillText(s,e.x,e.y+e.radius+12)}}_setupEvents(){const e=r=>{const i=this.canvas.getBoundingClientRect(),s=r.touches?r.touches[0].clientX:r.clientX,a=r.touches?r.touches[0].clientY:r.clientY;return{x:s-i.left,y:a-i.top}},t=r=>this.nodes.find(i=>{const s=i.x-r.x,a=i.y-r.y;return Math.sqrt(s*s+a*a)<=i.radius+6});this.canvas.addEventListener("mousemove",r=>{const i=e(r);if(this.isDragging&&this.dragNode){this.dragNode.x=i.x,this.dragNode.y=i.y;return}const s=t(i);s!==this.hoveredNode&&(this.hoveredNode=s,this.canvas.style.cursor=s?"pointer":"default")}),this.canvas.addEventListener("mousedown",r=>{const i=e(r),s=t(i);s&&(this.isDragging=!0,this.dragNode=s,this.selectedNode=s,this.onSelectCallback&&this.onSelectCallback(s))}),window.addEventListener("mouseup",()=>{this.isDragging=!1,this.dragNode=null}),this.canvas.addEventListener("touchstart",r=>{const i=e(r),s=t(i);s&&(this.isDragging=!0,this.dragNode=s,this.selectedNode=s,this.onSelectCallback&&this.onSelectCallback(s))},{passive:!0}),this.canvas.addEventListener("touchmove",r=>{if(this.isDragging&&this.dragNode){const i=e(r);this.dragNode.x=i.x,this.dragNode.y=i.y}},{passive:!0}),this.canvas.addEventListener("touchend",()=>{this.isDragging=!1,this.dragNode=null})}onSelect(e){this.onSelectCallback=e}resize(){this.width=this.canvas.clientWidth||500,this.height=this.canvas.clientHeight||400,this.canvas.width=this.width*window.devicePixelRatio,this.canvas.height=this.height*window.devicePixelRatio,this.ctx.scale(window.devicePixelRatio,window.devicePixelRatio)}destroy(){this.animId&&cancelAnimationFrame(this.animId)}}class Cbe{constructor(){this.synth=typeof window<"u"&&"speechSynthesis"in window?window.speechSynthesis:null,this.isPlaying=!1,this.currentUtterance=null,this.onStateChange=null}speak(e,t="en"){if(!this.synth){console.warn("Speech synthesis not supported in this browser");return}this.stop();const r=new SpeechSynthesisUtterance(e);r.lang=t==="ar"?"ar-SA":"en-US",r.rate=.95,r.pitch=1;const s=this.synth.getVoices().find(a=>a.lang.startsWith(t));s&&(r.voice=s),r.onstart=()=>{this.isPlaying=!0,this.onStateChange&&this.onStateChange(!0)},r.onend=()=>{this.isPlaying=!1,this.onStateChange&&this.onStateChange(!1)},r.onerror=a=>{console.error("Speech error:",a),this.isPlaying=!1,this.onStateChange&&this.onStateChange(!1)},this.currentUtterance=r,this.synth.speak(r)}stop(){this.synth&&this.synth.cancel(),this.isPlaying=!1,this.onStateChange&&this.onStateChange(!1)}toggle(e,t="en"){this.isPlaying?this.stop():this.speak(e,t)}}class Mbe{constructor(){this.mode="camera",this.rdfParser=new kD,this.speech=new Cbe,this.arEngine=null,this.simulator=null,this.cardManager=null,this.graphVisualizer=null,this.rawInitialTtl="",this.activeHotspot=null,this.lastTime=performance.now(),this.dom={arContainer:document.getElementById("ar-container"),simulatorContainer:document.getElementById("simulator-container"),btnMode3d:document.getElementById("btn-mode-3d"),btnModeScan:document.getElementById("btn-mode-scan"),modelDock:document.getElementById("model-dock"),mainPanel:document.getElementById("main-panel-container"),audioGuideBtn:document.getElementById("btn-audio-guide"),snapshotBtn:document.getElementById("btn-snapshot"),trackingStatus:document.getElementById("tracking-status"),trackingText:document.getElementById("tracking-text"),scanningHud:document.getElementById("scanning-hud"),metaTitle:document.getElementById("meta-title"),metaCreator:document.getElementById("meta-creator"),metaDate:document.getElementById("meta-date"),metaExtent:document.getElementById("meta-extent"),metaMaterial:document.getElementById("meta-material"),metaNotes:document.getElementById("meta-notes"),graphCanvas:document.getElementById("graph-canvas"),ttlEditor:document.getElementById("ttl-code-editor"),btnApplyRdf:document.getElementById("btn-apply-rdf"),btnResetRdf:document.getElementById("btn-reset-rdf"),hotspotModal:document.getElementById("hotspot-modal"),modalTitle:document.getElementById("modal-title"),modalBody:document.getElementById("modal-body"),btnCloseModal:document.getElementById("btn-close-modal"),btnModalAction:document.getElementById("btn-modal-action"),cameraFlash:document.getElementById("camera-flash")}}async init(){console.log("Initializing Alqami AR (Vision Pro UI)..."),this._setupTabNavigation(),this._setupModals(),this._setupButtons();try{const t=await this.rdfParser.loadFromUrl("./model.ttl");this.rawInitialTtl=this.rdfParser.rawTurtle,this.dom.ttlEditor&&(this.dom.ttlEditor.value=this.rawInitialTtl),this._updateUIWithMetadata(t.metadata),this.graphVisualizer=new kbe(this.dom.graphCanvas),this.graphVisualizer.setData(this.rdfParser.getGraphData()),this.graphVisualizer.onSelect(r=>{console.log("Selected Graph Node:",r)})}catch(e){console.error("Failed to load initial RDF:",e)}this._startSimulatorMode()}async _startCameraMode(){this.mode="camera",this.dom.arContainer.style.display="block",this.dom.simulatorContainer.style.display="none",this.dom.btnModeScan.classList.add("active"),this.dom.btnMode3d.classList.remove("active"),this.dom.modelDock.style.display="none",this.dom.mainPanel&&(this.dom.mainPanel.style.display="none"),this.dom.trackingStatus.style.display="flex",this._setTrackingState(!1,"Scanning for manuscript");try{const t=await this.rdfParser.loadFromUrl("./data/manuscript.ttl");this.rawInitialTtl=this.rdfParser.rawTurtle,this.dom.ttlEditor&&(this.dom.ttlEditor.value=this.rawInitialTtl),this._updateUIWithMetadata(t.metadata),this.graphVisualizer&&this.graphVisualizer.setData(this.rdfParser.getGraphData())}catch(e){console.warn("No manuscript.ttl found",e)}try{if(this.arEngine)this.arEngine.start();else{this.arEngine=new Ibe(this.dom.arContainer,"./targets/manuscript.mind"),this.arEngine.onTargetFound=()=>{console.log("Target Detected in AR Camera"),this._setTrackingState(!0,"Target Tracked")},this.arEngine.onTargetLost=()=>{console.log("Target Lost in AR Camera"),this._setTrackingState(!1,"Scanning for manuscript")},this.arEngine.onError=a=>{console.warn("Camera AR unavailable, switching to Simulator:",a),this._startSimulatorMode()};const{renderer:t,scene:r,camera:i,anchorGroup:s}=await this.arEngine.init();this.cardManager=new Tbe(s),this.cardManager.createHolographicCard(this.rdfParser.metadata),this.cardManager.createHotspots(this.rdfParser.hotspots),this.lastTime=performance.now(),await this.arEngine.start(()=>{const a=performance.now(),o=(a-this.lastTime)/1e3;this.lastTime=a,this.cardManager&&this.cardManager.update(o)}),this._setupInteractionRaycasting(t.domElement,i)}}catch(e){console.warn("Camera AR init failed, switching to Desktop Simulator:",e),this._startSimulatorMode()}}_startSimulatorMode(){this.mode="simulator",this.dom.arContainer.style.display="none",this.dom.simulatorContainer.style.display="block",this.dom.btnMode3d.classList.add("active"),this.dom.btnModeScan.classList.remove("active"),this.dom.modelDock.style.display="block",this.dom.mainPanel&&(this.dom.mainPanel.style.display="flex"),this.dom.trackingStatus.style.display="none",this.dom.scanningHud.style.display="none",this.arEngine&&this.arEngine.stop();const e=document.querySelectorAll(".dock-btn");e.forEach(r=>{r.addEventListener("click",async()=>{e.forEach(l=>l.classList.remove("active")),r.classList.add("active");const i=r.dataset.model,s=r.dataset.title;document.getElementById("top-title").textContent=s;const a="./",o=document.getElementById("model-3d-viewer");o&&(o.src=`${a}${i}.glb`);try{const l=await this.rdfParser.loadFromUrl(`${a}${i}.ttl`);this.rawInitialTtl=this.rdfParser.rawTurtle,this.dom.ttlEditor&&(this.dom.ttlEditor.value=this.rawInitialTtl),this._updateUIWithMetadata(l.metadata),this.graphVisualizer&&this.graphVisualizer.setData(this.rdfParser.getGraphData())}catch(l){console.error("Failed to load TTL for",i,l)}})});const t=document.getElementById("model-3d-viewer");t&&!t.hasAttribute("data-progress-listener")&&(t.setAttribute("data-progress-listener","true"),t.addEventListener("progress",r=>{const i=t.querySelector(".progress-bar"),s=t.querySelector(".update-bar");i&&s&&(s.style.width=`${r.detail.totalProgress*100}%`,r.detail.totalProgress===1?i.classList.add("hide"):i.classList.remove("hide"))}))}_setupInteractionRaycasting(e,t){const r=i=>{const s=i.changedTouches?i.changedTouches[0].clientX:i.clientX,a=i.changedTouches?i.changedTouches[0].clientY:i.clientY;if(this.cardManager){const o=this.cardManager.checkRaycast(t,s,a,e.clientWidth,e.clientHeight);o&&this._openHotspotModal(o)}};e.addEventListener("click",r)}_setTrackingState(e,t){e?(this.dom.trackingStatus.classList.add("found"),this.dom.trackingText.textContent=t||"Target Tracked",this.dom.scanningHud&&(this.dom.scanningHud.style.display="none")):(this.dom.trackingStatus.classList.remove("found"),this.dom.trackingText.textContent=t||"Scanning for manuscript",this.dom.scanningHud&&(this.dom.scanningHud.style.display="flex"))}_updateUIWithMetadata(e){e&&(this.dom.metaTitle.textContent=e.titleArabic||e.title||"—",this.dom.metaCreator.textContent=e.creator||"—",this.dom.metaDate.textContent=e.date||"—",this.dom.metaExtent.textContent=e.dimensions||e.extent||"—",this.dom.metaMaterial.textContent=e.material||"—",this.dom.metaNotes.textContent=e.transcriptionArabic||"—")}_setupTabNavigation(){const e=document.querySelectorAll(".tab-btn"),t=document.querySelectorAll(".tab-pane");e.forEach(r=>{r.addEventListener("click",()=>{e.forEach(a=>a.classList.remove("active")),t.forEach(a=>a.classList.remove("active")),r.classList.add("active");const i=r.getAttribute("data-tab"),s=document.getElementById(i);s&&s.classList.add("active"),i==="tab-graph"&&this.graphVisualizer&&setTimeout(()=>this.graphVisualizer.resize(),50)})})}_setupModals(){this.dom.btnCloseModal&&this.dom.btnCloseModal.addEventListener("click",()=>{this.dom.hotspotModal.classList.remove("active")}),this.dom.btnModalAction&&this.dom.btnModalAction.addEventListener("click",()=>{this.activeHotspot&&this.speech.speak(`${this.activeHotspot.label}. ${this.activeHotspot.description}`)})}_openHotspotModal(e){this.activeHotspot=e,this.dom.modalTitle.textContent=e.label,this.dom.modalBody.innerHTML=`
       <p style="margin-bottom: 8px;"><strong>Location:</strong> <span style="color: var(--apple-blue);">${e.folio}</span></p>
       <p style="line-height: 1.6;">${e.description}</p>
     `,this.dom.hotspotModal.classList.add("active")}_setupButtons(){this.dom.btnMode3d&&this.dom.btnMode3d.addEventListener("click",()=>{this.mode!=="simulator"&&this._startSimulatorMode()}),this.dom.btnModeScan&&this.dom.btnModeScan.addEventListener("click",()=>{this.mode!=="camera"&&this._startCameraMode()}),this.dom.audioGuideBtn&&this.dom.audioGuideBtn.addEventListener("click",()=>{const e=this.dom.metaNotes?this.dom.metaNotes.textContent:"No description available.";this.speech.toggle(e,"ar")}),this.dom.snapshotBtn&&this.dom.snapshotBtn.addEventListener("click",()=>{this.dom.cameraFlash&&(this.dom.cameraFlash.classList.add("flash"),setTimeout(()=>this.dom.cameraFlash.classList.remove("flash"),200));const e=this.mode==="camera"?this.dom.arContainer.querySelector("canvas"):this.dom.simulatorContainer.querySelector("canvas");if(e){const t=document.createElement("a");t.download=`alqami-${Date.now()}.png`,t.href=e.toDataURL("image/png"),t.click()}}),this.dom.btnApplyRdf.addEventListener("click",async()=>{try{const e=this.dom.ttlEditor.value,t=await this.rdfParser.parseTurtle(e);this._updateUIWithMetadata(t.metadata),this.cardManager&&(this.cardManager.createHolographicCard(t.metadata),this.cardManager.createHotspots(t.hotspots)),this.graphVisualizer&&this.graphVisualizer.setData(this.rdfParser.getGraphData()),alert("AR Hologram and metadata updated successfully.")}catch(e){alert(`RDF Syntax Error: ${e.message}`)}}),this.dom.btnResetRdf.addEventListener("click",async()=>{this.dom.ttlEditor.value=this.rawInitialTtl;const e=await this.rdfParser.parseTurtle(this.rawInitialTtl);this._updateUIWithMetadata(e.metadata),this.cardManager&&(this.cardManager.createHolographicCard(e.metadata),this.cardManager.createHotspots(e.hotspots)),this.graphVisualizer&&this.graphVisualizer.setData(this.rdfParser.getGraphData())})}}window.addEventListener("DOMContentLoaded",()=>{new Mbe().init()});
