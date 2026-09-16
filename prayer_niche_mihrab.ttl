@@ -1,0 +1,17 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix ms: <http://example.org/manuscript/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://alqami.net/artifact/mihrab>
+    a schema:CreativeWork ;
+    dc:title "محراب الصلاة"@ar ;
+    dc:title "Prayer Niche (Mihrab)"@en ;
+    dc:creator "فنان إسلامي غير معروف"@ar ;
+    dc:date "القرن الثالث عشر الميلادي" ;
+    schema:material "خزف مزجج (قاشاني)"@ar ;
+    schema:material "Glazed Ceramic (Kashani)"@en ;
+    ms:transcriptionArabic """محراب مزين بالزخارف الهندسية والنباتية والآيات القرآنية بالخط الكوفي والثلث. يستخدم لتحديد القبلة في المساجد."""@ar ;
+    ms:translationEnglish """Description loaded."""@en ;
+    schema:extent "قطعة معمارية كبيرة"@ar .

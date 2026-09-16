@@ -1,0 +1,17 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix ms: <http://example.org/manuscript/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://alqami.net/artifact/cuneiform>
+    a schema:CreativeWork ;
+    dc:title "لوح مسماري بابلي قديم"@ar ;
+    dc:title "Old Babylonian Cuneiform Tablet"@en ;
+    dc:creator "كاتب بابلي"@ar ;
+    dc:date "العهد البابلي القديم (حوالي 1900-1600 ق.م)" ;
+    schema:material "طين مشوي"@ar ;
+    schema:material "Baked Clay"@en ;
+    ms:transcriptionArabic """لوح يحتوي على كتابات مسمارية توثق معاملات إدارية أو نصوص أدبية من الحضارة البابلية."""@ar ;
+    ms:translationEnglish """Description loaded."""@en ;
+    schema:extent "لوح طيني صغير"@ar .

@@ -1,0 +1,17 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix ms: <http://example.org/manuscript/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://alqami.net/artifact/stela>
+    a schema:CreativeWork ;
+    dc:title "مسلة حمورابي"@ar ;
+    dc:title "Stela of Hammurabi"@en ;
+    dc:creator "الإمبراطورية البابلية"@ar ;
+    dc:date "حوالي 1750 ق.م" ;
+    schema:material "حجر الديوريت الأسود"@ar ;
+    schema:material "Black Diorite"@en ;
+    ms:transcriptionArabic """تحتوي على واحدة من أقدم وأكمل القوانين التشريعية المكتوبة في التاريخ البشري، منقوشة باللغة الأكادية."""@ar ;
+    ms:translationEnglish """Description loaded."""@en ;
+    schema:extent "طول 2.25 متر"@ar .
