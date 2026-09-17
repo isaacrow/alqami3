@@ -10,6 +10,9 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { ManuscriptSimulator } from './simulator.js';
 import { ManuscriptSpeechEngine } from './speech.js';
 import { AllSidesMatcher } from './all-sides-matcher.js';
+import { ClosedSetRecognitionEngine } from './recognition/recognition-engine.js';
+import { TestInspectorHUD } from './admin/test-inspector-hud.js';
+import { ArtifactManagerModal } from './admin/artifact-manager-modal.js';
 
 class AppController {
   constructor() {
@@ -21,6 +24,9 @@ class AppController {
     this.cardManager = null;
     this.graphVisualizer = null;
     this.allSidesMatcher = null;
+    this.closedSetEngine = null;
+    this.testInspectorHUD = null;
+    this.artifactManagerModal = null;
     this.rawInitialTtl = '';
     this.activeHotspot = null;
     this.lastTime = performance.now();
@@ -30,11 +36,16 @@ class AppController {
       arContainer: document.getElementById('ar-container'),
       aiContainer: document.getElementById('ai-container'),
       allsidesContainer: document.getElementById('allsides-container'),
+      closedsetContainer: document.getElementById('closedset-container'),
       simulatorContainer: document.getElementById('simulator-container'),
       btnMode3d: document.getElementById('btn-mode-3d'),
       btnModeScan: document.getElementById('btn-mode-scan'),
       btnModeAi: document.getElementById('btn-mode-ai'),
       btnModeAllSides: document.getElementById('btn-mode-allsides'),
+      btnModeClosedSet: document.getElementById('btn-mode-closedset'),
+      btnAdminManager: document.getElementById('btn-admin-manager'),
+      artifactManagerModal: document.getElementById('artifact-manager-modal'),
+      closedsetHudContainer: document.getElementById('closedset-hud-container'),
       btnModeGenai: document.getElementById('btn-mode-genai'),
       genaiContainer: document.getElementById('genai-container'),
       btnGenaiCapture: document.getElementById('btn-genai-capture'),
@@ -125,16 +136,19 @@ class AppController {
     this.dom.btnMode3d.classList.remove('active');
     if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
     if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.remove('active');
+    if (this.dom.btnModeClosedSet) this.dom.btnModeClosedSet.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
     
     this.dom.modelDock.style.display = 'none';
     if(this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
     if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
     if (this.dom.allsidesContainer) this.dom.allsidesContainer.style.display = 'none';
+    if (this.dom.closedsetContainer) this.dom.closedsetContainer.style.display = 'none';
     this.dom.trackingStatus.style.display = 'flex';
 
     if (this.aiEngine) this.aiEngine.stop();
     if (this.allSidesMatcher) this.allSidesMatcher.stop();
+    if (this.closedSetEngine) this.closedSetEngine.stop();
     this._stopGenAiCamera();
 
     this._setTrackingState(false, 'Scanning for manuscript');
@@ -273,12 +287,14 @@ class AppController {
     this.dom.btnModeScan.classList.remove('active');
     if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
     if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.remove('active');
+    if (this.dom.btnModeClosedSet) this.dom.btnModeClosedSet.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
     
     this.dom.modelDock.style.display = 'block';
     if(this.dom.mainPanel) this.dom.mainPanel.style.display = 'flex';
     if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
     if (this.dom.allsidesContainer) this.dom.allsidesContainer.style.display = 'none';
+    if (this.dom.closedsetContainer) this.dom.closedsetContainer.style.display = 'none';
     this.dom.trackingStatus.style.display = 'none';
     this.dom.scanningHud.style.display = 'none';
 
@@ -290,6 +306,9 @@ class AppController {
     }
     if (this.allSidesMatcher) {
       this.allSidesMatcher.stop();
+    }
+    if (this.closedSetEngine) {
+      this.closedSetEngine.stop();
     }
     this._stopGenAiCamera();
 
@@ -351,12 +370,14 @@ class AppController {
     this.dom.btnModeScan.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
     if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.remove('active');
+    if (this.dom.btnModeClosedSet) this.dom.btnModeClosedSet.classList.remove('active');
     this.dom.btnModeAi.classList.add('active');
 
     this.dom.modelDock.style.display = 'none';
     if(this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
     if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
     if (this.dom.allsidesContainer) this.dom.allsidesContainer.style.display = 'none';
+    if (this.dom.closedsetContainer) this.dom.closedsetContainer.style.display = 'none';
     this.dom.trackingStatus.style.display = 'flex';
     this.dom.scanningHud.style.display = 'none';
 
@@ -364,6 +385,7 @@ class AppController {
 
     if (this.arEngine) this.arEngine.stop();
     if (this.allSidesMatcher) this.allSidesMatcher.stop();
+    if (this.closedSetEngine) this.closedSetEngine.stop();
     this._stopGenAiCamera();
 
     if (!this.aiEngine) {
@@ -428,11 +450,13 @@ class AppController {
     this.dom.btnModeScan.classList.remove('active');
     if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
     if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.remove('active');
+    if (this.dom.btnModeClosedSet) this.dom.btnModeClosedSet.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.add('active');
 
     this.dom.modelDock.style.display = 'none';
     if (this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
     if (this.dom.allsidesContainer) this.dom.allsidesContainer.style.display = 'none';
+    if (this.dom.closedsetContainer) this.dom.closedsetContainer.style.display = 'none';
     this.dom.trackingStatus.style.display = 'flex';
     this.dom.scanningHud.style.display = 'none';
 
@@ -441,6 +465,7 @@ class AppController {
     if (this.arEngine) this.arEngine.stop();
     if (this.aiEngine) this.aiEngine.stop();
     if (this.allSidesMatcher) this.allSidesMatcher.stop();
+    if (this.closedSetEngine) this.closedSetEngine.stop();
 
     if (!this.genaiEngine) {
       this.genaiEngine = new GenAIEngine();
@@ -521,10 +546,12 @@ class AppController {
     this.dom.btnModeScan.classList.remove('active');
     if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
+    if (this.dom.btnModeClosedSet) this.dom.btnModeClosedSet.classList.remove('active');
     if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.add('active');
 
     this.dom.modelDock.style.display = 'none';
     if (this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
+    if (this.dom.closedsetContainer) this.dom.closedsetContainer.style.display = 'none';
     this.dom.trackingStatus.style.display = 'flex';
     this.dom.scanningHud.style.display = 'none';
 
@@ -532,6 +559,7 @@ class AppController {
 
     if (this.arEngine) this.arEngine.stop();
     if (this.aiEngine) this.aiEngine.stop();
+    if (this.closedSetEngine) this.closedSetEngine.stop();
     this._stopGenAiCamera();
 
     if (!this.allSidesMatcher) {
@@ -591,6 +619,101 @@ class AppController {
     } catch (err) {
       console.error('Failed to start AllSidesMatcher:', err);
       this._setTrackingState(false, 'تعذر فتح كاميرا الواقع المعزز');
+    }
+  }
+
+  async _startClosedSetMode() {
+    this.mode = 'closedset';
+    this.dom.simulatorContainer.style.display = 'none';
+    this.dom.arContainer.style.display = 'none';
+    if (this.dom.aiContainer) this.dom.aiContainer.style.display = 'none';
+    if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
+    if (this.dom.allsidesContainer) this.dom.allsidesContainer.style.display = 'none';
+    if (this.dom.closedsetContainer) this.dom.closedsetContainer.style.display = 'block';
+
+    this.dom.btnMode3d.classList.remove('active');
+    this.dom.btnModeScan.classList.remove('active');
+    if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
+    if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
+    if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.remove('active');
+    if (this.dom.btnModeClosedSet) this.dom.btnModeClosedSet.classList.add('active');
+
+    this.dom.modelDock.style.display = 'none';
+    if (this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
+    this.dom.trackingStatus.style.display = 'flex';
+    this.dom.scanningHud.style.display = 'none';
+
+    this._setTrackingState(false, 'التعرف المغلق: جاري فحص البيئة بحثاً عن المقتنيات المسجلة...');
+
+    if (this.arEngine) this.arEngine.stop();
+    if (this.aiEngine) this.aiEngine.stop();
+    if (this.allSidesMatcher) this.allSidesMatcher.stop();
+    this._stopGenAiCamera();
+
+    if (!this.closedSetEngine) {
+      const video = document.getElementById('closedset-video');
+      const canvas = document.getElementById('closedset-canvas');
+      const hudContainer = document.getElementById('closedset-hud-container');
+
+      this.closedSetEngine = new ClosedSetRecognitionEngine(video, canvas);
+      await this.closedSetEngine.init();
+
+      this.testInspectorHUD = new TestInspectorHUD(hudContainer, (newThreshold) => {
+        this.closedSetEngine.setThreshold(newThreshold);
+      });
+
+      this.closedSetEngine.onEvaluation = (report) => {
+        this.testInspectorHUD.update(report);
+      };
+
+      this.lastConfirmedSpeechId = null;
+      this.closedSetEngine.onArtifactConfirmed = async (match) => {
+        console.log('Closed-Set Confirmed Match:', match);
+        this._setTrackingState(true, `✓ تم التعرف: ${match.id} — ${match.title} (${Math.round(match.similarity * 100)}%)`);
+
+        // Load linked BIBFRAME record
+        const baseUrl = import.meta.env.BASE_URL || './';
+        const cacheBust = `?v=${Date.now()}`;
+        const ttlFile = match.artifact.bibframe?.ttlPath || 'model.ttl';
+
+        try {
+          const data = await this.rdfParser.loadFromUrl(`${baseUrl}${ttlFile}${cacheBust}`);
+          this.rawInitialTtl = this.rdfParser.rawTurtle;
+          if (this.dom.ttlEditor) this.dom.ttlEditor.value = this.rawInitialTtl;
+          this._updateUIWithMetadata(data.metadata);
+
+          if (this.graphVisualizer) {
+            this.graphVisualizer.setData(this.rdfParser.getGraphData());
+          }
+
+          if (this.dom.mainPanel) {
+            this.dom.mainPanel.style.display = 'flex';
+            this.dom.mainPanel.classList.remove('hidden');
+          }
+
+          if (this.speech && this.lastConfirmedSpeechId !== match.id) {
+            this.lastConfirmedSpeechId = match.id;
+            this.speech.speak(`تم التعرف على القطعة المسجلة: ${match.title}.`, 'ar');
+          }
+        } catch (err) {
+          console.warn('Error loading BIBFRAME TTL for artifact:', match.id, err);
+        }
+      };
+
+      this.closedSetEngine.onArtifactLost = () => {
+        this._setTrackingState(false, '⚠️ UNKNOWN ARTIFACT — القطعة غير مسجلة في قاعدة المقتنيات');
+        if (this.dom.mainPanel) {
+          this.dom.mainPanel.style.display = 'none';
+        }
+        this.lastConfirmedSpeechId = null;
+      };
+    }
+
+    try {
+      await this.closedSetEngine.start();
+    } catch (err) {
+      console.error('Failed to start ClosedSetRecognitionEngine:', err);
+      this._setTrackingState(false, 'تعذر فتح الكاميرا');
     }
   }
 
@@ -733,6 +856,25 @@ class AppController {
     if (this.dom.btnModeAllSides) {
       this.dom.btnModeAllSides.addEventListener('click', () => {
         if (this.mode !== 'allsides') this._startAllSidesMode();
+      });
+    }
+
+    if (this.dom.btnModeClosedSet) {
+      this.dom.btnModeClosedSet.addEventListener('click', () => {
+        if (this.mode !== 'closedset') this._startClosedSetMode();
+      });
+    }
+
+    if (this.dom.btnAdminManager) {
+      this.dom.btnAdminManager.addEventListener('click', () => {
+        if (!this.artifactManagerModal) {
+          this.artifactManagerModal = new ArtifactManagerModal(this.dom.artifactManagerModal, () => {
+            if (this.closedSetEngine) {
+              this.closedSetEngine.reloadDatabase();
+            }
+          });
+        }
+        this.artifactManagerModal.open();
       });
     }
 
