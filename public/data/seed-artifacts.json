@@ -1,24 +1,24 @@
-[
+﻿[
   {
     "id": "ART-002",
     "identifier": "IPKSN:ART-002",
-    "title": "صندوق تحفة براغ (Prague Wooden Souvenir Box)",
+    "title": "ØµÙ†Ø¯ÙˆÙ‚ ØªØ­ÙØ© Ø¨Ø±Ø§Øº (Prague Wooden Souvenir Box)",
     "type": "artifact",
-    "description": "صندوق تذكاري خشبي من براغ يتميز بنقوش وزخارف جسر تشارلز وكلمة Praha بالخط القوطي، مع تعشيق خشبي يدوي وملصق السعر الأصلي.",
-    "collection": "مقتنيات القمي المعاصرة / Alqami Contemporary Collection",
-    "institution": "مؤسسة القمي للتراث المعرفي",
+    "description": "ØµÙ†Ø¯ÙˆÙ‚ ØªØ°ÙƒØ§Ø±ÙŠ Ø®Ø´Ø¨ÙŠ Ù…Ù† Ø¨Ø±Ø§Øº ÙŠØªÙ…ÙŠØ² Ø¨Ù†Ù‚ÙˆØ´ ÙˆØ²Ø®Ø§Ø±Ù Ø¬Ø³Ø± ØªØ´Ø§Ø±Ù„Ø² ÙˆÙƒÙ„Ù…Ø© Praha Ø¨Ø§Ù„Ø®Ø· Ø§Ù„Ù‚ÙˆØ·ÙŠØŒ Ù…Ø¹ ØªØ¹Ø´ÙŠÙ‚ Ø®Ø´Ø¨ÙŠ ÙŠØ¯ÙˆÙŠ ÙˆÙ…Ù„ØµÙ‚ Ø§Ù„Ø³Ø¹Ø± Ø§Ù„Ø£ØµÙ„ÙŠ.",
+    "collection": "Ù…Ù‚ØªÙ†ÙŠØ§Øª Ø§Ù„Ù‚Ù…ÙŠ Ø§Ù„Ù…Ø¹Ø§ØµØ±Ø© / Alqami Contemporary Collection",
+    "institution": "Ù…Ø¤Ø³Ø³Ø© Ø§Ù„Ù‚Ù…ÙŠ Ù„Ù„ØªØ±Ø§Ø« Ø§Ù„Ù…Ø¹Ø±ÙÙŠ",
     "date": "2024",
     "materials": [
-      "خشب الزان",
-      "ورق ملصق",
-      "حفر ليزر"
+      "Ø®Ø´Ø¨ Ø§Ù„Ø²Ø§Ù†",
+      "ÙˆØ±Ù‚ Ù…Ù„ØµÙ‚",
+      "Ø­ÙØ± Ù„ÙŠØ²Ø±"
     ],
     "dimensions": {
       "width": "8.5 cm",
       "height": "11.2 cm",
       "depth": "5.4 cm"
     },
-    "recognitionThreshold": 0.8,
+    "recognitionThreshold": 0.65,
     "bibframe": {
       "workUri": "http://example.org/work/1789642441889",
       "instanceUri": "http://example.org/instance/1789642441889",
@@ -33,33 +33,33 @@
       {
         "view": "front",
         "file": "praha_front.jpg",
-        "label": "الجهة الأمامية (Praha Facade)"
+        "label": "Ø§Ù„Ø¬Ù‡Ø© Ø§Ù„Ø£Ù…Ø§Ù…ÙŠØ© (Praha Facade)"
       },
       {
         "view": "back",
         "file": "praha_back.jpg",
-        "label": "الجهة الخلفية (Price Sticker)"
+        "label": "Ø§Ù„Ø¬Ù‡Ø© Ø§Ù„Ø®Ù„ÙÙŠØ© (Price Sticker)"
       },
       {
         "view": "left",
         "file": "praha_side1.jpg",
-        "label": "الجانب الأيسر (Vertical Slot)"
+        "label": "Ø§Ù„Ø¬Ø§Ù†Ø¨ Ø§Ù„Ø£ÙŠØ³Ø± (Vertical Slot)"
       },
       {
         "view": "right",
         "file": "praha_side2.jpg",
-        "label": "الجانب الأيمن (Vertical Slot)"
+        "label": "Ø§Ù„Ø¬Ø§Ù†Ø¨ Ø§Ù„Ø£ÙŠÙ…Ù† (Vertical Slot)"
       },
       {
         "view": "top",
         "file": "praha_top.jpg",
-        "label": "الجهة العلوية (Top Opening)"
+        "label": "Ø§Ù„Ø¬Ù‡Ø© Ø§Ù„Ø¹Ù„ÙˆÙŠØ© (Top Opening)"
       }
     ],
     "embeddings": [
       {
         "view": "front",
-        "label": "الجهة الأمامية (Praha Facade)",
+        "label": "Ø§Ù„Ø¬Ù‡Ø© Ø§Ù„Ø£Ù…Ø§Ù…ÙŠØ© (Praha Facade)",
         "imageFile": "praha_front.jpg",
         "vector": [
           0.0329,
@@ -1346,7 +1346,7 @@
       },
       {
         "view": "back",
-        "label": "الجهة الخلفية (Price Sticker)",
+        "label": "Ø§Ù„Ø¬Ù‡Ø© Ø§Ù„Ø®Ù„ÙÙŠØ© (Price Sticker)",
         "imageFile": "praha_back.jpg",
         "vector": [
           0.0108,
@@ -2633,7 +2633,7 @@
       },
       {
         "view": "left",
-        "label": "الجانب الأيسر (Vertical Slot)",
+        "label": "Ø§Ù„Ø¬Ø§Ù†Ø¨ Ø§Ù„Ø£ÙŠØ³Ø± (Vertical Slot)",
         "imageFile": "praha_side1.jpg",
         "vector": [
           0.0018,
@@ -3920,7 +3920,7 @@
       },
       {
         "view": "right",
-        "label": "الجانب الأيمن (Vertical Slot)",
+        "label": "Ø§Ù„Ø¬Ø§Ù†Ø¨ Ø§Ù„Ø£ÙŠÙ…Ù† (Vertical Slot)",
         "imageFile": "praha_side2.jpg",
         "vector": [
           0.0104,
@@ -5207,7 +5207,7 @@
       },
       {
         "view": "top",
-        "label": "الجهة العلوية (Top Opening)",
+        "label": "Ø§Ù„Ø¬Ù‡Ø© Ø§Ù„Ø¹Ù„ÙˆÙŠØ© (Top Opening)",
         "imageFile": "praha_top.jpg",
         "vector": [
           0.0282,
@@ -6497,23 +6497,23 @@
   {
     "id": "ART-001",
     "identifier": "IPKSN:MS-001-QABASAT",
-    "title": "مخطوط القبسات — الميرداماد (Al-Qabasat Manuscript)",
+    "title": "Ù…Ø®Ø·ÙˆØ· Ø§Ù„Ù‚Ø¨Ø³Ø§Øª â€” Ø§Ù„Ù…ÙŠØ±Ø¯Ø§Ù…Ø§Ø¯ (Al-Qabasat Manuscript)",
     "type": "manuscript",
-    "description": "نسخة أصلية مذهبة من كتاب القبسات للفيلسوف المتأله الميرداماد (توفي 1041 هـ)، بخط النستعليق ومجدولة بالذهب الخالص.",
-    "collection": "المخطوطات الفلسفية والكلامية النادرة",
-    "institution": "مكتبة مجلس الشورى : 4662، طهران",
-    "date": "1650 [1061 هـ]",
+    "description": "Ù†Ø³Ø®Ø© Ø£ØµÙ„ÙŠØ© Ù…Ø°Ù‡Ø¨Ø© Ù…Ù† ÙƒØªØ§Ø¨ Ø§Ù„Ù‚Ø¨Ø³Ø§Øª Ù„Ù„ÙÙŠÙ„Ø³ÙˆÙ Ø§Ù„Ù…ØªØ£Ù„Ù‡ Ø§Ù„Ù…ÙŠØ±Ø¯Ø§Ù…Ø§Ø¯ (ØªÙˆÙÙŠ 1041 Ù‡Ù€)ØŒ Ø¨Ø®Ø· Ø§Ù„Ù†Ø³ØªØ¹Ù„ÙŠÙ‚ ÙˆÙ…Ø¬Ø¯ÙˆÙ„Ø© Ø¨Ø§Ù„Ø°Ù‡Ø¨ Ø§Ù„Ø®Ø§Ù„Øµ.",
+    "collection": "Ø§Ù„Ù…Ø®Ø·ÙˆØ·Ø§Øª Ø§Ù„ÙÙ„Ø³ÙÙŠØ© ÙˆØ§Ù„ÙƒÙ„Ø§Ù…ÙŠØ© Ø§Ù„Ù†Ø§Ø¯Ø±Ø©",
+    "institution": "Ù…ÙƒØªØ¨Ø© Ù…Ø¬Ù„Ø³ Ø§Ù„Ø´ÙˆØ±Ù‰ : 4662ØŒ Ø·Ù‡Ø±Ø§Ù†",
+    "date": "1650 [1061 Ù‡Ù€]",
     "materials": [
-      "ورق يدوي",
-      "حبر أسود",
-      "ماء ذهب",
-      "جلد أحمر"
+      "ÙˆØ±Ù‚ ÙŠØ¯ÙˆÙŠ",
+      "Ø­Ø¨Ø± Ø£Ø³ÙˆØ¯",
+      "Ù…Ø§Ø¡ Ø°Ù‡Ø¨",
+      "Ø¬Ù„Ø¯ Ø£Ø­Ù…Ø±"
     ],
     "dimensions": {
-      "extent": "344 ورقة",
+      "extent": "344 ÙˆØ±Ù‚Ø©",
       "linesPerFolio": 18
     },
-    "recognitionThreshold": 0.8,
+    "recognitionThreshold": 0.65,
     "bibframe": {
       "workUri": "http://example.org/work/1789642441889",
       "instanceUri": "http://example.org/instance/1789642441889",
@@ -6528,13 +6528,13 @@
       {
         "view": "front",
         "file": "manuscript.jpg",
-        "label": "اللوحة الاستفتاحية المذهبة"
+        "label": "Ø§Ù„Ù„ÙˆØ­Ø© Ø§Ù„Ø§Ø³ØªÙØªØ§Ø­ÙŠØ© Ø§Ù„Ù…Ø°Ù‡Ø¨Ø©"
       }
     ],
     "embeddings": [
       {
         "view": "front",
-        "label": "اللوحة الاستفتاحية المذهبة",
+        "label": "Ø§Ù„Ù„ÙˆØ­Ø© Ø§Ù„Ø§Ø³ØªÙØªØ§Ø­ÙŠØ© Ø§Ù„Ù…Ø°Ù‡Ø¨Ø©",
         "imageFile": "manuscript.jpg",
         "vector": [
           0.003,
@@ -7824,22 +7824,22 @@
   {
     "id": "ART-003",
     "identifier": "IPKSN:ART-003-ZULFIQAR",
-    "title": "سيف ذو الفقار التاريخي (Zulfiqar Sword Artifact)",
+    "title": "Ø³ÙŠÙ Ø°Ùˆ Ø§Ù„ÙÙ‚Ø§Ø± Ø§Ù„ØªØ§Ø±ÙŠØ®ÙŠ (Zulfiqar Sword Artifact)",
     "type": "weaponry",
-    "description": "تحفة رمزية مجسمة لسيف ذي الفقار بشفرته المزدوجة ونقوشه الكوفية التراثية ومقبضه الفولاذي الدمشقي.",
-    "collection": "متحف الأسلحة والتحف التاريخية الإسلامية",
-    "institution": "متحف القمي الرقمي",
-    "date": "القرن الـ 16 الميلادي",
+    "description": "ØªØ­ÙØ© Ø±Ù…Ø²ÙŠØ© Ù…Ø¬Ø³Ù…Ø© Ù„Ø³ÙŠÙ Ø°ÙŠ Ø§Ù„ÙÙ‚Ø§Ø± Ø¨Ø´ÙØ±ØªÙ‡ Ø§Ù„Ù…Ø²Ø¯ÙˆØ¬Ø© ÙˆÙ†Ù‚ÙˆØ´Ù‡ Ø§Ù„ÙƒÙˆÙÙŠØ© Ø§Ù„ØªØ±Ø§Ø«ÙŠØ© ÙˆÙ…Ù‚Ø¨Ø¶Ù‡ Ø§Ù„ÙÙˆÙ„Ø§Ø°ÙŠ Ø§Ù„Ø¯Ù…Ø´Ù‚ÙŠ.",
+    "collection": "Ù…ØªØ­Ù Ø§Ù„Ø£Ø³Ù„Ø­Ø© ÙˆØ§Ù„ØªØ­Ù Ø§Ù„ØªØ§Ø±ÙŠØ®ÙŠØ© Ø§Ù„Ø¥Ø³Ù„Ø§Ù…ÙŠØ©",
+    "institution": "Ù…ØªØ­Ù Ø§Ù„Ù‚Ù…ÙŠ Ø§Ù„Ø±Ù‚Ù…ÙŠ",
+    "date": "Ø§Ù„Ù‚Ø±Ù† Ø§Ù„Ù€ 16 Ø§Ù„Ù…ÙŠÙ„Ø§Ø¯ÙŠ",
     "materials": [
-      "فولاذ دمشقي",
-      "فضة",
-      "عاج"
+      "ÙÙˆÙ„Ø§Ø° Ø¯Ù…Ø´Ù‚ÙŠ",
+      "ÙØ¶Ø©",
+      "Ø¹Ø§Ø¬"
     ],
     "dimensions": {
       "length": "105 cm",
       "weight": "1.4 kg"
     },
-    "recognitionThreshold": 0.8,
+    "recognitionThreshold": 0.65,
     "bibframe": {
       "ttlPath": "Zulfiqar_Sword.ttl"
     },
@@ -7851,13 +7851,13 @@
       {
         "view": "front",
         "file": "hand.jpg",
-        "label": "شفرة السيف والمقبض"
+        "label": "Ø´ÙØ±Ø© Ø§Ù„Ø³ÙŠÙ ÙˆØ§Ù„Ù…Ù‚Ø¨Ø¶"
       }
     ],
     "embeddings": [
       {
         "view": "front",
-        "label": "شفرة السيف والمقبض",
+        "label": "Ø´ÙØ±Ø© Ø§Ù„Ø³ÙŠÙ ÙˆØ§Ù„Ù…Ù‚Ø¨Ø¶",
         "imageFile": "hand.jpg",
         "vector": [
           0.0014,
@@ -9147,21 +9147,21 @@
   {
     "id": "ART-004",
     "identifier": "IPKSN:ART-004-SAQAKHANE",
-    "title": "طاسة سقاخانة برونزية (Saqakhane Sacred Bowl)",
+    "title": "Ø·Ø§Ø³Ø© Ø³Ù‚Ø§Ø®Ø§Ù†Ø© Ø¨Ø±ÙˆÙ†Ø²ÙŠØ© (Saqakhane Sacred Bowl)",
     "type": "metalwork",
-    "description": "وعاء برونزي تراثي محفور بالأدعية والرموز الروحية التقليدية من العهد الصفوي المتأخر.",
-    "collection": "مجموعة الفنون والتحف المعدنية",
-    "institution": "متحف الفنون التراثية",
-    "date": "القرن الـ 17 الميلادي",
+    "description": "ÙˆØ¹Ø§Ø¡ Ø¨Ø±ÙˆÙ†Ø²ÙŠ ØªØ±Ø§Ø«ÙŠ Ù…Ø­ÙÙˆØ± Ø¨Ø§Ù„Ø£Ø¯Ø¹ÙŠØ© ÙˆØ§Ù„Ø±Ù…ÙˆØ² Ø§Ù„Ø±ÙˆØ­ÙŠØ© Ø§Ù„ØªÙ‚Ù„ÙŠØ¯ÙŠØ© Ù…Ù† Ø§Ù„Ø¹Ù‡Ø¯ Ø§Ù„ØµÙÙˆÙŠ Ø§Ù„Ù…ØªØ£Ø®Ø±.",
+    "collection": "Ù…Ø¬Ù…ÙˆØ¹Ø© Ø§Ù„ÙÙ†ÙˆÙ† ÙˆØ§Ù„ØªØ­Ù Ø§Ù„Ù…Ø¹Ø¯Ù†ÙŠØ©",
+    "institution": "Ù…ØªØ­Ù Ø§Ù„ÙÙ†ÙˆÙ† Ø§Ù„ØªØ±Ø§Ø«ÙŠØ©",
+    "date": "Ø§Ù„Ù‚Ø±Ù† Ø§Ù„Ù€ 17 Ø§Ù„Ù…ÙŠÙ„Ø§Ø¯ÙŠ",
     "materials": [
-      "برونز مصبوب",
-      "نقش بارز"
+      "Ø¨Ø±ÙˆÙ†Ø² Ù…ØµØ¨ÙˆØ¨",
+      "Ù†Ù‚Ø´ Ø¨Ø§Ø±Ø²"
     ],
     "dimensions": {
       "diameter": "18.5 cm",
       "height": "7 cm"
     },
-    "recognitionThreshold": 0.8,
+    "recognitionThreshold": 0.65,
     "bibframe": {
       "ttlPath": "saqakhane_bowl.ttl"
     },
@@ -9173,13 +9173,13 @@
       {
         "view": "angle",
         "file": "alqami_artifact.jpg",
-        "label": "الجسم الخارجي والنقوش"
+        "label": "Ø§Ù„Ø¬Ø³Ù… Ø§Ù„Ø®Ø§Ø±Ø¬ÙŠ ÙˆØ§Ù„Ù†Ù‚ÙˆØ´"
       }
     ],
     "embeddings": [
       {
         "view": "angle",
-        "label": "الجسم الخارجي والنقوش",
+        "label": "Ø§Ù„Ø¬Ø³Ù… Ø§Ù„Ø®Ø§Ø±Ø¬ÙŠ ÙˆØ§Ù„Ù†Ù‚ÙˆØ´",
         "imageFile": "alqami_artifact.jpg",
         "vector": [
           0,
@@ -10469,22 +10469,22 @@
   {
     "id": "ART-005",
     "identifier": "IPKSN:MS-005-KUFIC",
-    "title": "رق مصحف كوفي أثري (Early Kufic Quran Folio)",
+    "title": "Ø±Ù‚ Ù…ØµØ­Ù ÙƒÙˆÙÙŠ Ø£Ø«Ø±ÙŠ (Early Kufic Quran Folio)",
     "type": "manuscript",
-    "description": "ورقة رق أثرية مكتوبة بالخط الكوفي الحجازي المبكر مع علامات التنقيط والتشكيل الحمراء والذهبية.",
-    "collection": "مجموعة المصاحف الشريفة المبكرة",
-    "institution": "المكتبة الوطنية للتراث",
-    "date": "القرن الـ 8 الميلادي [القرن 2 هـ]",
+    "description": "ÙˆØ±Ù‚Ø© Ø±Ù‚ Ø£Ø«Ø±ÙŠØ© Ù…ÙƒØªÙˆØ¨Ø© Ø¨Ø§Ù„Ø®Ø· Ø§Ù„ÙƒÙˆÙÙŠ Ø§Ù„Ø­Ø¬Ø§Ø²ÙŠ Ø§Ù„Ù…Ø¨ÙƒØ± Ù…Ø¹ Ø¹Ù„Ø§Ù…Ø§Øª Ø§Ù„ØªÙ†Ù‚ÙŠØ· ÙˆØ§Ù„ØªØ´ÙƒÙŠÙ„ Ø§Ù„Ø­Ù…Ø±Ø§Ø¡ ÙˆØ§Ù„Ø°Ù‡Ø¨ÙŠØ©.",
+    "collection": "Ù…Ø¬Ù…ÙˆØ¹Ø© Ø§Ù„Ù…ØµØ§Ø­Ù Ø§Ù„Ø´Ø±ÙŠÙØ© Ø§Ù„Ù…Ø¨ÙƒØ±Ø©",
+    "institution": "Ø§Ù„Ù…ÙƒØªØ¨Ø© Ø§Ù„ÙˆØ·Ù†ÙŠØ© Ù„Ù„ØªØ±Ø§Ø«",
+    "date": "Ø§Ù„Ù‚Ø±Ù† Ø§Ù„Ù€ 8 Ø§Ù„Ù…ÙŠÙ„Ø§Ø¯ÙŠ [Ø§Ù„Ù‚Ø±Ù† 2 Ù‡Ù€]",
     "materials": [
-      "رق غزال",
-      "حبر كربوني",
-      "صبغ أحمر طبيعي"
+      "Ø±Ù‚ ØºØ²Ø§Ù„",
+      "Ø­Ø¨Ø± ÙƒØ±Ø¨ÙˆÙ†ÙŠ",
+      "ØµØ¨Øº Ø£Ø­Ù…Ø± Ø·Ø¨ÙŠØ¹ÙŠ"
     ],
     "dimensions": {
-      "extent": "رق مفرد",
+      "extent": "Ø±Ù‚ Ù…ÙØ±Ø¯",
       "dimensions": "24 x 32 cm"
     },
-    "recognitionThreshold": 0.8,
+    "recognitionThreshold": 0.65,
     "bibframe": {
       "ttlPath": "kufic.ttl"
     },
@@ -10496,13 +10496,13 @@
       {
         "view": "front",
         "file": "kufic.jpg",
-        "label": "صفحة الرق الكوفي"
+        "label": "ØµÙØ­Ø© Ø§Ù„Ø±Ù‚ Ø§Ù„ÙƒÙˆÙÙŠ"
       }
     ],
     "embeddings": [
       {
         "view": "front",
-        "label": "صفحة الرق الكوفي",
+        "label": "ØµÙØ­Ø© Ø§Ù„Ø±Ù‚ Ø§Ù„ÙƒÙˆÙÙŠ",
         "imageFile": "kufic.jpg",
         "vector": [
           0.0165,

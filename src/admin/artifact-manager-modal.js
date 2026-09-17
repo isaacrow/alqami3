@@ -103,7 +103,7 @@ export class ArtifactManagerModal {
         date: new Date().getFullYear().toString(),
         materials: [],
         dimensions: {},
-        recognitionThreshold: 0.80,
+        recognitionThreshold: 0.65,
         images: [],
         embeddings: []
       }, true);
@@ -223,7 +223,7 @@ export class ArtifactManagerModal {
             </div>
             <div class="form-group">
               <label>عتبة القبول للتعرف (0.50 - 0.98):</label>
-              <input type="number" id="form-art-threshold" step="0.01" min="0.50" max="0.98" value="${this.editingArtifact.recognitionThreshold || 0.80}" />
+              <input type="number" id="form-art-threshold" step="0.01" min="0.50" max="0.98" value="${this.editingArtifact.recognitionThreshold || 0.65}" />
             </div>
           </div>
 

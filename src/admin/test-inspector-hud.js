@@ -36,11 +36,11 @@ export class TestInspectorHUD {
           <div class="inspector-score-section">
             <div class="score-labels">
               <span>نسبة المطابقة: <strong id="inspector-score-val">0.0%</strong></span>
-              <span>الحد الأدنى: <strong id="inspector-threshold-val">80%</strong></span>
+              <span>الحد الأدنى: <strong id="inspector-threshold-val">65%</strong></span>
             </div>
             <div class="meter-bar-track">
               <div id="inspector-score-bar" class="meter-bar-fill" style="width: 0%;"></div>
-              <div id="inspector-threshold-line" class="meter-threshold-marker" style="left: 80%;"></div>
+              <div id="inspector-threshold-line" class="meter-threshold-marker" style="left: 65%;"></div>
             </div>
           </div>
 
@@ -48,9 +48,9 @@ export class TestInspectorHUD {
           <div class="threshold-slider-group">
             <div class="slider-label-row">
               <label for="threshold-slider">تعديل عتبة القبول (Threshold):</label>
-              <span id="threshold-slider-label">0.80</span>
+              <span id="threshold-slider-label">0.65</span>
             </div>
-            <input type="range" id="threshold-slider" min="0.50" max="0.98" step="0.01" value="0.80" class="styled-slider" />
+            <input type="range" id="threshold-slider" min="0.50" max="0.98" step="0.01" value="0.65" class="styled-slider" />
           </div>
 
           <!-- Candidate Rankings -->

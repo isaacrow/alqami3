@@ -19,7 +19,7 @@ export class ClosedSetRecognitionEngine {
     });
 
     this.artifacts = [];
-    this.globalThreshold = 0.80; // Configurable (0.00 - 1.00)
+    this.globalThreshold = 0.65; // Configurable (0.00 - 1.00)
     this.isRunning = false;
     this.animFrameId = null;
     this.isProcessingFrame = false;
