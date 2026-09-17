@@ -119,23 +119,29 @@ export class RDFManuscriptParser {
     const titleAr = titles.find(t => t.language === 'ar')?.value || '';
     const titleFa = titles.find(t => t.language === 'fa')?.value || '';
 
-    const authorUri = this._getFirstValue(mainSubject, this.prefixes.dc + 'creator');
+    const authorUriOrLiteral = this._getFirstValue(mainSubject, this.prefixes.dc + 'creator');
     let authorName = 'Ibn Sīnā (Avicenna / ابن سینا)';
     let authorJob = 'Polymath & Philosopher';
     let authorBio = '';
 
-    if (authorUri) {
-      const authorQuads = this.store.getQuads(N3.DataFactory.namedNode(authorUri), null, null, null);
-      for (const q of authorQuads) {
-        if (q.predicate.value === this.prefixes.rdfs + 'label' || q.predicate.value === this.prefixes.schema + 'name') {
-          authorName = q.object.value;
+    if (authorUriOrLiteral) {
+      if (authorUriOrLiteral.startsWith('http')) {
+        const authorQuads = this.store.getQuads(N3.DataFactory.namedNode(authorUriOrLiteral), null, null, null);
+        for (const q of authorQuads) {
+          if (q.predicate.value === this.prefixes.rdfs + 'label' || q.predicate.value === this.prefixes.schema + 'name') {
+            authorName = q.object.value;
+          }
+          if (q.predicate.value === this.prefixes.schema + 'jobTitle') {
+            authorJob = q.object.value;
+          }
+          if (q.predicate.value === this.prefixes.schema + 'description') {
+            authorBio = q.object.value;
+          }
         }
-        if (q.predicate.value === this.prefixes.schema + 'jobTitle') {
-          authorJob = q.object.value;
-        }
-        if (q.predicate.value === this.prefixes.schema + 'description') {
-          authorBio = q.object.value;
-        }
+      } else {
+        // It's a literal!
+        authorName = authorUriOrLiteral;
+        authorJob = '';
       }
     }
 
@@ -148,13 +154,13 @@ export class RDFManuscriptParser {
       authorJob,
       authorBio,
       date: this._getFirstValue(mainSubject, this.prefixes.dc + 'date', '16th-17th Century CE'),
-      contributor: this._getFirstValue(mainSubject, this.prefixes.dc + 'contributor', 'Master Calligrapher & Royal Illuminator'),
+      contributor: this._getFirstValue(mainSubject, this.prefixes.dc + 'contributor', ''),
       format: this._getFirstValue(mainSubject, this.prefixes.dc + 'format', 'Illuminated Codex'),
-      identifier: this._getFirstValue(mainSubject, this.prefixes.dc + 'identifier', 'MS-1302-MAJLIS'),
-      publisher: this._getFirstValue(mainSubject, this.prefixes.dc + 'publisher', 'Parliament Library of Iran'),
+      identifier: this._getFirstValue(mainSubject, this.prefixes.dc + 'identifier', ''),
+      publisher: this._getFirstValue(mainSubject, this.prefixes.schema + 'publisher', 'Parliament Library of Iran'),
       material: this._getFirstValue(mainSubject, this.prefixes.schema + 'material', 'Handmade rag paper, shell gold, lapis lazuli, iron gall ink'),
-      dimensions: this._getFirstValue(mainSubject, this.prefixes.ms + 'dimensions', '26.5 cm x 17.2 cm'),
-      folioLayout: this._getFirstValue(mainSubject, this.prefixes.ms + 'folioLayout', 'Framed single-column with diagonal margins'),
+      dimensions: this._getFirstValue(mainSubject, this.prefixes.schema + 'extent', '26.5 cm x 17.2 cm'),
+      folioLayout: this._getFirstValue(mainSubject, this.prefixes.ms + 'folioLayout', ''),
       transcriptionArabic: this._getFirstValue(mainSubject, this.prefixes.ms + 'transcriptionArabic', ''),
       translationEnglish: this._getFirstValue(mainSubject, this.prefixes.ms + 'translationEnglish', '')
     };

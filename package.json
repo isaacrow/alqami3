@@ -12,6 +12,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "@napi-rs/canvas": "^1.0.9",
+    "@tensorflow-models/coco-ssd": "^2.2.3",
+    "@tensorflow/tfjs": "^4.22.0",
+    "marked": "^18.0.13",
     "mind-ar": "^1.2.5",
     "n3": "^2.2.5",
     "three": "^0.150.0"

@@ -157,46 +157,46 @@ export class ARCardManager {
 
     ctx.clearRect(0, 0, w, h);
 
-    // Apple VisionOS Frosted White Glass Card
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+    // Vision Pro Dark Glass Card
+    ctx.fillStyle = 'rgba(40, 40, 40, 0.8)'; // Dark translucent
     this._roundRect(ctx, 16, 16, w - 32, h - 32, 28);
     ctx.fill();
 
     // Subtle border
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+    ctx.strokeStyle = 'rgba(201, 201, 201, 0.6)';
     ctx.lineWidth = 2;
     ctx.stroke();
 
     // Top Header Badge
-    ctx.fillStyle = 'rgba(0, 113, 227, 0.08)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
     this._roundRect(ctx, 42, 38, 200, 36, 18);
     ctx.fill();
 
     ctx.font = '600 13px -apple-system, BlinkMacSystemFont, sans-serif';
-    ctx.fillStyle = '#0071e3';
+    ctx.fillStyle = '#ffffff';
     ctx.fillText('ALQAMI INTELLIGENCE', 58, 61);
 
     // Identifier Badge
     ctx.font = '500 13px monospace';
-    ctx.fillStyle = '#86868b';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.6)';
     ctx.textAlign = 'right';
     ctx.fillText(meta?.identifier || 'MS-SHIFA-1302', w - 45, 61);
     ctx.textAlign = 'left';
 
     // Title (English)
     ctx.font = '600 28px -apple-system, BlinkMacSystemFont, sans-serif';
-    ctx.fillStyle = '#1d1d1f';
+    ctx.fillStyle = '#ffffff';
     ctx.fillText(meta?.title || 'Kitab al-Shifa: Logic and Metaphysics', 45, 118);
 
     // Arabic Subtitle
     if (meta?.titleArabic) {
       ctx.font = '24px "Amiri", "Traditional Arabic", serif';
-      ctx.fillStyle = '#6e6e73';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
       ctx.fillText(meta.titleArabic, 45, 158);
     }
 
     // Thin Hairline Divider
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.06)';
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.15)';
     ctx.lineWidth = 1;
     ctx.beginPath();
     ctx.moveTo(45, 180);
@@ -206,11 +206,11 @@ export class ARCardManager {
     // Properties Grid
     const drawProp = (label, val, x, y) => {
       ctx.font = '600 11px -apple-system, BlinkMacSystemFont, sans-serif';
-      ctx.fillStyle = '#86868b';
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
       ctx.fillText(label.toUpperCase(), x, y);
 
       ctx.font = '500 17px -apple-system, BlinkMacSystemFont, sans-serif';
-      ctx.fillStyle = '#1d1d1f';
+      ctx.fillStyle = '#ffffff';
       const truncated = val && val.length > 34 ? val.slice(0, 32) + '…' : (val || '—');
       ctx.fillText(truncated, x, y + 22);
     };
@@ -225,20 +225,20 @@ export class ARCardManager {
     drawProp('Dimensions', meta?.dimensions || '26.5 x 17.2 cm', 520, 362);
 
     // Bottom Quote / Transcription Box
-    ctx.fillStyle = 'rgba(0, 0, 0, 0.03)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
     this._roundRect(ctx, 45, 420, w - 90, 155, 16);
     ctx.fill();
 
     ctx.font = '600 11px monospace';
-    ctx.fillStyle = '#86868b';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
     ctx.fillText('ONTOLOGY TRANSCRIPTION (dc:description)', 65, 448);
 
     ctx.font = '16px "Amiri", "Traditional Arabic", serif';
-    ctx.fillStyle = '#1d1d1f';
+    ctx.fillStyle = '#ffffff';
     ctx.fillText('« بسم الله الرحمن الرحيم - الحمد لله الواحد الأحد الصمد المصور... »', 65, 484);
 
     ctx.font = '14px -apple-system, BlinkMacSystemFont, sans-serif';
-    ctx.fillStyle = '#6e6e73';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.7)';
     ctx.fillText('"In the Name of God... origination (ibda) and cosmic formation (takwin)..."', 65, 516);
 
     // Tracking Status Footer
@@ -321,26 +321,26 @@ export class ARCardManager {
       pinMesh.name = 'pinMesh';
       group.add(pinMesh);
 
-      // 4. Clean White Billboard Label
+      // 4. Clean White Billboard Label -> Dark Glass Billboard
       const labelCanvas = document.createElement('canvas');
       labelCanvas.width = 360;
       labelCanvas.height = 84;
       const lCtx = labelCanvas.getContext('2d');
-      lCtx.fillStyle = 'rgba(255, 255, 255, 0.95)';
+      lCtx.fillStyle = 'rgba(40, 40, 40, 0.8)';
       this._roundRect(lCtx, 4, 4, 352, 76, 18);
       lCtx.fill();
-      lCtx.strokeStyle = 'rgba(0, 0, 0, 0.08)';
+      lCtx.strokeStyle = 'rgba(201, 201, 201, 0.6)';
       lCtx.lineWidth = 2;
       lCtx.stroke();
 
       lCtx.font = '600 20px -apple-system, BlinkMacSystemFont, sans-serif';
-      lCtx.fillStyle = '#1d1d1f';
+      lCtx.fillStyle = '#ffffff';
       lCtx.textAlign = 'center';
       const truncatedLabel = hs.label.length > 22 ? hs.label.slice(0, 20) + '…' : hs.label;
       lCtx.fillText(truncatedLabel, 180, 38);
 
       lCtx.font = '500 14px -apple-system, BlinkMacSystemFont, sans-serif';
-      lCtx.fillStyle = '#86868b';
+      lCtx.fillStyle = 'rgba(255, 255, 255, 0.7)';
       lCtx.fillText(hs.folio || 'Region', 180, 62);
 
       const labelTex = new THREE.CanvasTexture(labelCanvas);

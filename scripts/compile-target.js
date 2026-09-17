@@ -39,7 +39,11 @@ class NodeCompiler extends CompilerBase {
 }
 
 async function compileManuscript() {
-  const inputImagePath = path.resolve(__dirname, '../manuscript.jpg');
+  const img1Path = path.resolve(__dirname, '../public/manuscript.jpg');
+  const img2Path = path.resolve(__dirname, '../public/quran.jpg');
+  const img3Path = path.resolve(__dirname, '../public/kufic.jpg');
+  const img4Path = path.resolve(__dirname, '../public/hand.jpg');
+  const img5Path = path.resolve(__dirname, '../public/alqami_artifact.jpg');
   const outputDir = path.resolve(__dirname, '../public/targets');
   const outputPath = path.join(outputDir, 'manuscript.mind');
 
@@ -47,14 +51,21 @@ async function compileManuscript() {
     fs.mkdirSync(outputDir, { recursive: true });
   }
 
-  console.log(`Loading image from ${inputImagePath}...`);
-  const image = await loadImage(inputImagePath);
-  console.log(`Image loaded: ${image.width}x${image.height} px`);
+  console.log(`Loading image 1...`);
+  const image1 = await loadImage(img1Path);
+  console.log(`Loading image 2...`);
+  const image2 = await loadImage(img2Path);
+  console.log(`Loading image 3...`);
+  const image3 = await loadImage(img3Path);
+  console.log(`Loading image 4...`);
+  const image4 = await loadImage(img4Path);
+  console.log(`Loading image 5...`);
+  const image5 = await loadImage(img5Path);
 
   const compiler = new NodeCompiler();
-  console.log('Compiling target image into .mind format (this extracts multiscale feature points)...');
+  console.log('Compiling target images into .mind format...');
 
-  await compiler.compileImageTargets([image], (progress) => {
+  await compiler.compileImageTargets([image1, image2, image3, image4, image5], (progress) => {
     process.stdout.write(`\rProgress: ${progress.toFixed(1)}%`);
   });
 

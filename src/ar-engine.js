@@ -52,24 +52,42 @@ export class AREngine {
       pointLight.position.set(0, 1, 1);
       scene.add(pointLight);
 
-      // Add target anchor (Target index 0 = manuscript)
-      this.anchor = this.mindarThree.addAnchor(0);
+      this.anchors = [];
+      this.activeTargetIndex = -1;
+      // Support multiple targets (we compiled exactly 5 targets: 0, 1, 2, 3, 4)
+      for (let i = 0; i < 5; i++) {
+        try {
+          const anchor = this.mindarThree.addAnchor(i);
+          this.anchors.push(anchor);
+          
+          anchor.onTargetFound = () => {
+            this.activeTargetIndex = i;
+            if (this.onTargetFound) this.onTargetFound(i);
+          };
+          
+          anchor.onTargetLost = () => {
+            if (this.activeTargetIndex === i) {
+              this.activeTargetIndex = -1;
+              if (this.onTargetLost) this.onTargetLost(i);
+            }
+          };
+        } catch (e) {
+          // Ignore if .mind file has fewer targets
+          console.log(`Target ${i} not in mind file`);
+        }
+      }
 
-      this.anchor.onTargetFound = () => {
-        this.isTargetFound = true;
-        if (this.onTargetFound) this.onTargetFound();
-      };
-
-      this.anchor.onTargetLost = () => {
-        this.isTargetFound = false;
-        if (this.onTargetLost) this.onTargetLost();
-      };
+      this.renderer = renderer;
+      this.scene = scene;
+      this.camera = camera;
+      this.anchorGroup = this.anchors[0] ? this.anchors[0].group : null; // fallback for card manager to attach to primary
 
       return {
         renderer,
         scene,
         camera,
-        anchorGroup: this.anchor.group
+        anchorGroup: this.anchorGroup,
+        anchors: this.anchors
       };
     } catch (err) {
       console.error('AREngine init error:', err);

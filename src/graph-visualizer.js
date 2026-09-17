@@ -17,10 +17,12 @@ export class RDFGraphVisualizer {
   }
 
   setData(graphData) {
-    this.width = this.canvas.clientWidth || 500;
-    this.height = this.canvas.clientHeight || 400;
+    const parent = this.canvas.parentElement;
+    this.width = parent ? parent.clientWidth : (this.canvas.clientWidth || 500);
+    this.height = parent ? parent.clientHeight : (this.canvas.clientHeight || 250);
     this.canvas.width = this.width * window.devicePixelRatio;
     this.canvas.height = this.height * window.devicePixelRatio;
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
     const totalNodes = graphData.nodes.length;
@@ -261,11 +263,24 @@ export class RDFGraphVisualizer {
   }
 
   resize() {
-    this.width = this.canvas.clientWidth || 500;
-    this.height = this.canvas.clientHeight || 400;
+    const parent = this.canvas.parentElement;
+    if (!parent) return;
+    this.width = parent.clientWidth || 500;
+    this.height = parent.clientHeight || 300; // Give it a fixed minimum if needed
     this.canvas.width = this.width * window.devicePixelRatio;
     this.canvas.height = this.height * window.devicePixelRatio;
+    
+    // Reset transform before scaling
+    this.ctx.setTransform(1, 0, 0, 1, 0, 0);
     this.ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+    
+    // Nudge nodes towards new center
+    const centerX = this.width / 2;
+    const centerY = this.height / 2;
+    for (const node of this.nodes) {
+      node.x = node.x * 0.5 + centerX * 0.5;
+      node.y = node.y * 0.5 + centerY * 0.5;
+    }
   }
 
   destroy() {

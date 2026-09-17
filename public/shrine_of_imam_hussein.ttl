@@ -1,0 +1,17 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix schema: <http://schema.org/> .
+@prefix ms: <http://example.org/manuscript/> .
+
+<https://alqami.net/museum/shrine_hussein>
+    a schema:Manuscript ;
+    dc:title "مرقد الإمام الحسين (عليه السلام)"@ar ;
+    dc:title "Shrine of Imam Hussein (AS)"@en ;
+    dc:creator "عمارة إسلامية"@ar ;
+    dc:creator "Islamic Architecture"@en ;
+    dc:date "متعدد الحقب التاريخية" ;
+    schema:material "ذهب، فضة، طابوق قاشاني مزجج، مرمر"@ar ;
+    schema:material "Gold, Silver, Glazed Qashani Tiles, Marble"@en ;
+    schema:extent "نموذج ثلاثي الأبعاد للمرقد الشريف" ;
+    schema:publisher "العتبة الحسينية المقدسة"@ar ;
+    ms:transcriptionArabic """نموذج ثلاثي الأبعاد يجسد العمارة الإسلامية الخالصة لمرقد الإمام الحسين (عليه السلام) في كربلاء المقدسة، مبرزاً القبة الذهبية والمآذن الشامخة والزخارف الكربلائية."""@ar ;
+    ms:translationEnglish """A 3D model representing the pure Islamic architecture of the Shrine of Imam Hussein (AS) in Holy Karbala, highlighting the golden dome, towering minarets, and Karbalaei ornaments."""@en .

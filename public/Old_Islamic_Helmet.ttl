@@ -1,0 +1,17 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix ms: <http://example.org/manuscript/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+
+<https://alqami.net/artifact/helmet>
+    a schema:CreativeWork ;
+    dc:title "خوذة إسلامية قديمة"@ar ;
+    dc:title "Old Islamic Helmet"@en ;
+    dc:creator "صانع دروع غير معروف"@ar ;
+    dc:date "القرون الوسطى الإسلامية" ;
+    schema:material "حديد مطروق، برونز، نقوش ذهبية أو فضية"@ar ;
+    schema:material "Forged Iron, Bronze, Gold/Silver inlay"@en ;
+    ms:transcriptionArabic """خوذة قتالية إسلامية تاريخية (خُوذة) مصممة لحماية الرأس. تتميز بنقوش وزخارف هندسية تعكس براعة صناعة الدروع في العصر الإسلامي القديم."""@ar ;
+    ms:translationEnglish """Description loaded."""@en ;
+    schema:extent "حجم قياسي للرأس"@ar .
