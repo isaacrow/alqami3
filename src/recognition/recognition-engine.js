@@ -156,6 +156,9 @@ export class ClosedSetRecognitionEngine {
     // 3. Strict Closed-Set Threshold Gate
     const targetThreshold = bestCandidate?.artifact?.recognitionThreshold ?? this.globalThreshold;
     const passesThreshold = (bestCandidate && topScore >= targetThreshold);
+    if (bestCandidate) {
+      bestCandidate.roi = roi;
+    }
 
     // 4. Temporal Filter
     const filterInput = passesThreshold ? bestCandidate : null;
@@ -171,6 +174,7 @@ export class ClosedSetRecognitionEngine {
       bestCandidate: bestCandidate,
       topScore: Math.round(topScore * 1000) / 10,
       threshold: Math.round(targetThreshold * 1000) / 10,
+      roi: roi,
       candidates: evalResult.candidates.map(c => ({
         id: c.id,
         title: c.title,
