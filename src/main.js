@@ -9,6 +9,7 @@ import { RDFGraphVisualizer } from './graph-visualizer.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import { ManuscriptSimulator } from './simulator.js';
 import { ManuscriptSpeechEngine } from './speech.js';
+import { AllSidesMatcher } from './all-sides-matcher.js';
 
 class AppController {
   constructor() {
@@ -19,6 +20,7 @@ class AppController {
     this.simulator = null;
     this.cardManager = null;
     this.graphVisualizer = null;
+    this.allSidesMatcher = null;
     this.rawInitialTtl = '';
     this.activeHotspot = null;
     this.lastTime = performance.now();
@@ -27,10 +29,12 @@ class AppController {
     this.dom = {
       arContainer: document.getElementById('ar-container'),
       aiContainer: document.getElementById('ai-container'),
+      allsidesContainer: document.getElementById('allsides-container'),
       simulatorContainer: document.getElementById('simulator-container'),
       btnMode3d: document.getElementById('btn-mode-3d'),
       btnModeScan: document.getElementById('btn-mode-scan'),
       btnModeAi: document.getElementById('btn-mode-ai'),
+      btnModeAllSides: document.getElementById('btn-mode-allsides'),
       btnModeGenai: document.getElementById('btn-mode-genai'),
       genaiContainer: document.getElementById('genai-container'),
       btnGenaiCapture: document.getElementById('btn-genai-capture'),
@@ -120,14 +124,17 @@ class AppController {
     this.dom.btnModeScan.classList.add('active');
     this.dom.btnMode3d.classList.remove('active');
     if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
+    if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
     
     this.dom.modelDock.style.display = 'none';
     if(this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
     if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
+    if (this.dom.allsidesContainer) this.dom.allsidesContainer.style.display = 'none';
     this.dom.trackingStatus.style.display = 'flex';
 
     if (this.aiEngine) this.aiEngine.stop();
+    if (this.allSidesMatcher) this.allSidesMatcher.stop();
     this._stopGenAiCamera();
 
     this._setTrackingState(false, 'Scanning for manuscript');
@@ -265,11 +272,13 @@ class AppController {
     this.dom.btnMode3d.classList.add('active');
     this.dom.btnModeScan.classList.remove('active');
     if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
+    if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
     
     this.dom.modelDock.style.display = 'block';
     if(this.dom.mainPanel) this.dom.mainPanel.style.display = 'flex';
     if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
+    if (this.dom.allsidesContainer) this.dom.allsidesContainer.style.display = 'none';
     this.dom.trackingStatus.style.display = 'none';
     this.dom.scanningHud.style.display = 'none';
 
@@ -278,6 +287,9 @@ class AppController {
     }
     if (this.aiEngine) {
       this.aiEngine.stop();
+    }
+    if (this.allSidesMatcher) {
+      this.allSidesMatcher.stop();
     }
     this._stopGenAiCamera();
 
@@ -338,17 +350,20 @@ class AppController {
     this.dom.btnMode3d.classList.remove('active');
     this.dom.btnModeScan.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
+    if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.remove('active');
     this.dom.btnModeAi.classList.add('active');
 
     this.dom.modelDock.style.display = 'none';
     if(this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
     if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
+    if (this.dom.allsidesContainer) this.dom.allsidesContainer.style.display = 'none';
     this.dom.trackingStatus.style.display = 'flex';
     this.dom.scanningHud.style.display = 'none';
 
     this._setTrackingState(false, 'Initializing AI Vision...');
 
     if (this.arEngine) this.arEngine.stop();
+    if (this.allSidesMatcher) this.allSidesMatcher.stop();
     this._stopGenAiCamera();
 
     if (!this.aiEngine) {
@@ -412,10 +427,12 @@ class AppController {
     this.dom.btnMode3d.classList.remove('active');
     this.dom.btnModeScan.classList.remove('active');
     if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
+    if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.add('active');
 
     this.dom.modelDock.style.display = 'none';
     if (this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
+    if (this.dom.allsidesContainer) this.dom.allsidesContainer.style.display = 'none';
     this.dom.trackingStatus.style.display = 'flex';
     this.dom.scanningHud.style.display = 'none';
 
@@ -423,6 +440,7 @@ class AppController {
 
     if (this.arEngine) this.arEngine.stop();
     if (this.aiEngine) this.aiEngine.stop();
+    if (this.allSidesMatcher) this.allSidesMatcher.stop();
 
     if (!this.genaiEngine) {
       this.genaiEngine = new GenAIEngine();
@@ -488,6 +506,85 @@ class AppController {
     if (video && video.srcObject) {
       video.srcObject.getTracks().forEach(track => track.stop());
       video.srcObject = null;
+    }
+  }
+
+  async _startAllSidesMode() {
+    this.mode = 'allsides';
+    this.dom.simulatorContainer.style.display = 'none';
+    this.dom.arContainer.style.display = 'none';
+    if (this.dom.aiContainer) this.dom.aiContainer.style.display = 'none';
+    if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
+    if (this.dom.allsidesContainer) this.dom.allsidesContainer.style.display = 'block';
+
+    this.dom.btnMode3d.classList.remove('active');
+    this.dom.btnModeScan.classList.remove('active');
+    if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
+    if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
+    if (this.dom.btnModeAllSides) this.dom.btnModeAllSides.classList.add('active');
+
+    this.dom.modelDock.style.display = 'none';
+    if (this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
+    this.dom.trackingStatus.style.display = 'flex';
+    this.dom.scanningHud.style.display = 'none';
+
+    this._setTrackingState(false, 'وجه الكاميرا نحو صندوق التحفة من أي جهة...');
+
+    if (this.arEngine) this.arEngine.stop();
+    if (this.aiEngine) this.aiEngine.stop();
+    this._stopGenAiCamera();
+
+    if (!this.allSidesMatcher) {
+      const video = document.getElementById('allsides-video');
+      const canvas = document.getElementById('allsides-canvas');
+      const hud = document.getElementById('allsides-hud');
+      this.allSidesMatcher = new AllSidesMatcher(video, canvas, hud);
+      await this.allSidesMatcher.init();
+
+      this.allSidesMatcher.onMatch = async (matchData) => {
+        console.log('All-Sides Matcher Detected:', matchData);
+
+        // Highlight matching side pill
+        const pills = document.querySelectorAll('.side-pill');
+        pills.forEach(p => p.classList.remove('active'));
+        const activePill = document.getElementById(`pill-${matchData.side.id}`);
+        if (activePill) activePill.classList.add('active');
+
+        this._setTrackingState(true, `القبسات (Al-Qabasat) — تم التحقق: ${matchData.side.nameAr} (${matchData.confidence}%)`);
+
+        // Load Al-Qabasat RDF metadata
+        const baseUrl = import.meta.env.BASE_URL || './';
+        const cacheBust = `?v=${Date.now()}`;
+        try {
+          const data = await this.rdfParser.loadFromUrl(`${baseUrl}alqabasat.ttl${cacheBust}`);
+          this.rawInitialTtl = this.rdfParser.rawTurtle;
+          if (this.dom.ttlEditor) this.dom.ttlEditor.value = this.rawInitialTtl;
+          this._updateUIWithMetadata(data.metadata);
+
+          if (this.graphVisualizer) {
+            this.graphVisualizer.setData(this.rdfParser.getGraphData());
+          }
+
+          if (this.dom.mainPanel) {
+            this.dom.mainPanel.style.display = 'flex';
+            this.dom.mainPanel.classList.remove('hidden');
+          }
+
+          // Audio Guide Voice feedback
+          if (this.speech) {
+            this.speech.speak(`تم التعرف على مخطوط القبسات للميرداماد من ${matchData.side.nameAr}. الدقة ${matchData.confidence} بالمائة.`, 'ar');
+          }
+        } catch (err) {
+          console.error('Error loading Alqabasat metadata:', err);
+        }
+      };
+    }
+
+    try {
+      await this.allSidesMatcher.start();
+    } catch (err) {
+      console.error('Failed to start AllSidesMatcher:', err);
+      this._setTrackingState(false, 'تعذر فتح الكاميرا');
     }
   }
 
@@ -616,6 +713,12 @@ class AppController {
     if (this.dom.btnModeAi) {
       this.dom.btnModeAi.addEventListener('click', () => {
         if (this.mode !== 'ai') this._startAiMode();
+      });
+    }
+
+    if (this.dom.btnModeAllSides) {
+      this.dom.btnModeAllSides.addEventListener('click', () => {
+        if (this.mode !== 'allsides') this._startAllSidesMode();
       });
     }
 
