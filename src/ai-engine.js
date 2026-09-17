@@ -58,15 +58,25 @@ export class AIEngine {
     // Draw bounding boxes
     predictions.forEach(prediction => {
       const isAlqami = (prediction.class === 'vase' || prediction.class === 'bowl');
-      const displayName = isAlqami ? `alqami (تحفة القمي)` : `${prediction.class}`;
-      const reportedClass = isAlqami ? 'alqami' : prediction.class;
+      const isZulfiqar = (prediction.class === 'knife' || prediction.class === 'sword');
+      
+      let displayName = `${prediction.class}`;
+      let reportedClass = prediction.class;
+
+      if (isAlqami) {
+        displayName = `alqami (تحفة القمي)`;
+        reportedClass = 'alqami';
+      } else if (isZulfiqar) {
+        displayName = `Zulfiqar (سيف ذو الفقار)`;
+        reportedClass = 'sword';
+      }
 
       // Draw box
       this.ctx.beginPath();
       this.ctx.rect(...prediction.bbox);
-      this.ctx.lineWidth = isAlqami ? 5 : 3;
-      this.ctx.strokeStyle = isAlqami ? 'rgba(255, 215, 0, 0.95)' : 'rgba(0, 255, 128, 0.85)';
-      this.ctx.fillStyle = isAlqami ? 'rgba(255, 215, 0, 0.2)' : 'rgba(0, 255, 128, 0.15)';
+      this.ctx.lineWidth = (isAlqami || isZulfiqar) ? 5 : 3;
+      this.ctx.strokeStyle = (isAlqami || isZulfiqar) ? 'rgba(255, 215, 0, 0.95)' : 'rgba(0, 255, 128, 0.85)';
+      this.ctx.fillStyle = (isAlqami || isZulfiqar) ? 'rgba(255, 215, 0, 0.2)' : 'rgba(0, 255, 128, 0.15)';
       this.ctx.stroke();
       this.ctx.fill();
 
@@ -75,10 +85,10 @@ export class AIEngine {
       this.ctx.font = 'bold 20px -apple-system, sans-serif';
       const textWidth = this.ctx.measureText(labelText).width;
       
-      this.ctx.fillStyle = isAlqami ? 'rgba(20, 15, 0, 0.88)' : 'rgba(0, 0, 0, 0.75)';
+      this.ctx.fillStyle = (isAlqami || isZulfiqar) ? 'rgba(20, 15, 0, 0.88)' : 'rgba(0, 0, 0, 0.75)';
       this.ctx.fillRect(prediction.bbox[0], Math.max(0, prediction.bbox[1] - 32), textWidth + 24, 32);
       
-      this.ctx.fillStyle = isAlqami ? '#ffd700' : '#00ff80';
+      this.ctx.fillStyle = (isAlqami || isZulfiqar) ? '#ffd700' : '#00ff80';
       this.ctx.fillText(
         labelText, 
         prediction.bbox[0] + 12, 

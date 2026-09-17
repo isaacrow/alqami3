@@ -26,66 +26,10 @@
       <!-- Camera WebAR Viewport Container (Scan Mode) -->
       <div id="ar-container"></div>
       
-      <!-- 360 Spatial Object Scanner Container -->
-      <div id="spatial360-container" style="display: none; position: absolute; top:0; left:0; width: 100%; height: 100%; z-index: 2;">
-        <video id="spatial360-video" style="width: 100%; height: 100%; object-fit: cover;" playsinline></video>
-        <canvas id="spatial360-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
-        
-        <!-- Top 360 Artifact Selector Dock -->
-        <div class="spatial360-top-bar vision-glass">
-          <div class="spatial360-selector-scroll">
-            <button class="spatial360-chip active" data-target="auto">⚡ كشف تلقائي 360°</button>
-            <button class="spatial360-chip" data-target="alqami">🏺 تحفة القمي الخزفية</button>
-            <button class="spatial360-chip" data-target="zulfiqar">⚔️ سيف ذو الفقار</button>
-            <button class="spatial360-chip" data-target="shrine">🕌 مرقد الإمام الحسين</button>
-            <button class="spatial360-chip" data-target="minaret">🌟 المنارة الذهبية</button>
-            <button class="spatial360-chip" data-target="bowl">🥣 طاسة سقاخانة</button>
-            <button class="spatial360-chip" data-target="manuscript">📜 مخطوط القبسات</button>
-            <button class="spatial360-chip" data-target="quran">📖 المصحف المذهب</button>
-            <button class="spatial360-chip" data-target="kufic">📜 المصحف الكوفي</button>
-            <button class="spatial360-chip" data-target="helmet">🪖 خوذة إسلامية</button>
-            <button class="spatial360-chip" data-target="tablet">🪨 لوح مسماري</button>
-          </div>
-        </div>
-
-        <!-- Bottom Trigger & Status HUD -->
-        <div class="spatial360-hud">
-          <button id="btn-spatial360-trigger" class="vision-glass spatial360-scan-btn">
-            <span class="pulse-radar-dot"></span>
-            <span id="spatial360-btn-text">⚡ فحص المجسم الآن (Instant 360° Scan)</span>
-          </button>
-        </div>
-
-        <!-- Floating Recognition Result Card -->
-        <div id="spatial360-result-card" class="spatial360-card vision-glass hidden">
-          <div class="spatial360-card-header">
-            <div style="display: flex; align-items: center; gap: 8px;">
-              <span class="spatial360-badge">✓ 360° LOCKED</span>
-              <span id="spatial360-angle-badge" class="spatial360-angle-pill">🧭 زاوية 360°</span>
-            </div>
-            <button id="btn-spatial360-card-close" class="btn-icon" title="إغلاق">&times;</button>
-          </div>
-          <div id="spatial360-card-title" class="spatial360-card-title">اسم القطعة</div>
-          
-          <div class="spatial360-spec-pills">
-            <span id="spatial360-card-period" class="spec-pill">🏛️ الحقبة</span>
-            <span id="spatial360-card-material" class="spec-pill">🏺 المادة</span>
-          </div>
-
-          <div id="spatial360-card-desc" class="spatial360-card-desc">تفاصيل التعرف من هذه الزاوية...</div>
-          
-          <div class="spatial360-card-actions">
-            <button id="btn-spatial360-audio" class="btn-pill" style="background: rgba(255,215,0,0.2); color: #ffd700; border: 1px solid rgba(255,215,0,0.4);">
-              🔊 استمع للشرح
-            </button>
-            <button id="btn-spatial360-open3d" class="btn-pill" style="background: rgba(0, 229, 255, 0.2); color: #00e5ff; border: 1px solid rgba(0, 229, 255, 0.4);">
-              🌐 عرض 3D بالواقع المعزز
-            </button>
-            <button id="btn-spatial360-viewmeta" class="btn-pill" style="background: #0a84ff; color: #ffffff;">
-              📑 بيانات RDF الكاملة
-            </button>
-          </div>
-        </div>
+      <!-- AI Object Scanner Container -->
+      <div id="ai-container" style="display: none; position: absolute; top:0; left:0; width: 100%; height: 100%;">
+        <video id="ai-video" style="width: 100%; height: 100%; object-fit: cover;" playsinline></video>
+        <canvas id="ai-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
       </div>
 
       <!-- 3D Model Viewer Container (3D Mode) -->
@@ -137,13 +81,9 @@
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"></path><circle cx="12" cy="13" r="4"></circle></svg>
             <span>مسح AR</span>
           </button>
-          <button id="btn-mode-360" class="btn-side" title="360° Smart Object Scanner">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <circle cx="12" cy="12" r="10"></circle>
-              <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
-              <path d="M2 12h20"></path>
-            </svg>
-            <span>مسح 360°</span>
+          <button id="btn-mode-ai" class="btn-side" title="AI Object Scan">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z"/><path d="M12 6a6 6 0 1 0 6 6 6 6 0 0 0-6-6Zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4Z"/></svg>
+            <span>مسح AI</span>
           </button>
           
           <div class="sidebar-divider"></div>

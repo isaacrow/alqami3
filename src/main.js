@@ -3,7 +3,6 @@ import { RDFManuscriptParser } from './rdf-parser.js';
 import { ARCardManager } from './ar-card.js';
 import { AREngine } from './ar-engine.js';
 import { AIEngine } from './ai-engine.js';
-import { Spatial360Engine } from './spatial360-engine.js';
 import { GenAIEngine } from './genai-engine.js';
 import { marked } from 'marked';
 import { RDFGraphVisualizer } from './graph-visualizer.js';
@@ -20,7 +19,6 @@ class AppController {
     this.simulator = null;
     this.cardManager = null;
     this.graphVisualizer = null;
-    this.spatial360Engine = null;
     this.rawInitialTtl = '';
     this.activeHotspot = null;
     this.lastTime = performance.now();
@@ -29,25 +27,11 @@ class AppController {
     this.dom = {
       arContainer: document.getElementById('ar-container'),
       aiContainer: document.getElementById('ai-container'),
-      spatial360Container: document.getElementById('spatial360-container'),
       simulatorContainer: document.getElementById('simulator-container'),
       btnMode3d: document.getElementById('btn-mode-3d'),
       btnModeScan: document.getElementById('btn-mode-scan'),
       btnModeAi: document.getElementById('btn-mode-ai'),
-      btnMode360: document.getElementById('btn-mode-360'),
       btnModeGenai: document.getElementById('btn-mode-genai'),
-      btnSpatial360Trigger: document.getElementById('btn-spatial360-trigger'),
-      spatial360BtnText: document.getElementById('spatial360-btn-text'),
-      spatial360ResultCard: document.getElementById('spatial360-result-card'),
-      spatial360CardTitle: document.getElementById('spatial360-card-title'),
-      spatial360CardDesc: document.getElementById('spatial360-card-desc'),
-      spatial360AngleBadge: document.getElementById('spatial360-angle-badge'),
-      btnSpatial360CardClose: document.getElementById('btn-spatial360-card-close'),
-      spatial360CardPeriod: document.getElementById('spatial360-card-period'),
-      spatial360CardMaterial: document.getElementById('spatial360-card-material'),
-      btnSpatial360Audio: document.getElementById('btn-spatial360-audio'),
-      btnSpatial360Open3d: document.getElementById('btn-spatial360-open3d'),
-      btnSpatial360Viewmeta: document.getElementById('btn-spatial360-viewmeta'),
       genaiContainer: document.getElementById('genai-container'),
       btnGenaiCapture: document.getElementById('btn-genai-capture'),
       genaiResultPanel: document.getElementById('genai-result-panel'),
@@ -136,17 +120,14 @@ class AppController {
     this.dom.btnModeScan.classList.add('active');
     this.dom.btnMode3d.classList.remove('active');
     if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
-    if (this.dom.btnMode360) this.dom.btnMode360.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
     
     this.dom.modelDock.style.display = 'none';
     if(this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
     if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
-    if (this.dom.spatial360Container) this.dom.spatial360Container.style.display = 'none';
     this.dom.trackingStatus.style.display = 'flex';
 
     if (this.aiEngine) this.aiEngine.stop();
-    if (this.spatial360Engine) this.spatial360Engine.stop();
     this._stopGenAiCamera();
 
     this._setTrackingState(false, 'Scanning for manuscript');
@@ -284,13 +265,11 @@ class AppController {
     this.dom.btnMode3d.classList.add('active');
     this.dom.btnModeScan.classList.remove('active');
     if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
-    if (this.dom.btnMode360) this.dom.btnMode360.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
     
     this.dom.modelDock.style.display = 'block';
     if(this.dom.mainPanel) this.dom.mainPanel.style.display = 'flex';
     if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
-    if (this.dom.spatial360Container) this.dom.spatial360Container.style.display = 'none';
     this.dom.trackingStatus.style.display = 'none';
     this.dom.scanningHud.style.display = 'none';
 
@@ -299,9 +278,6 @@ class AppController {
     }
     if (this.aiEngine) {
       this.aiEngine.stop();
-    }
-    if (this.spatial360Engine) {
-      this.spatial360Engine.stop();
     }
     this._stopGenAiCamera();
 
@@ -361,21 +337,18 @@ class AppController {
 
     this.dom.btnMode3d.classList.remove('active');
     this.dom.btnModeScan.classList.remove('active');
-    if (this.dom.btnMode360) this.dom.btnMode360.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
     this.dom.btnModeAi.classList.add('active');
 
     this.dom.modelDock.style.display = 'none';
     if(this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
     if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
-    if (this.dom.spatial360Container) this.dom.spatial360Container.style.display = 'none';
     this.dom.trackingStatus.style.display = 'flex';
     this.dom.scanningHud.style.display = 'none';
 
     this._setTrackingState(false, 'Initializing AI Vision...');
 
     if (this.arEngine) this.arEngine.stop();
-    if (this.spatial360Engine) this.spatial360Engine.stop();
     this._stopGenAiCamera();
 
     if (!this.aiEngine) {
@@ -391,7 +364,12 @@ class AppController {
         this.lastAiDetectionTime = now;
 
         console.log('AI Detected:', className);
-        const displayLabel = className === 'alqami' ? 'Alqami (تحفة القمي)' : className;
+        let displayLabel = className;
+        if (className === 'alqami' || className === 'vase') displayLabel = 'Alqami (تحفة القمي)';
+        else if (className === 'knife' || className === 'sword') displayLabel = 'Zulfiqar (سيف ذو الفقار)';
+        else if (className === 'cup' || className === 'bowl') displayLabel = 'Saqakhane (طاسة سقاخانة)';
+        else if (className === 'book') displayLabel = 'Quran / Manuscript (المصحف الشريف)';
+
         this._setTrackingState(true, `Recognized: ${displayLabel}`);
         
         // Show simulated metadata based on detection
@@ -399,6 +377,7 @@ class AppController {
         let ttlFile = 'model.ttl'; // fallback
         if (className === 'alqami' || className === 'vase') ttlFile = 'alqami.ttl';
         else if (className === 'cup' || className === 'bowl') ttlFile = 'saqakhane_bowl.ttl';
+        else if (className === 'knife' || className === 'sword') ttlFile = 'Zulfiqar_Sword.ttl';
         else if (className === 'book') ttlFile = 'quran.ttl';
         
         try {
@@ -428,13 +407,11 @@ class AppController {
     this.dom.simulatorContainer.style.display = 'none';
     this.dom.arContainer.style.display = 'none';
     if (this.dom.aiContainer) this.dom.aiContainer.style.display = 'none';
-    if (this.dom.spatial360Container) this.dom.spatial360Container.style.display = 'none';
     if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'block';
 
     this.dom.btnMode3d.classList.remove('active');
     this.dom.btnModeScan.classList.remove('active');
     if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
-    if (this.dom.btnMode360) this.dom.btnMode360.classList.remove('active');
     if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.add('active');
 
     this.dom.modelDock.style.display = 'none';
@@ -446,7 +423,6 @@ class AppController {
 
     if (this.arEngine) this.arEngine.stop();
     if (this.aiEngine) this.aiEngine.stop();
-    if (this.spatial360Engine) this.spatial360Engine.stop();
 
     if (!this.genaiEngine) {
       this.genaiEngine = new GenAIEngine();
@@ -513,164 +489,6 @@ class AppController {
       video.srcObject.getTracks().forEach(track => track.stop());
       video.srcObject = null;
     }
-  }
-
-  async _startSpatial360Mode() {
-    this.mode = 'spatial360';
-    this.dom.simulatorContainer.style.display = 'none';
-    this.dom.arContainer.style.display = 'none';
-    if (this.dom.aiContainer) this.dom.aiContainer.style.display = 'none';
-    if (this.dom.genaiContainer) this.dom.genaiContainer.style.display = 'none';
-    this.dom.spatial360Container.style.display = 'block';
-
-    this.dom.btnMode3d.classList.remove('active');
-    this.dom.btnModeScan.classList.remove('active');
-    if (this.dom.btnModeAi) this.dom.btnModeAi.classList.remove('active');
-    if (this.dom.btnModeGenai) this.dom.btnModeGenai.classList.remove('active');
-    this.dom.btnMode360.classList.add('active');
-
-    this.dom.modelDock.style.display = 'none';
-    if (this.dom.mainPanel) this.dom.mainPanel.style.display = 'none';
-    this.dom.trackingStatus.style.display = 'none';
-    this.dom.scanningHud.style.display = 'none';
-
-    if (this.arEngine) this.arEngine.stop();
-    if (this.aiEngine) this.aiEngine.stop();
-    this._stopGenAiCamera();
-
-    if (!this.spatial360Engine) {
-      const video = document.getElementById('spatial360-video');
-      const canvas = document.getElementById('spatial360-canvas');
-      this.spatial360Engine = new Spatial360Engine(video, canvas);
-      await this.spatial360Engine.init();
-
-      // Top chip selector dock
-      const chips = document.querySelectorAll('.spatial360-chip');
-      chips.forEach(chip => {
-        chip.addEventListener('click', () => {
-          chips.forEach(c => c.classList.remove('active'));
-          chip.classList.add('active');
-          const target = chip.dataset.target;
-          this.spatial360Engine.setPresetTarget(target);
-        });
-      });
-
-      // Trigger button
-      if (this.dom.btnSpatial360Trigger) {
-        this.dom.btnSpatial360Trigger.addEventListener('click', async () => {
-          this.dom.spatial360BtnText.textContent = '⚡ جاري التحليل والمطابقة 360°...';
-          await this.spatial360Engine.performDeep360Scan();
-          setTimeout(() => {
-            if (this.dom.spatial360BtnText) {
-              this.dom.spatial360BtnText.textContent = '⚡ فحص المجسم الآن (Instant 360° Scan)';
-            }
-          }, 2500);
-        });
-      }
-
-      // Close result card
-      if (this.dom.btnSpatial360CardClose) {
-        this.dom.btnSpatial360CardClose.addEventListener('click', () => {
-          this.dom.spatial360ResultCard.classList.add('hidden');
-        });
-      }
-
-      // Audio guide button on card
-      if (this.dom.btnSpatial360Audio) {
-        this.dom.btnSpatial360Audio.addEventListener('click', () => {
-          if (this.activeRecognizedMeta && this.speech) {
-            const txt = `${this.activeRecognizedMeta.titleArabic || this.activeRecognizedMeta.title || ''}. ${this.activeRecognizedMeta.transcriptionArabic || ''}`;
-            this.speech.speak(txt, 'ar');
-          }
-        });
-      }
-
-      // Open in 3D AR button on card
-      if (this.dom.btnSpatial360Open3d) {
-        this.dom.btnSpatial360Open3d.addEventListener('click', () => {
-          if (this.activeRecognizedTarget) {
-            this._startSimulatorMode();
-            const dockBtn = document.querySelector(`.dock-btn[data-model="${this.activeRecognizedTarget.model}"]`);
-            if (dockBtn) {
-              dockBtn.click();
-            } else {
-              const viewer = document.getElementById('model-3d-viewer');
-              const baseUrl = import.meta.env.BASE_URL || './';
-              if (viewer && this.activeRecognizedTarget.modelFile) {
-                viewer.src = `${baseUrl}${this.activeRecognizedTarget.modelFile}`;
-              }
-            }
-          }
-        });
-      }
-
-      // View full metadata on card
-      if (this.dom.btnSpatial360Viewmeta) {
-        this.dom.btnSpatial360Viewmeta.addEventListener('click', () => {
-          if (this.dom.mainPanel) {
-            this.dom.mainPanel.style.display = 'flex';
-            this.dom.mainPanel.classList.remove('hidden');
-          }
-        });
-      }
-
-      // Callbacks
-      this.spatial360Engine.onTargetRecognized = async (item, parsed) => {
-        console.log('360 Target Recognized:', item.id, parsed);
-        this.activeRecognizedTarget = item;
-
-        // Load item TTL metadata
-        try {
-          const baseUrl = import.meta.env.BASE_URL || './';
-          const cacheBust = `?v=${Date.now()}`;
-          const data = await this.rdfParser.loadFromUrl(`${baseUrl}${item.ttl}${cacheBust}`);
-          this.rawInitialTtl = this.rdfParser.rawTurtle;
-          if (this.dom.ttlEditor) this.dom.ttlEditor.value = this.rawInitialTtl;
-          this.activeRecognizedMeta = data.metadata;
-          this._updateUIWithMetadata(data.metadata);
-
-          if (this.graphVisualizer) {
-            this.graphVisualizer.setData(this.rdfParser.getGraphData());
-          }
-
-          // Populate floating 360 result card
-          if (this.dom.spatial360CardTitle) {
-            this.dom.spatial360CardTitle.textContent = data.metadata.titleArabic || item.titleAr || item.title;
-          }
-          if (this.dom.spatial360CardPeriod) {
-            this.dom.spatial360CardPeriod.textContent = `🏛️ ${data.metadata.date || item.period || 'تاريخي'}`;
-          }
-          if (this.dom.spatial360CardMaterial) {
-            this.dom.spatial360CardMaterial.textContent = `🏺 ${data.metadata.materialArabic || item.material || 'مواد تراثية'}`;
-          }
-          if (this.dom.spatial360CardDesc) {
-            const desc = data.metadata.transcriptionArabic || item.brief || parsed.briefReason || 'تم التعرف على المجسم ومطابقته بنجاح.';
-            this.dom.spatial360CardDesc.textContent = desc;
-          }
-          if (this.dom.spatial360AngleBadge) {
-            this.dom.spatial360AngleBadge.textContent = `🧭 ${parsed.angleDetected || 'زاوية 360°'}`;
-          }
-          if (this.dom.spatial360ResultCard) {
-            this.dom.spatial360ResultCard.classList.remove('hidden');
-          }
-        } catch (err) {
-          console.warn('Error loading 360 target metadata:', err);
-        }
-      };
-
-      this.spatial360Engine.onScanningStatus = (msg) => {
-        if (this.dom.spatial360BtnText) {
-          this.dom.spatial360BtnText.textContent = msg;
-          setTimeout(() => {
-            if (this.dom.spatial360BtnText) {
-              this.dom.spatial360BtnText.textContent = '⚡ فحص المجسم الآن (Instant 360° Scan)';
-            }
-          }, 3000);
-        }
-      };
-    }
-
-    await this.spatial360Engine.start();
   }
 
   _setupInteractionRaycasting(domElement, camera) {
@@ -798,12 +616,6 @@ class AppController {
     if (this.dom.btnModeAi) {
       this.dom.btnModeAi.addEventListener('click', () => {
         if (this.mode !== 'ai') this._startAiMode();
-      });
-    }
-
-    if (this.dom.btnMode360) {
-      this.dom.btnMode360.addEventListener('click', () => {
-        if (this.mode !== 'spatial360') this._startSpatial360Mode();
       });
     }
 
