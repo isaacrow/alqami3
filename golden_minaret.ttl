@@ -1,0 +1,17 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix schema: <http://schema.org/> .
+@prefix ms: <http://example.org/manuscript/> .
+
+<https://alqami.net/museum/golden_minaret>
+    a schema:Manuscript ;
+    dc:title "المنارة الذهبية لمرقد الإمام علي (عليه السلام)"@ar ;
+    dc:title "Golden Minaret of Imam Ali Shrine"@en ;
+    dc:creator "عمارة إسلامية (النجف الأشرف)"@ar ;
+    dc:creator "Islamic Architecture (Najaf)"@en ;
+    dc:date "متعدد الحقب التاريخية" ;
+    schema:material "صفائح الذهب الخالص، طابوق، قاشاني"@ar ;
+    schema:material "Pure Gold Plates, Brick, Qashani Tiles"@en ;
+    schema:extent "نموذج ثلاثي الأبعاد للمنارة" ;
+    schema:publisher "العتبة العلوية المقدسة"@ar ;
+    ms:transcriptionArabic """نموذج ثلاثي الأبعاد للمنارة الذهبية الشاهقة في العتبة العلوية المقدسة. تتألق المنارة بصفائح الذهب التي تكسوها، وتعتبر تحفة معمارية تتوسط مدينة النجف الأشرف."""@ar ;
+    ms:translationEnglish """A 3D model of the towering golden minaret at the Holy Alawi Shrine. Clad in plates of pure gold, the minaret shines as an architectural masterpiece in the heart of Najaf."""@en .
