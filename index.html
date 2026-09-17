@@ -17,7 +17,7 @@
   <!-- Google Model Viewer component -->
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
   <script src="https://unpkg.com/meshoptimizer@0.21.0/meshopt_decoder.js"></script>
-  <script type="module" crossorigin src="./assets/index-BVcd8rZF.js"></script>
+  <script type="module" crossorigin src="./assets/index-DxqRdHZq.js"></script>
   <link rel="stylesheet" crossorigin href="./assets/index-DvgYzLkU.css">
 </head>
 <body class="dark-theme">
@@ -33,14 +33,13 @@
         <canvas id="ai-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
       </div>
 
-      <!-- All-Sides Object Scanner Container (فحص القطعة من جميع الاتجاهات) -->
-      <div id="allsides-container" style="display: none; position: absolute; top:0; left:0; width: 100%; height: 100%;">
-        <video id="allsides-video" style="width: 100%; height: 100%; object-fit: cover;" playsinline></video>
-        <canvas id="allsides-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+      <!-- All-Sides 3D WebXR Continuous AR Container (فحص القطعة من جميع الاتجاهات) -->
+      <div id="allsides-container" style="display: none; position: absolute; top:0; left:0; width: 100%; height: 100%; overflow: hidden;">
+        <div id="allsides-ar-viewport" style="width: 100%; height: 100%; position: absolute; top:0; left:0;"></div>
         
         <!-- Multi-angle sides status dock -->
         <div id="allsides-hud" class="allsides-hud vision-glass">
-          <div class="allsides-hud-title">فحص القطعة من جميع الاتجاهات (Multi-Angle Vision)</div>
+          <div class="allsides-hud-title">فحص القطعة 3D WebAR (تتبع مستمر لجميع الجهات)</div>
           <div class="allsides-pills-row">
             <span class="side-pill" id="pill-front" data-side="front">🏛️ أمامية (Praha)</span>
             <span class="side-pill" id="pill-back" data-side="back">🏷️ خلفية (Kč 120)</span>
