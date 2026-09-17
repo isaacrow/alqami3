@@ -1,0 +1,17 @@
+﻿@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix schema: <http://schema.org/> .
+@prefix ms: <http://example.org/manuscript/> .
+
+<https://alqami.net/museum/meshy-model>
+    a schema:VisualArtwork ;
+    dc:title "مجسم تحفة القمي ثلاثي الأبعاد (Alqami 3D Model)"@ar ;
+    dc:title "Alqami 3D Artifact Model"@en ;
+    dc:creator "ورشة القمي للرقمنة التراثية ثلاثية الأبعاد"@ar ;
+    dc:creator "Alqami 3D Cultural Digitization Guild"@en ;
+    dc:date "القرن 18-19 م (توثيق رقمي ثلاثي الأبعاد)" ;
+    schema:material "خزف إسلامي مزجج / مجسم ثلاثي الأبعاد PBR"@ar ;
+    schema:material "Glazed Islamic Ceramic / High-Fidelity 3D Model"@en ;
+    schema:extent "نموذج مجسم متكامل 360 درجة" ;
+    schema:publisher "متحف القمي الرقمي"@ar ;
+    ms:transcriptionArabic """النموذج المجسم ثلاثي الأبعاد لتحفة القمي التراثية، يجسد تفاصيل الزخارف والنقوش والتاج العلوي للتحفة، مع إمكانية المعاينة التفاعلية والتكبير وتدوير المجسم في فضاء الواقع المعزز (WebXR AR)."""@ar ;
+    ms:translationEnglish """High-fidelity 3D digital model of the Alqami Ceramic Artifact. Features full 360-degree surface texturing, arabesque motifs, and realistic PBR material rendering for immersive AR inspection."""@en .
