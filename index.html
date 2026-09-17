@@ -17,8 +17,8 @@
   <!-- Google Model Viewer component -->
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
   <script src="https://unpkg.com/meshoptimizer@0.21.0/meshopt_decoder.js"></script>
-  <script type="module" crossorigin src="./assets/index-C62F4c-m.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-CHC-KhqI.css">
+  <script type="module" crossorigin src="./assets/index-z_NtZp0H.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-ZMGXsatp.css">
 </head>
 <body class="dark-theme">
   <div id="app">
@@ -31,6 +31,12 @@
       <div id="ai-container" style="display: none; position: absolute; top:0; left:0; width: 100%; height: 100%;">
         <video id="ai-video" style="width: 100%; height: 100%; object-fit: cover;" playsinline></video>
         <canvas id="ai-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+      </div>
+
+      <!-- Local Visual Matcher Container -->
+      <div id="visual-container" style="display: none; position: absolute; top:0; left:0; width: 100%; height: 100%;">
+        <video id="visual-video" style="width: 100%; height: 100%; object-fit: cover;" playsinline></video>
+        <canvas id="visual-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
       </div>
 
       <!-- 3D Model Viewer Container (3D Mode) -->
@@ -85,6 +91,10 @@
           <button id="btn-mode-ai" class="btn-side" title="AI Object Scan">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z"/><path d="M12 6a6 6 0 1 0 6 6 6 6 0 0 0-6-6Zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4Z"/></svg>
             <span>مسح AI</span>
+          </button>
+          <button id="btn-mode-visual" class="btn-side" title="المطابقة البصرية للقطع (Visual Match)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="6"/><line x1="12" y1="18" x2="12" y2="22"/><line x1="2" y1="12" x2="6" y2="12"/><line x1="18" y1="12" x2="22" y2="12"/></svg>
+            <span>مطابقة بصرية</span>
           </button>
           
           <div class="sidebar-divider"></div>
