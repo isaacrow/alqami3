@@ -17,8 +17,8 @@
   <!-- Google Model Viewer component -->
   <script type="module" src="https://ajax.googleapis.com/ajax/libs/model-viewer/3.5.0/model-viewer.min.js"></script>
   <script src="https://unpkg.com/meshoptimizer@0.21.0/meshopt_decoder.js"></script>
-  <script type="module" crossorigin src="./assets/index-Fa7DjL8T.js"></script>
-  <link rel="stylesheet" crossorigin href="./assets/index-DuKwextz.css">
+  <script type="module" crossorigin src="./assets/index-OMfBKvs2.js"></script>
+  <link rel="stylesheet" crossorigin href="./assets/index-D-ahSX7J.css">
 </head>
 <body class="dark-theme">
   <div id="app">
@@ -33,27 +33,11 @@
         <canvas id="ai-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
       </div>
 
-      <!-- All-Sides 3D WebXR Continuous AR Container (فحص القطعة من جميع الاتجاهات) -->
-      <div id="allsides-container" style="display: none; position: absolute; top:0; left:0; width: 100%; height: 100%; overflow: hidden;">
-        <div id="allsides-ar-viewport" style="width: 100%; height: 100%; position: absolute; top:0; left:0;"></div>
-        
-        <!-- Multi-angle sides status dock -->
-        <div id="allsides-hud" class="allsides-hud vision-glass">
-          <div class="allsides-hud-title">فحص القطعة 3D WebAR (تتبع مستمر لجميع الجهات)</div>
-          <div class="allsides-pills-row">
-            <span class="side-pill" id="pill-front" data-side="front">🏛️ أمامية (Praha)</span>
-            <span class="side-pill" id="pill-back" data-side="back">🏷️ خلفية (Kč 120)</span>
-            <span class="side-pill" id="pill-side1" data-side="side1">📐 جانب أيسر</span>
-            <span class="side-pill" id="pill-side2" data-side="side2">📐 جانب أيمن</span>
-            <span class="side-pill" id="pill-top" data-side="top">🔲 علوية</span>
-          </div>
-        </div>
-      </div>
-
-      <!-- Closed-Set Custom Artifact Recognition Container -->
-      <div id="closedset-container" style="display: none; position: absolute; top:0; left:0; width: 100%; height: 100%;">
+      <!-- Closed-Set Custom Artifact Recognition & XR AR Deployment Container -->
+      <div id="closedset-container" style="display: none; position: absolute; top:0; left:0; width: 100%; height: 100%; overflow: hidden;">
         <video id="closedset-video" style="width: 100%; height: 100%; object-fit: cover;" playsinline></video>
         <canvas id="closedset-canvas" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none;"></canvas>
+        <div id="closedset-xr-overlay" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: auto;"></div>
         <div id="closedset-hud-container" style="position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%); z-index: 60; width: 92%; max-width: 440px;"></div>
       </div>
 
@@ -109,14 +93,6 @@
           <button id="btn-mode-ai" class="btn-side" title="AI Object Scan">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8Z"/><path d="M12 6a6 6 0 1 0 6 6 6 6 0 0 0-6-6Zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4Z"/></svg>
             <span>مسح AI</span>
-          </button>
-          <button id="btn-mode-allsides" class="btn-side" title="فحص القطعة من جميع الاتجاهات">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-              <path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/>
-              <path d="m3.3 7 8.7 5 8.7-5"/>
-              <path d="M12 22V12"/>
-            </svg>
-            <span>فحص القطعة</span>
           </button>
           <button id="btn-mode-closedset" class="btn-side" title="التعرف المغلق على القطع">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
