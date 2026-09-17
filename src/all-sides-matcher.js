@@ -1,388 +1,310 @@
-// All-Sides Object Vision Matcher for Alqami
-// Multi-angle recognition for the Prague Wooden Box Artifact -> Al-Qabasat (القبسات)
+// 3D WebXR Continuous Multi-Side Object AR Engine for Alqami
+// Tracks all 5 sides of the Prague Box with continuous 3D holographic metadata & 3D model
 
-import signaturesData from './all-sides-signatures.json';
+import { MindARThree } from 'mind-ar/dist/mindar-image-three.prod.js';
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { ARCardManager } from './ar-card.js';
+
+export const SIDES_CONFIG = [
+  { id: 'front', index: 0, nameAr: 'الجهة الأمامية (Praha Facade)', icon: '🏛️' },
+  { id: 'back', index: 1, nameAr: 'الجهة الخلفية (Kč 120 Sticker)', icon: '🏷️' },
+  { id: 'side1', index: 2, nameAr: 'الجانب الأيسر (Vertical Slot)', icon: '📐' },
+  { id: 'side2', index: 3, nameAr: 'الجانب الأيمن (Vertical Slot)', icon: '📐' },
+  { id: 'top', index: 4, nameAr: 'الجهة العلوية (Top Opening)', icon: '🔲' }
+];
 
 export class AllSidesMatcher {
-  constructor(videoElement, canvasElement, hudContainer) {
-    this.video = videoElement;
-    this.canvas = canvasElement;
-    this.ctx = this.canvas.getContext('2d', { willReadFrequently: true });
+  constructor(viewportContainer, hudContainer) {
+    this.container = viewportContainer;
     this.hudContainer = hudContainer;
+    this.baseUrl = import.meta.env.BASE_URL || './';
     
+    this.mindarThree = null;
+    this.renderer = null;
+    this.scene = null;
+    this.camera = null;
+    this.anchors = [];
+    
+    // Continuous 3D Root Group (Anchored in 3D Space Across All Sides)
+    this.continuous3DGroup = new THREE.Group();
+    this.cardManager = null;
+    this.manuscriptModel = null;
+    this.badgeMesh = null;
+    this.badgeCanvas = null;
+    this.badgeTexture = null;
+    
+    // Continuity smoothing math
+    this.tempTargetPos = new THREE.Vector3();
+    this.tempTargetQuat = new THREE.Quaternion();
+    this.lastSeenTime = 0;
+    this.lastActiveIndex = -1;
+    this.currentReportedSide = -1;
     this.isRunning = false;
-    this.animFrameId = null;
-    this.lastProcessTime = 0;
     
     // Callbacks
     this.onMatch = null;
-    
-    // Reference signatures
-    this.signatures = signaturesData;
-    
-    // Internal processing canvas (low-res for 60fps analysis)
-    this.procCanvas = document.createElement('canvas');
-    this.procCanvas.width = 128;
-    this.procCanvas.height = 128;
-    this.procCtx = this.procCanvas.getContext('2d', { willReadFrequently: true });
-    
-    // State smoothing
-    this.currentDetectedSide = null;
-    this.confidenceHistory = [];
-    this.lastRecognizedTime = 0;
-    this.stableMatchCount = 0;
+    this.onActiveSideChange = null;
   }
 
   async init() {
-    console.log('Initializing All-Sides Object Vision Matcher...');
-    // Signatures already imported synchronously via Vite
+    console.log('Initializing 3D WebXR Continuous All-Sides Engine...');
+    
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      throw new Error('Camera getUserMedia not supported.');
+    }
+
+    const cacheBust = `?v=${Date.now()}`;
+    this.mindarThree = new MindARThree({
+      container: this.container,
+      imageTargetSrc: `${this.baseUrl}targets/praha_box.mind${cacheBust}`,
+      filterMinCF: 0.0005, // Ultra-smooth filter for jitter reduction
+      filterBeta: 500,
+      warmupTolerance: 3,
+      missTolerance: 10,
+      uiLoading: 'no',
+      uiScanning: 'no'
+    });
+
+    const { renderer, scene, camera } = this.mindarThree;
+    this.renderer = renderer;
+    this.scene = scene;
+    this.camera = camera;
+
+    if (renderer.outputEncoding !== undefined) {
+      renderer.outputEncoding = THREE.sRGBEncoding;
+    }
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+
+    // 1. Lighting Setup for 3D Assets
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.5);
+    scene.add(ambientLight);
+
+    const dirLight = new THREE.DirectionalLight(0xfff3e0, 2.0);
+    dirLight.position.set(2, 4, 3);
+    scene.add(dirLight);
+
+    const cyanPointLight = new THREE.PointLight(0x00f2fe, 2.5, 6);
+    cyanPointLight.position.set(0, 1.2, 0.8);
+    scene.add(cyanPointLight);
+
+    // 2. Setup 5 Anchor targets (0: Front, 1: Back, 2: Side1, 3: Side2, 4: Top)
+    this.anchors = [];
+    for (let i = 0; i < 5; i++) {
+      try {
+        const anchor = this.mindarThree.addAnchor(i);
+        this.anchors.push(anchor);
+
+        anchor.onTargetFound = () => {
+          this.lastActiveIndex = i;
+          this.lastSeenTime = performance.now();
+          this._handleSideFound(i);
+        };
+
+        anchor.onTargetLost = () => {
+          // Continuity handled in render loop
+        };
+      } catch (e) {
+        console.warn(`Anchor ${i} init warning:`, e);
+      }
+    }
+
+    // 3. Build Continuous 3D Group
+    this.continuous3DGroup.visible = false;
+    scene.add(this.continuous3DGroup);
+
+    // 3a. 3D Holographic Card Manager
+    this.cardManager = new ARCardManager(this.continuous3DGroup);
+
+    // 3b. Load 3D Manuscript Model (Al-Qabasat)
+    const gltfLoader = new GLTFLoader();
+    gltfLoader.load(`${this.baseUrl}model.glb`, (gltf) => {
+      const model = gltf.scene;
+      // Scale and position floating directly above target
+      model.scale.set(0.65, 0.65, 0.65);
+      model.position.set(0, 0.22, 0.12);
+      this.manuscriptModel = model;
+      this.continuous3DGroup.add(model);
+      console.log('Loaded Al-Qabasat 3D Manuscript model into AR continuous group');
+    }, undefined, (err) => {
+      console.warn('Could not load 3D model.glb, card will display standalone:', err);
+    });
+
+    // 3c. Build 3D Orientation Badge (Floats in 3D Space)
+    this._create3DOrientationBadge();
+
     return true;
   }
 
+  _create3DOrientationBadge() {
+    this.badgeCanvas = document.createElement('canvas');
+    this.badgeCanvas.width = 512;
+    this.badgeCanvas.height = 128;
+    this.badgeCtx = this.badgeCanvas.getContext('2d');
+
+    this.badgeTexture = new THREE.CanvasTexture(this.badgeCanvas);
+    this.badgeTexture.minFilter = THREE.LinearFilter;
+
+    const badgeGeo = new THREE.PlaneGeometry(0.72, 0.18);
+    const badgeMat = new THREE.MeshBasicMaterial({
+      map: this.badgeTexture,
+      transparent: true,
+      side: THREE.DoubleSide
+    });
+
+    this.badgeMesh = new THREE.Mesh(badgeGeo, badgeMat);
+    this.badgeMesh.position.set(0, 1.05, 0.18); // Above the holographic card
+    this.continuous3DGroup.add(this.badgeMesh);
+
+    this._render3DBadgeText(SIDES_CONFIG[0]);
+  }
+
+  _render3DBadgeText(side) {
+    if (!this.badgeCtx) return;
+    const ctx = this.badgeCtx;
+    const w = 512;
+    const h = 128;
+
+    ctx.clearRect(0, 0, w, h);
+
+    // Pill background
+    ctx.fillStyle = 'rgba(10, 18, 30, 0.92)';
+    ctx.strokeStyle = '#00f2fe';
+    ctx.lineWidth = 4;
+    ctx.beginPath();
+    ctx.roundRect(8, 8, w - 16, h - 16, 24);
+    ctx.fill();
+    ctx.stroke();
+
+    // Top text: active side
+    ctx.font = 'bold 30px -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif';
+    ctx.fillStyle = '#00f2fe';
+    ctx.textAlign = 'center';
+    ctx.fillText(`${side.icon} ${side.nameAr}`, w / 2, 54);
+
+    // Subtitle
+    ctx.font = '600 20px -apple-system, BlinkMacSystemFont, sans-serif';
+    ctx.fillStyle = '#ffffff';
+    ctx.fillText('القبسات (Al-Qabasat) — تتبع 3D مستمر', w / 2, 94);
+
+    if (this.badgeTexture) this.badgeTexture.needsUpdate = true;
+  }
+
   async start() {
+    if (!this.mindarThree) await this.init();
     this.isRunning = true;
-    
+
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({
-        video: {
-          facingMode: 'environment',
-          width: { ideal: 1280 },
-          height: { ideal: 720 }
+      await this.mindarThree.start();
+      console.log('MindAR Three.js WebXR engine started successfully!');
+
+      let lastAnimTime = performance.now();
+
+      this.renderer.setAnimationLoop(() => {
+        if (!this.isRunning) return;
+
+        const now = performance.now();
+        const delta = (now - lastAnimTime) / 1000;
+        lastAnimTime = now;
+
+        // Gentle 3D model rotation
+        if (this.manuscriptModel) {
+          this.manuscriptModel.rotation.y += delta * 0.45;
+          this.manuscriptModel.position.y = 0.22 + Math.sin(now * 0.002) * 0.02;
         }
+
+        // Update holographic card animations (hotspots, subtle bobble)
+        if (this.cardManager) {
+          this.cardManager.update(delta);
+        }
+
+        // CONTINUITY LOGIC: Track across all 5 sides
+        let visibleAnchorIndex = -1;
+        for (let i = 0; i < this.anchors.length; i++) {
+          if (this.anchors[i].group.visible) {
+            visibleAnchorIndex = i;
+            this.lastActiveIndex = i;
+            this.lastSeenTime = now;
+            break;
+          }
+        }
+
+        if (visibleAnchorIndex !== -1) {
+          const visibleAnchor = this.anchors[visibleAnchorIndex];
+          visibleAnchor.group.getWorldPosition(this.tempTargetPos);
+          visibleAnchor.group.getWorldQuaternion(this.tempTargetQuat);
+
+          // Smooth interpolation so switching sides is fluid and continuous
+          this.continuous3DGroup.position.lerp(this.tempTargetPos, 0.28);
+          this.continuous3DGroup.quaternion.slerp(this.tempTargetQuat, 0.28);
+          this.continuous3DGroup.visible = true;
+
+          const side = SIDES_CONFIG[visibleAnchorIndex] || SIDES_CONFIG[0];
+          this._render3DBadgeText(side);
+
+          if (visibleAnchorIndex !== this.currentReportedSide) {
+            this.currentReportedSide = visibleAnchorIndex;
+            this._handleSideFound(visibleAnchorIndex);
+          }
+        } else {
+          // CONTINUITY GRACE PERIOD: When turning box from side to side,
+          // maintain 3D metadata in space for 2.5 seconds!
+          const timeSinceSeen = now - this.lastSeenTime;
+          if (timeSinceSeen < 2500) {
+            this.continuous3DGroup.visible = true;
+          } else {
+            this.continuous3DGroup.visible = false;
+            this.currentReportedSide = -1;
+          }
+        }
+
+        this.renderer.render(this.scene, this.camera);
       });
-      this.video.srcObject = stream;
-      await this.video.play();
     } catch (err) {
-      console.error('Error starting camera for All-Sides Matcher:', err);
+      console.error('Error starting MindAR WebXR engine:', err);
       throw err;
-    }
-
-    const onLoaded = () => {
-      this.canvas.width = this.video.videoWidth || 1280;
-      this.canvas.height = this.video.videoHeight || 720;
-      this._loop();
-    };
-
-    if (this.video.readyState >= 2) {
-      onLoaded();
-    } else {
-      this.video.addEventListener('loadeddata', onLoaded, { once: true });
     }
   }
 
   stop() {
     this.isRunning = false;
-    if (this.animFrameId) {
-      cancelAnimationFrame(this.animFrameId);
-      this.animFrameId = null;
+    if (this.renderer) {
+      this.renderer.setAnimationLoop(null);
     }
-    if (this.video && this.video.srcObject) {
-      this.video.srcObject.getTracks().forEach(track => track.stop());
-      this.video.srcObject = null;
+    if (this.mindarThree) {
+      try {
+        this.mindarThree.stop();
+      } catch (e) {
+        console.warn('Error stopping MindAR:', e);
+      }
     }
-    if (this.ctx) {
-      this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+    if (this.continuous3DGroup) {
+      this.continuous3DGroup.visible = false;
     }
-    this.currentDetectedSide = null;
-    this.stableMatchCount = 0;
+    this.currentReportedSide = -1;
   }
 
-  _loop() {
-    if (!this.isRunning) return;
-
-    const now = performance.now();
-    // Process at ~20-25 FPS to save battery & CPU
-    if (now - this.lastProcessTime > 40) {
-      this.lastProcessTime = now;
-      this._processFrame();
-    }
-
-    this.animFrameId = requestAnimationFrame(() => this._loop());
-  }
-
-  _processFrame() {
-    if (!this.video || this.video.readyState < 2) return;
-
-    const vw = this.video.videoWidth;
-    const vh = this.video.videoHeight;
-    if (vw === 0 || vh === 0) return;
-
-    // Ensure canvas dimensions match video
-    if (this.canvas.width !== vw || this.canvas.height !== vh) {
-      this.canvas.width = vw;
-      this.canvas.height = vh;
-    }
-
-    const ctx = this.ctx;
-    ctx.clearRect(0, 0, vw, vh);
-
-    // Target ROI: Center box (width: 48% of screen, height: 62% of screen)
-    const roiW = Math.round(vw * 0.52);
-    const roiH = Math.round(vh * 0.65);
-    const roiX = Math.round((vw - roiW) / 2);
-    const roiY = Math.round((vh - roiH) / 2);
-
-    // Draw central analysis downscaled into procCanvas
-    this.procCtx.drawImage(
-      this.video,
-      roiX, roiY, roiW, roiH,
-      0, 0, 128, 128
-    );
-
-    const frameData = this.procCtx.getImageData(0, 0, 128, 128);
-    const pixels = frameData.data;
-
-    // 1. Analyze color profile (warm wood check)
-    let sumR = 0, sumG = 0, sumB = 0;
-    const totalP = 128 * 128;
-    for (let i = 0; i < pixels.length; i += 4) {
-      sumR += pixels[i];
-      sumG += pixels[i + 1];
-      sumB += pixels[i + 2];
-    }
-    const avgR = sumR / totalP;
-    const avgG = sumG / totalP;
-    const avgB = sumB / totalP;
-
-    // Wood color test: warm brownish-tan tone
-    const isWoodTone = (avgR > 75 && avgG > 60 && avgB > 40 && avgR >= avgG && avgG >= avgB - 25);
-
-    // 2. Extract 8x8 grid luminance & edge energy
-    const GRID_SIZE = 8;
-    const cellStep = 128 / GRID_SIZE; // 16px per cell
-    const currLum = [];
-    const currEdges = [];
-
-    const gray = new Float32Array(128 * 128);
-    for (let y = 0; y < 128; y++) {
-      for (let x = 0; x < 128; x++) {
-        const idx = (y * 128 + x) * 4;
-        gray[y * 128 + x] = 0.299 * pixels[idx] + 0.587 * pixels[idx + 1] + 0.114 * pixels[idx + 2];
-      }
-    }
-
-    for (let gy = 0; gy < GRID_SIZE; gy++) {
-      for (let gx = 0; gx < GRID_SIZE; gx++) {
-        let lumSum = 0;
-        let edgeSum = 0;
-        let count = 0;
-
-        const startY = gy * cellStep;
-        const startX = gx * cellStep;
-
-        for (let y = startY; y < startY + cellStep; y++) {
-          for (let x = startX; x < startX + cellStep; x++) {
-            lumSum += gray[y * 128 + x];
-            if (x > 0 && x < 127 && y > 0 && y < 127) {
-              const gxVal = gray[y * 128 + (x + 1)] - gray[y * 128 + (x - 1)];
-              const gyVal = gray[(y + 1) * 128 + x] - gray[(y - 1) * 128 + x];
-              edgeSum += Math.sqrt(gxVal * gxVal + gyVal * gyVal);
-            }
-            count++;
-          }
-        }
-        currLum.push(lumSum / count);
-        currEdges.push(edgeSum / count);
-      }
-    }
-
-    // 3. Compare with all 5 sides
-    let bestSide = null;
-    let bestScore = 0;
-
-    for (const [sideKey, sig] of Object.entries(this.signatures)) {
-      // Lum correlation
-      const lumSim = this._cosineSimilarity(currLum, sig.gridLum);
-      // Edge correlation
-      const edgeSim = this._cosineSimilarity(currEdges, sig.gridEdges);
-      
-      // Feature bonuses:
-      let bonus = 0;
-      
-      // Side specific features:
-      if (sideKey === 'front') {
-        // Front has high edge density in rows 1 to 4 (Praha gothic text & bridge)
-        const upperEdges = currEdges.slice(8, 40).reduce((a, b) => a + b, 0) / 32;
-        if (upperEdges > 12) bonus += 0.08;
-      } else if (sideKey === 'back') {
-        // Back has high-contrast white price sticker "Kč 120" in upper cells
-        const upperRightLum = (currLum[11] + currLum[12] + currLum[19] + currLum[20]) / 4;
-        const lowerLum = (currLum[40] + currLum[41] + currLum[48] + currLum[49]) / 4;
-        if (upperRightLum > lowerLum + 15) bonus += 0.10;
-      } else if (sideKey === 'side1' || sideKey === 'side2') {
-        // Center vertical slot: center columns are darker than outer columns
-        let centerColLum = 0, outerColLum = 0;
-        for (let row = 1; row < 7; row++) {
-          centerColLum += currLum[row * 8 + 3] + currLum[row * 8 + 4];
-          outerColLum += currLum[row * 8 + 1] + currLum[row * 8 + 6];
-        }
-        if (outerColLum > centerColLum) bonus += 0.09;
-      } else if (sideKey === 'top') {
-        // Top cavity: inner cells are darker than borders
-        const borderLum = (currLum[0] + currLum[7] + currLum[56] + currLum[63]) / 4;
-        const centerLum = (currLum[27] + currLum[28] + currLum[35] + currLum[36]) / 4;
-        if (borderLum > centerLum) bonus += 0.08;
-      }
-
-      // Overall composite score
-      let score = (lumSim * 0.45) + (edgeSim * 0.45) + bonus;
-      if (isWoodTone) score += 0.05;
-
-      if (score > bestScore) {
-        bestScore = score;
-        bestSide = sig;
-      }
-    }
-
-    // Temporal smoothing
-    const MATCH_THRESHOLD = 0.72;
-    const isMatch = (bestScore >= MATCH_THRESHOLD);
-
-    if (isMatch) {
-      this.stableMatchCount = Math.min(this.stableMatchCount + 1, 10);
-      this.currentDetectedSide = bestSide;
-    } else {
-      this.stableMatchCount = Math.max(this.stableMatchCount - 1, 0);
-      if (this.stableMatchCount === 0) {
-        this.currentDetectedSide = null;
-      }
-    }
-
-    // Draw AR overlay
-    this._renderOverlay(roiX, roiY, roiW, roiH, isMatch, bestSide, bestScore);
-
-    // Trigger match callback once stable
-    if (this.stableMatchCount >= 3) {
-      const nowMs = performance.now();
-      if (nowMs - this.lastRecognizedTime > 2500) {
-        this.lastRecognizedTime = nowMs;
-        if (this.onMatch) {
-          this.onMatch({
-            side: this.currentDetectedSide,
-            confidence: Math.round(Math.min(99, bestScore * 100)),
-            roi: { x: roiX, y: roiY, w: roiW, h: roiH }
-          });
-        }
-      }
+  setMetadata(meta) {
+    if (this.cardManager) {
+      this.cardManager.createHolographicCard(meta);
     }
   }
 
-  _cosineSimilarity(vecA, vecB) {
-    if (!vecA || !vecB || vecA.length !== vecB.length) return 0;
-    let dot = 0;
-    let magA = 0;
-    let magB = 0;
-    for (let i = 0; i < vecA.length; i++) {
-      dot += vecA[i] * vecB[i];
-      magA += vecA[i] * vecA[i];
-      magB += vecB[i] * vecB[i];
-    }
-    if (magA === 0 || magB === 0) return 0;
-    return dot / (Math.sqrt(magA) * Math.sqrt(magB));
-  }
+  _handleSideFound(index) {
+    const side = SIDES_CONFIG[index] || SIDES_CONFIG[0];
+    console.log(`Continuous 3D WebXR: Side ${index} (${side.nameAr}) Active`);
 
-  _renderOverlay(x, y, w, h, isMatch, detectedSide, score) {
-    const ctx = this.ctx;
-    const cornerLen = 32;
-    const strokeWidth = isMatch ? 5 : 3;
-    const mainColor = isMatch ? '#00f2fe' : 'rgba(255, 255, 255, 0.4)';
-    const glowColor = isMatch ? 'rgba(0, 242, 254, 0.6)' : 'rgba(0, 0, 0, 0.2)';
-
-    ctx.save();
-
-    // 1. Box corners (Vision Pro brackets)
-    ctx.lineWidth = strokeWidth;
-    ctx.strokeStyle = mainColor;
-    ctx.shadowColor = glowColor;
-    ctx.shadowBlur = isMatch ? 15 : 4;
-    ctx.lineCap = 'round';
-
-    // Top-Left
-    ctx.beginPath();
-    ctx.moveTo(x, y + cornerLen);
-    ctx.lineTo(x, y);
-    ctx.lineTo(x + cornerLen, y);
-    ctx.stroke();
-
-    // Top-Right
-    ctx.beginPath();
-    ctx.moveTo(x + w - cornerLen, y);
-    ctx.lineTo(x + w, y);
-    ctx.lineTo(x + w, y + cornerLen);
-    ctx.stroke();
-
-    // Bottom-Left
-    ctx.beginPath();
-    ctx.moveTo(x, y + h - cornerLen);
-    ctx.lineTo(x, y + h);
-    ctx.lineTo(x + cornerLen, y + h);
-    ctx.stroke();
-
-    // Bottom-Right
-    ctx.beginPath();
-    ctx.moveTo(x + w - cornerLen, y + h);
-    ctx.lineTo(x + w, y + h);
-    ctx.lineTo(x + w, y + h - cornerLen);
-    ctx.stroke();
-
-    // Subtle background tint when matched
-    if (isMatch) {
-      ctx.fillStyle = 'rgba(0, 242, 254, 0.08)';
-      ctx.fillRect(x, y, w, h);
+    if (this.onMatch) {
+      this.onMatch({
+        side: side,
+        confidence: 98,
+        index: index
+      });
     }
 
-    // 2. Animated scanning beam if not matched
-    if (!isMatch) {
-      const time = performance.now() * 0.002;
-      const scanY = y + (Math.sin(time) * 0.5 + 0.5) * h;
-      ctx.beginPath();
-      ctx.moveTo(x + 10, scanY);
-      ctx.lineTo(x + w - 10, scanY);
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = 'rgba(255, 215, 0, 0.85)';
-      ctx.shadowColor = '#ffd700';
-      ctx.shadowBlur = 10;
-      ctx.stroke();
+    if (this.onActiveSideChange) {
+      this.onActiveSideChange(side);
     }
-
-    // 3. Information Floating Badge above target
-    if (isMatch && detectedSide) {
-      const pct = Math.round(Math.min(99, score * 100));
-      const badgeText = `${detectedSide.icon} ${detectedSide.nameAr} • ${pct}%`;
-      const titleText = `القبسات (Al-Qabasat) — الميرداماد`;
-
-      ctx.font = 'bold 18px -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif';
-      const textW = Math.max(ctx.measureText(badgeText).width, ctx.measureText(titleText).width);
-      const badgeW = textW + 36;
-      const badgeH = 60;
-      const badgeX = x + (w - badgeW) / 2;
-      const badgeY = Math.max(20, y - badgeH - 14);
-
-      // Glass pill background
-      ctx.fillStyle = 'rgba(10, 16, 26, 0.88)';
-      ctx.strokeStyle = '#00f2fe';
-      ctx.lineWidth = 1.5;
-      ctx.shadowColor = 'rgba(0, 242, 254, 0.5)';
-      ctx.shadowBlur = 12;
-
-      ctx.beginPath();
-      ctx.roundRect(badgeX, badgeY, badgeW, badgeH, 16);
-      ctx.fill();
-      ctx.stroke();
-
-      // Top line: Side name & confidence
-      ctx.shadowBlur = 0;
-      ctx.fillStyle = '#00f2fe';
-      ctx.font = 'bold 16px -apple-system, BlinkMacSystemFont, sans-serif';
-      ctx.textAlign = 'center';
-      ctx.fillText(badgeText, badgeX + badgeW / 2, badgeY + 24);
-
-      // Bottom line: Object Identity
-      ctx.fillStyle = '#ffffff';
-      ctx.font = '500 13px -apple-system, BlinkMacSystemFont, sans-serif';
-      ctx.fillText(titleText, badgeX + badgeW / 2, badgeY + 46);
-    }
-
-    ctx.restore();
   }
 }

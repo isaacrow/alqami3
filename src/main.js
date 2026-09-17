@@ -528,21 +528,38 @@ class AppController {
     this.dom.trackingStatus.style.display = 'flex';
     this.dom.scanningHud.style.display = 'none';
 
-    this._setTrackingState(false, 'وجه الكاميرا نحو صندوق التحفة من أي جهة...');
+    this._setTrackingState(false, 'وجه الكاميرا نحو صندوق التحفة (تتبع 3D مستمر)...');
 
     if (this.arEngine) this.arEngine.stop();
     if (this.aiEngine) this.aiEngine.stop();
     this._stopGenAiCamera();
 
     if (!this.allSidesMatcher) {
-      const video = document.getElementById('allsides-video');
-      const canvas = document.getElementById('allsides-canvas');
+      const viewport = document.getElementById('allsides-ar-viewport');
       const hud = document.getElementById('allsides-hud');
-      this.allSidesMatcher = new AllSidesMatcher(video, canvas, hud);
+      this.allSidesMatcher = new AllSidesMatcher(viewport, hud);
       await this.allSidesMatcher.init();
 
+      // Pre-load Al-Qabasat RDF metadata into the 3D Holographic card
+      const baseUrl = import.meta.env.BASE_URL || './';
+      const cacheBust = `?v=${Date.now()}`;
+      try {
+        const data = await this.rdfParser.loadFromUrl(`${baseUrl}alqabasat.ttl${cacheBust}`);
+        this.rawInitialTtl = this.rdfParser.rawTurtle;
+        if (this.dom.ttlEditor) this.dom.ttlEditor.value = this.rawInitialTtl;
+        this._updateUIWithMetadata(data.metadata);
+        this.allSidesMatcher.setMetadata(data.metadata);
+
+        if (this.graphVisualizer) {
+          this.graphVisualizer.setData(this.rdfParser.getGraphData());
+        }
+      } catch (err) {
+        console.error('Error preloading Alqabasat metadata:', err);
+      }
+
+      this.lastVoiceSide = null;
       this.allSidesMatcher.onMatch = async (matchData) => {
-        console.log('All-Sides Matcher Detected:', matchData);
+        console.log('Continuous 3D WebXR Side Detected:', matchData);
 
         // Highlight matching side pill
         const pills = document.querySelectorAll('.side-pill');
@@ -550,41 +567,30 @@ class AppController {
         const activePill = document.getElementById(`pill-${matchData.side.id}`);
         if (activePill) activePill.classList.add('active');
 
-        this._setTrackingState(true, `القبسات (Al-Qabasat) — تم التحقق: ${matchData.side.nameAr} (${matchData.confidence}%)`);
+        this._setTrackingState(true, `القبسات (Al-Qabasat) — تتبع 3D مستمر: ${matchData.side.nameAr}`);
 
-        // Load Al-Qabasat RDF metadata
-        const baseUrl = import.meta.env.BASE_URL || './';
-        const cacheBust = `?v=${Date.now()}`;
-        try {
-          const data = await this.rdfParser.loadFromUrl(`${baseUrl}alqabasat.ttl${cacheBust}`);
-          this.rawInitialTtl = this.rdfParser.rawTurtle;
-          if (this.dom.ttlEditor) this.dom.ttlEditor.value = this.rawInitialTtl;
-          this._updateUIWithMetadata(data.metadata);
+        if (this.dom.mainPanel) {
+          this.dom.mainPanel.style.display = 'flex';
+          this.dom.mainPanel.classList.remove('hidden');
+        }
 
-          if (this.graphVisualizer) {
-            this.graphVisualizer.setData(this.rdfParser.getGraphData());
-          }
-
-          if (this.dom.mainPanel) {
-            this.dom.mainPanel.style.display = 'flex';
-            this.dom.mainPanel.classList.remove('hidden');
-          }
-
-          // Audio Guide Voice feedback
-          if (this.speech) {
-            this.speech.speak(`تم التعرف على مخطوط القبسات للميرداماد من ${matchData.side.nameAr}. الدقة ${matchData.confidence} بالمائة.`, 'ar');
-          }
-        } catch (err) {
-          console.error('Error loading Alqabasat metadata:', err);
+        // Voice feedback when side changes
+        if (this.speech && this.lastVoiceSide !== matchData.side.id) {
+          this.lastVoiceSide = matchData.side.id;
+          this.speech.speak(`تم التعرف على مخطوط القبسات من ${matchData.side.nameAr} بتتبع هولوغرافي ثلاثي الأبعاد مستمر.`, 'ar');
         }
       };
+
+      if (this.allSidesMatcher.renderer && this.allSidesMatcher.camera) {
+        this._setupInteractionRaycasting(this.allSidesMatcher.renderer.domElement, this.allSidesMatcher.camera);
+      }
     }
 
     try {
       await this.allSidesMatcher.start();
     } catch (err) {
       console.error('Failed to start AllSidesMatcher:', err);
-      this._setTrackingState(false, 'تعذر فتح الكاميرا');
+      this._setTrackingState(false, 'تعذر فتح كاميرا الواقع المعزز');
     }
   }
 
@@ -594,7 +600,15 @@ class AppController {
       const clientY = e.changedTouches ? e.changedTouches[0].clientY : e.clientY;
 
       let hitHotspot = null;
-      if (this.cardManagers && this.cardManagers.length > 0) {
+      if (this.allSidesMatcher && this.allSidesMatcher.cardManager) {
+        hitHotspot = this.allSidesMatcher.cardManager.checkRaycast(
+          camera,
+          clientX,
+          clientY,
+          domElement.clientWidth,
+          domElement.clientHeight
+        );
+      } else if (this.cardManagers && this.cardManagers.length > 0) {
         for (const mgr of this.cardManagers) {
           hitHotspot = mgr.checkRaycast(
             camera,
