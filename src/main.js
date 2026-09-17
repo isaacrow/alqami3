@@ -43,7 +43,10 @@ class AppController {
       spatial360CardDesc: document.getElementById('spatial360-card-desc'),
       spatial360AngleBadge: document.getElementById('spatial360-angle-badge'),
       btnSpatial360CardClose: document.getElementById('btn-spatial360-card-close'),
+      spatial360CardPeriod: document.getElementById('spatial360-card-period'),
+      spatial360CardMaterial: document.getElementById('spatial360-card-material'),
       btnSpatial360Audio: document.getElementById('btn-spatial360-audio'),
+      btnSpatial360Open3d: document.getElementById('btn-spatial360-open3d'),
       btnSpatial360Viewmeta: document.getElementById('btn-spatial360-viewmeta'),
       genaiContainer: document.getElementById('genai-container'),
       btnGenaiCapture: document.getElementById('btn-genai-capture'),
@@ -541,12 +544,27 @@ class AppController {
       this.spatial360Engine = new Spatial360Engine(video, canvas);
       await this.spatial360Engine.init();
 
+      // Top chip selector dock
+      const chips = document.querySelectorAll('.spatial360-chip');
+      chips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          chips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          const target = chip.dataset.target;
+          this.spatial360Engine.setPresetTarget(target);
+        });
+      });
+
       // Trigger button
       if (this.dom.btnSpatial360Trigger) {
         this.dom.btnSpatial360Trigger.addEventListener('click', async () => {
-          this.dom.spatial360BtnText.textContent = '⚡ جاري الفحص المجسم 360°...';
+          this.dom.spatial360BtnText.textContent = '⚡ جاري التحليل والمطابقة 360°...';
           await this.spatial360Engine.performDeep360Scan();
-          this.dom.spatial360BtnText.textContent = '🔍 فحص 360° فوري (Scan 360°)';
+          setTimeout(() => {
+            if (this.dom.spatial360BtnText) {
+              this.dom.spatial360BtnText.textContent = '⚡ فحص المجسم الآن (Instant 360° Scan)';
+            }
+          }, 2500);
         });
       }
 
@@ -561,8 +579,27 @@ class AppController {
       if (this.dom.btnSpatial360Audio) {
         this.dom.btnSpatial360Audio.addEventListener('click', () => {
           if (this.activeRecognizedMeta && this.speech) {
-            const txt = `${this.activeRecognizedMeta.title || ''}. ${this.activeRecognizedMeta.transcriptionArabic || ''}`;
+            const txt = `${this.activeRecognizedMeta.titleArabic || this.activeRecognizedMeta.title || ''}. ${this.activeRecognizedMeta.transcriptionArabic || ''}`;
             this.speech.speak(txt, 'ar');
+          }
+        });
+      }
+
+      // Open in 3D AR button on card
+      if (this.dom.btnSpatial360Open3d) {
+        this.dom.btnSpatial360Open3d.addEventListener('click', () => {
+          if (this.activeRecognizedTarget) {
+            this._startSimulatorMode();
+            const dockBtn = document.querySelector(`.dock-btn[data-model="${this.activeRecognizedTarget.model}"]`);
+            if (dockBtn) {
+              dockBtn.click();
+            } else {
+              const viewer = document.getElementById('model-3d-viewer');
+              const baseUrl = import.meta.env.BASE_URL || './';
+              if (viewer && this.activeRecognizedTarget.modelFile) {
+                viewer.src = `${baseUrl}${this.activeRecognizedTarget.modelFile}`;
+              }
+            }
           }
         });
       }
@@ -580,6 +617,7 @@ class AppController {
       // Callbacks
       this.spatial360Engine.onTargetRecognized = async (item, parsed) => {
         console.log('360 Target Recognized:', item.id, parsed);
+        this.activeRecognizedTarget = item;
 
         // Load item TTL metadata
         try {
@@ -597,14 +635,20 @@ class AppController {
 
           // Populate floating 360 result card
           if (this.dom.spatial360CardTitle) {
-            this.dom.spatial360CardTitle.textContent = data.metadata.titleArabic || data.metadata.title || item.title;
+            this.dom.spatial360CardTitle.textContent = data.metadata.titleArabic || item.titleAr || item.title;
+          }
+          if (this.dom.spatial360CardPeriod) {
+            this.dom.spatial360CardPeriod.textContent = `🏛️ ${data.metadata.date || item.period || 'تاريخي'}`;
+          }
+          if (this.dom.spatial360CardMaterial) {
+            this.dom.spatial360CardMaterial.textContent = `🏺 ${data.metadata.materialArabic || item.material || 'مواد تراثية'}`;
           }
           if (this.dom.spatial360CardDesc) {
-            const desc = data.metadata.transcriptionArabic || parsed.briefReason || 'تم التعرف على المجسم ومطابقته بنجاح.';
+            const desc = data.metadata.transcriptionArabic || item.brief || parsed.briefReason || 'تم التعرف على المجسم ومطابقته بنجاح.';
             this.dom.spatial360CardDesc.textContent = desc;
           }
           if (this.dom.spatial360AngleBadge) {
-            this.dom.spatial360AngleBadge.textContent = parsed.angleDetected || 'زاوية 360°';
+            this.dom.spatial360AngleBadge.textContent = `🧭 ${parsed.angleDetected || 'زاوية 360°'}`;
           }
           if (this.dom.spatial360ResultCard) {
             this.dom.spatial360ResultCard.classList.remove('hidden');
@@ -619,7 +663,7 @@ class AppController {
           this.dom.spatial360BtnText.textContent = msg;
           setTimeout(() => {
             if (this.dom.spatial360BtnText) {
-              this.dom.spatial360BtnText.textContent = '🔍 فحص 360° فوري (Scan 360°)';
+              this.dom.spatial360BtnText.textContent = '⚡ فحص المجسم الآن (Instant 360° Scan)';
             }
           }, 3000);
         }
