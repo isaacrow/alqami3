@@ -1,0 +1,25 @@
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix schema: <http://schema.org/> .
+@prefix ms: <https://w3id.org/manuscript-ar/ontology#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix bf: <http://id.loc.gov/ontologies/bibframe/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+
+<https://alqami.net/manuscript/nahj_al_balagha>
+    a schema:Manuscript, <http://www.cidoc-crm.org/cidoc-crm/E22_Human-Made_Object> ;
+    dc:title "نهج البلاغة"@ar, "Nahj al-Balagha (Peak of Eloquence)"@en ;
+    dc:creator "الشريف الرضي، محمد بن حسين (ت 406 هـ)"@ar, "Al-Sharif al-Radi (d. 406 AH)"@en ;
+    dc:contributor "الناسخ: شمس الدين علي الشيرازي الهراس (1022 هـ)"@ar ;
+    dc:subject "حديث، خطب ومواعظ، بلاغة وأدب إسلامي"@ar ;
+    dc:date "1022 هـ / 1613 م" ;
+    dc:identifier "نسخة رقم 1861" ;
+    dc:language "ara" ;
+    schema:extent "477 ورقة"@ar ;
+    schema:material "ورق مجدول، مذهب، خط النسخ، عناوين بالمداد الأحمر"@ar ;
+    schema:publisher "مكتبة العتبة الرضوية المقدسة في مشهد - إيران"@ar, "Central Library of Astan Quds Razavi, Mashhad"@en ;
+    ms:transcriptionArabic """أول النسخة: بسمله اما بعد حمد الله الذي جعل الحمد ثمناً لنعمائه ومعاذاً من بلائه و وسيلاً الى جنانه وسبباً لزيادة احسانه والصلوة على رسوله..
+آخر النسخة: الينا بعد الشذوذ و ما توفيقنا.. شمس الدين علي الشيرازي الهراس غفرله.
+الوصف: مجدولة، مذهبة، أولها لوحة فنية، كتبت رؤوس المطالب والعناوين بالمداد الأحمر، عليها آثار رطوبة تاريخية وقيمتها التراثية نادرة."""@ar ;
+    ms:translationEnglish """Nahj al-Balagha (Peak of Eloquence), compiled by al-Sharif al-Radi (d. 406 AH). Scribe: Shams al-Din Ali al-Shirazi al-Harras, copied in 1022 AH. Preserved at the Central Library of Astan Quds Razavi in Mashhad (Copy No. 1861). 477 folios in Naskh script, illuminated with gold rulings, chapter titles in red ink."""@en .

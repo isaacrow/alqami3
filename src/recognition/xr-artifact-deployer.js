@@ -35,6 +35,15 @@ export class XRArtifactDeployer {
     this.userRotating = false;
     this.previousTouchX = 0;
 
+    // 3D Skeletal / Morph Animation Mixer for Interactive Models (e.g. Nahj al-Balagha Open Book)
+    this.clock = new THREE.Clock();
+    this.mixer = null;
+    this.animations = [];
+    this.bookAction = null;
+    this.currentClip = null;
+    this.isBookOpen = false;
+    this.onAnimationStateChange = null;
+
     // Screen-to-3D projection caches
     this.target3DPos = new THREE.Vector3(0, 0, -2.4);
     this.current3DPos = new THREE.Vector3(0, 0, -2.4);
@@ -158,7 +167,44 @@ export class XRArtifactDeployer {
           if (this.currentModel) {
             this.modelGroup.remove(this.currentModel);
           }
+          if (this.mixer) {
+            this.mixer.stopAllAction();
+            this.mixer = null;
+          }
+
           this.currentModel = gltf.scene;
+
+          // Process GLTF Animation Clips (e.g. Open_Book on Nahj al-Balagha)
+          this.animations = gltf.animations || [];
+          if (this.animations.length > 0) {
+            this.mixer = new THREE.AnimationMixer(this.currentModel);
+            const clip = this.animations.find(a => a.name === 'Open_Book') || this.animations[0];
+            this.currentClip = clip;
+            const action = this.mixer.clipAction(clip);
+            action.setLoop(THREE.LoopOnce);
+            action.clampWhenFinished = true;
+            this.bookAction = action;
+            this.isBookOpen = false;
+
+            if (this.onAnimationStateChange) {
+              this.onAnimationStateChange({
+                hasAnimation: true,
+                isOpen: false,
+                clipName: clip.name
+              });
+            }
+          } else {
+            this.bookAction = null;
+            this.currentClip = null;
+            this.isBookOpen = false;
+            if (this.onAnimationStateChange) {
+              this.onAnimationStateChange({
+                hasAnimation: false,
+                isOpen: false,
+                clipName: null
+              });
+            }
+          }
 
           // Auto-center and normalize scale
           const box = new THREE.Box3().setFromObject(this.currentModel);
@@ -172,7 +218,7 @@ export class XRArtifactDeployer {
           this.currentModel.position.sub(center.multiplyScalar(desiredScale));
 
           this.modelGroup.add(this.currentModel);
-          console.log('XR 3D Model Loaded Successfully into AR layer:', modelUrl);
+          console.log('XR 3D Model Loaded Successfully into AR layer:', modelUrl, 'Clips:', this.animations.map(a => a.name));
           resolve(this.currentModel);
         },
         undefined,
@@ -184,30 +230,84 @@ export class XRArtifactDeployer {
     });
   }
 
+  toggleBookAnimation() {
+    if (!this.mixer || !this.bookAction) return false;
+
+    if (!this.isBookOpen) {
+      // Open the book: play forward
+      this.bookAction.reset();
+      this.bookAction.timeScale = 1.0;
+      this.bookAction.paused = false;
+      this.bookAction.setLoop(THREE.LoopOnce);
+      this.bookAction.clampWhenFinished = true;
+      this.bookAction.play();
+      this.isBookOpen = true;
+    } else {
+      // Close the book: play reverse smoothly
+      this.bookAction.paused = false;
+      this.bookAction.timeScale = -1.0;
+      this.bookAction.setLoop(THREE.LoopOnce);
+      this.bookAction.clampWhenFinished = true;
+      this.bookAction.play();
+      this.isBookOpen = false;
+    }
+
+    if (this.onAnimationStateChange) {
+      this.onAnimationStateChange({
+        hasAnimation: true,
+        isOpen: this.isBookOpen,
+        clipName: this.currentClip?.name || 'Open_Book'
+      });
+    }
+
+    return this.isBookOpen;
+  }
+
   _setupTouchInteractions() {
     const el = this.renderer.domElement;
+    let startX = 0;
+    let startY = 0;
+    let hasMoved = false;
 
-    const onStart = (clientX) => {
+    const onStart = (clientX, clientY) => {
       this.userRotating = true;
       this.previousTouchX = clientX;
+      startX = clientX;
+      startY = clientY;
+      hasMoved = false;
     };
 
-    const onMove = (clientX) => {
+    const onMove = (clientX, clientY) => {
       if (!this.userRotating) return;
       const deltaX = clientX - this.previousTouchX;
+      if (Math.abs(clientX - startX) > 6 || Math.abs(clientY - startY) > 6) {
+        hasMoved = true;
+      }
       this.previousTouchX = clientX;
       this.modelGroup.rotation.y += deltaX * 0.015;
     };
 
-    const onEnd = () => {
+    const onEnd = (clientX, clientY) => {
       this.userRotating = false;
+      // If tapped without dragging, check raycast to trigger movement animation!
+      if (!hasMoved && this.mixer && this.camera) {
+        const rect = el.getBoundingClientRect();
+        const mouseX = ((clientX - rect.left) / rect.width) * 2 - 1;
+        const mouseY = -((clientY - rect.top) / rect.height) * 2 + 1;
+        const raycaster = new THREE.Raycaster();
+        raycaster.setFromCamera(new THREE.Vector2(mouseX, mouseY), this.camera);
+        const hits = raycaster.intersectObjects(this.modelGroup.children, true);
+        if (hits.length > 0) {
+          this.toggleBookAnimation();
+        }
+      }
     };
 
     // Pointer events
-    el.addEventListener('pointerdown', (e) => onStart(e.clientX));
-    window.addEventListener('pointermove', (e) => onMove(e.clientX));
-    window.addEventListener('pointerup', onEnd);
-    window.addEventListener('pointercancel', onEnd);
+    el.addEventListener('pointerdown', (e) => onStart(e.clientX, e.clientY));
+    window.addEventListener('pointermove', (e) => onMove(e.clientX, e.clientY));
+    window.addEventListener('pointerup', (e) => onEnd(e.clientX, e.clientY));
+    window.addEventListener('pointercancel', () => { this.userRotating = false; });
   }
 
   _handleResize() {
@@ -251,7 +351,13 @@ export class XRArtifactDeployer {
       this.currentArtifactId = artifactData.id;
       const baseUrl = import.meta.env.BASE_URL || './';
       let modelFile = 'model.glb';
-      if (artifactData.id === 'ART-003') modelFile = 'Old_Islamic_Helmet.glb';
+      if (artifactData.arModel?.glb) {
+        modelFile = artifactData.arModel.glb;
+      } else if (artifactData.id === 'ART-003') {
+        modelFile = 'Old_Islamic_Helmet.glb';
+      } else if (artifactData.id === 'ART-006' || artifactData.id?.toLowerCase().includes('nahj') || (artifactData.title && artifactData.title.includes('نهج'))) {
+        modelFile = 'nahj_al_balagha.glb';
+      }
       this._load3DModel(`${baseUrl}${modelFile}`);
     }
   }
@@ -292,6 +398,14 @@ export class XRArtifactDeployer {
     this.animFrameId = requestAnimationFrame(() => this._animate());
 
     this.time += 0.018;
+
+    // Update Three.js Animation Mixer for Skeletal / Morph Movements (Nahj al-Balagha Open Book)
+    if (this.clock) {
+      const delta = this.clock.getDelta();
+      if (this.mixer) {
+        this.mixer.update(delta);
+      }
+    }
 
     // Smooth LERP scale for pop-in / fold-out
     this.currentScale += (this.targetScale - this.currentScale) * 0.14;

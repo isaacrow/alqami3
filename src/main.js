@@ -142,6 +142,11 @@ class AppController {
     if (this.dom.closedsetContainer) this.dom.closedsetContainer.style.display = 'none';
     this.dom.trackingStatus.style.display = 'flex';
 
+    const btn3dAnim = document.getElementById('btn-3d-anim-action');
+    const btnArAnim = document.getElementById('btn-ar-anim-action');
+    if (btn3dAnim) btn3dAnim.style.display = 'none';
+    if (btnArAnim) btnArAnim.style.display = 'none';
+
     if (this.aiEngine) this.aiEngine.stop();
     if (this.xrDeployer) this.xrDeployer.stop();
     if (this.closedSetEngine) this.closedSetEngine.stop();
@@ -306,6 +311,14 @@ class AppController {
     }
     this._stopGenAiCamera();
 
+    const btnArAnim = document.getElementById('btn-ar-anim-action');
+    if (btnArAnim) btnArAnim.style.display = 'none';
+    const btn3dAnim = document.getElementById('btn-3d-anim-action');
+    const activeDockBtn = document.querySelector('.dock-btn.active');
+    if (btn3dAnim) {
+      btn3dAnim.style.display = (activeDockBtn && activeDockBtn.dataset.model === 'nahj_al_balagha') ? 'inline-flex' : 'none';
+    }
+
     // Model Dock Setup
     const dockBtns = document.querySelectorAll('.dock-btn');
     dockBtns.forEach(btn => {
@@ -320,7 +333,22 @@ class AppController {
         // Load GLB
         const baseUrl = import.meta.env.BASE_URL || './';
         const viewer = document.getElementById('model-3d-viewer');
-        if (viewer) viewer.src = `${baseUrl}${modelId}.glb`;
+        const btn3dAnim = document.getElementById('btn-3d-anim-action');
+        if (viewer) {
+          viewer.src = `${baseUrl}${modelId}.glb`;
+          if (modelId === 'nahj_al_balagha') {
+            viewer.animationName = 'Open_Book';
+            if (btn3dAnim) {
+              btn3dAnim.style.display = 'inline-flex';
+              btn3dAnim.classList.remove('is-active');
+              btn3dAnim.querySelector('.anim-btn-text').textContent = 'فتح المخطوط (Open Book)';
+              btn3dAnim.querySelector('.anim-btn-icon').textContent = '📖';
+            }
+          } else {
+            if (typeof viewer.pause === 'function') viewer.pause();
+            if (btn3dAnim) btn3dAnim.style.display = 'none';
+          }
+        }
         
         // Load TTL
         try {
@@ -557,6 +585,27 @@ class AppController {
       if (this.xrDeployer.renderer && this.xrDeployer.camera) {
         this._setupInteractionRaycasting(this.xrDeployer.renderer.domElement, this.xrDeployer.camera);
       }
+
+      // Wire AR Animation State listener to update the floating AR Action Button
+      const btnArAnim = document.getElementById('btn-ar-anim-action');
+      this.xrDeployer.onAnimationStateChange = (state) => {
+        if (btnArAnim) {
+          if (state.hasAnimation) {
+            btnArAnim.style.display = 'inline-flex';
+            if (state.isOpen) {
+              btnArAnim.classList.add('is-active');
+              btnArAnim.querySelector('.anim-btn-text').textContent = 'إغلاق المخطوط في الواقع المعزز (Close in AR)';
+              btnArAnim.querySelector('.anim-btn-icon').textContent = '📕';
+            } else {
+              btnArAnim.classList.remove('is-active');
+              btnArAnim.querySelector('.anim-btn-text').textContent = 'فتح المخطوط في الواقع المعزز (Open in AR)';
+              btnArAnim.querySelector('.anim-btn-icon').textContent = '📖';
+            }
+          } else {
+            btnArAnim.style.display = 'none';
+          }
+        }
+      };
     }
     this.xrDeployer.start();
 
@@ -627,6 +676,8 @@ class AppController {
         if (this.xrDeployer) {
           this.xrDeployer.collapseArtifactXR();
         }
+        const btnArAnim = document.getElementById('btn-ar-anim-action');
+        if (btnArAnim) btnArAnim.style.display = 'none';
         this.lastConfirmedSpeechId = null;
       };
     }
@@ -810,6 +861,41 @@ class AppController {
           viewer.activateAR();
         } else {
           alert('Sorry, your device or browser does not support placing 3D models in AR.');
+        }
+      });
+    }
+
+    // 3D Model Movement / Open Book Animation Button
+    const btn3dAnim = document.getElementById('btn-3d-anim-action');
+    if (btn3dAnim) {
+      btn3dAnim.addEventListener('click', () => {
+        const viewer = document.getElementById('model-3d-viewer');
+        if (viewer) {
+          if (!viewer.paused) {
+            viewer.pause();
+            btn3dAnim.classList.remove('is-active');
+            btn3dAnim.querySelector('.anim-btn-text').textContent = 'فتح المخطوط (Open Book)';
+            btn3dAnim.querySelector('.anim-btn-icon').textContent = '📖';
+          } else {
+            viewer.animationName = 'Open_Book';
+            viewer.play();
+            btn3dAnim.classList.add('is-active');
+            btn3dAnim.querySelector('.anim-btn-text').textContent = 'إغلاق المخطوط (Close Book)';
+            btn3dAnim.querySelector('.anim-btn-icon').textContent = '📕';
+          }
+        }
+      });
+    }
+
+    // AR Spatial Movement / Open Book Action Button
+    const btnArAnim = document.getElementById('btn-ar-anim-action');
+    if (btnArAnim) {
+      btnArAnim.addEventListener('click', () => {
+        if (this.xrDeployer) {
+          const isOpen = this.xrDeployer.toggleBookAnimation();
+          if (this.speech) {
+            this.speech.speak(isOpen ? 'تم فتح مخطوط نهج البلاغة في الواقع المعزز.' : 'تم إغلاق المخطوط.', 'ar');
+          }
         }
       });
     }
